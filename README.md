@@ -21,6 +21,11 @@ python web/app.py 8080
 ```
 Open **[http://127.0.0.1:8080](http://127.0.0.1:8080)** to interact with live PyTorch Beta-VAE inference and OVS line-rate flow tables.
 
+### 🔐 Admin Portal Credentials:
+- **Username**: `admin`
+- **Password**: `admin` *(or click "Autofill Demo" in the modal)*
+- **Privileges**: Unlocks manual zero-day exploit triggers, federated learning model retraining rounds, and OpenFlow table reset controls. Guests have real-time read-only telemetry observation.
+
 ---
 
 ## 🌟 Key Highlights

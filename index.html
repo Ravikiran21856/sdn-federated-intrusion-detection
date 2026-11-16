@@ -193,6 +193,20 @@
                     Reset
                 </button>
 
+                <!-- Admin Authentication Section -->
+                <div id="auth-container" class="flex items-center">
+                    <button onclick="openLoginModal()" id="btn-login-open" class="bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white px-3.5 py-2 rounded-xl font-bold transition flex items-center gap-1.5 shadow-md shadow-cyan-500/25">
+                        <span>🔐</span> <span>Admin Login</span>
+                    </button>
+                    <div id="admin-badge-logged" class="hidden flex items-center gap-2 bg-emerald-950/80 border border-emerald-500/50 px-3 py-1.5 rounded-xl shadow-inner">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span class="text-[11px] font-bold text-emerald-300 font-mono">ROOT ADMIN</span>
+                        <button onclick="logoutAdmin()" title="Logout" class="text-[10px] bg-slate-800 hover:bg-rose-950 hover:text-rose-300 text-slate-300 px-2 py-1 rounded-lg ml-1 font-semibold transition border border-borderCol">
+                            Logout
+                        </button>
+                    </div>
+                </div>
+
             </div>
 
         </div>
@@ -948,6 +962,7 @@
 
         // Manual Trigger from Button Click
         function manualInject(type) {
+            if (!requireAdmin("inject manual flow exploits")) return;
             const domain = parseInt(document.getElementById('target-domain').value);
             processFlow(type, domain);
         }
@@ -1008,6 +1023,7 @@
         }
 
         async function trainFLRound() {
+            if (!requireAdmin("trigger federated learning model rounds")) return;
             const btn = document.getElementById('btn-fl');
             btn.disabled = true;
             btn.innerHTML = `<span class="animate-spin">🔄</span> Syncing Weights Across Domains...`;
@@ -1028,6 +1044,7 @@
         }
 
         async function clearRules() {
+            if (!requireAdmin("purge OpenFlow tables")) return;
             await fetch('/api/clear_rules', { method: 'POST' });
             chartLabels = [];
             chartScores = [];
@@ -1043,6 +1060,108 @@
             fetchRules();
         }
 
+        // Admin Authentication State & Handlers
+        let isAdmin = false;
+
+        function checkAdminSession() {
+            if (localStorage.getItem('aegis_admin') === 'true') {
+                isAdmin = true;
+                updateAuthUI();
+            }
+        }
+
+        function updateAuthUI() {
+            const btnOpen = document.getElementById('btn-login-open');
+            const badgeLogged = document.getElementById('admin-badge-logged');
+            if (isAdmin) {
+                btnOpen.classList.add('hidden');
+                badgeLogged.classList.remove('hidden');
+            } else {
+                btnOpen.classList.remove('hidden');
+                badgeLogged.classList.add('hidden');
+            }
+        }
+
+        function openLoginModal(msg) {
+            const modal = document.getElementById('login-modal');
+            const errDiv = document.getElementById('login-error');
+            const errText = document.getElementById('login-error-text');
+
+            if (msg) {
+                errText.innerText = msg;
+                errDiv.classList.remove('hidden');
+                errDiv.className = "mb-4 p-2.5 rounded-xl bg-amber-950/70 border border-amber-500/50 text-amber-300 text-xs font-semibold flex items-center gap-2";
+            } else {
+                errDiv.classList.add('hidden');
+            }
+            modal.classList.remove('hidden');
+            document.getElementById('admin-username').focus();
+        }
+
+        function closeLoginModal() {
+            document.getElementById('login-modal').classList.add('hidden');
+        }
+
+        function autofillAdmin() {
+            document.getElementById('admin-username').value = "admin";
+            document.getElementById('admin-password').value = "admin";
+        }
+
+        async function handleLoginSubmit(e) {
+            e.preventDefault();
+            const u = document.getElementById('admin-username').value.trim();
+            const p = document.getElementById('admin-password').value.trim();
+            const errDiv = document.getElementById('login-error');
+            const errText = document.getElementById('login-error-text');
+
+            try {
+                // Try backend auth API
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: u, password: p })
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.success) {
+                        isAdmin = true;
+                        localStorage.setItem('aegis_admin', 'true');
+                        updateAuthUI();
+                        closeLoginModal();
+                        return;
+                    }
+                }
+                throw new Error("Invalid admin credentials");
+            } catch (err) {
+                // Client-side fallback authentication for GitHub Pages / Static hosting
+                if (u === "admin" && (p === "admin" || p === "admin123" || p === "aegisnet2026")) {
+                    isAdmin = true;
+                    localStorage.setItem('aegis_admin', 'true');
+                    updateAuthUI();
+                    closeLoginModal();
+                } else {
+                    errText.innerText = "Access Denied: Invalid admin credentials (use admin / admin)";
+                    errDiv.className = "mb-4 p-2.5 rounded-xl bg-rose-950/70 border border-rose-500/50 text-rose-300 text-xs font-semibold flex items-center gap-2";
+                    errDiv.classList.remove('hidden');
+                }
+            }
+        }
+
+        function logoutAdmin() {
+            isAdmin = false;
+            localStorage.removeItem('aegis_admin');
+            updateAuthUI();
+        }
+
+        function requireAdmin(actionName) {
+            if (!isAdmin) {
+                openLoginModal(`Admin authentication required to ${actionName}.`);
+                return false;
+            }
+            return true;
+        }
+
         function selectDomain(id) {
             document.getElementById('target-domain').value = id;
         }
@@ -1050,6 +1169,7 @@
         // Initialize on page load
         window.onload = () => {
             initChart();
+            checkAdminSession();
             fetchStatus();
             fetchRules();
 
@@ -1057,5 +1177,63 @@
             startStream();
         };
     </script>
+
+    <!-- Cyberpunk Admin Login Modal -->
+    <div id="login-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity">
+        <div class="relative w-full max-w-md bg-panelBg border border-borderCol/90 rounded-2xl shadow-2xl p-6 sm:p-8 overflow-hidden">
+            <!-- Ambient Glow Accents -->
+            <div class="absolute -top-12 -right-12 w-40 h-40 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-12 -left-12 w-40 h-40 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between pb-4 border-b border-borderCol mb-5">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center text-xl shadow-lg shadow-cyan-500/30">
+                        🛡
+                    </div>
+                    <div>
+                        <h3 class="text-base font-extrabold text-white tracking-wide">SDN Controller Admin</h3>
+                        <p class="text-[11px] text-slate-400">Authenticate for flow modification privileges</p>
+                    </div>
+                </div>
+                <button onclick="closeLoginModal()" class="text-slate-400 hover:text-white text-xl p-1 transition">&times;</button>
+            </div>
+
+            <!-- Error / Notice Banner -->
+            <div id="login-error" class="hidden mb-4 p-2.5 rounded-xl bg-rose-950/70 border border-rose-500/50 text-rose-300 text-xs font-semibold flex items-center gap-2">
+                <span>⚠</span> <span id="login-error-text">Invalid admin credentials.</span>
+            </div>
+
+            <!-- Login Form -->
+            <form id="admin-login-form" onsubmit="handleLoginSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-400 mb-1.5 tracking-wider">Admin Username</label>
+                    <input type="text" id="admin-username" required placeholder="admin" autocomplete="username" class="w-full bg-darkBg border border-borderCol rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-500 font-mono shadow-inner">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-400 mb-1.5 tracking-wider">Security Key / Password</label>
+                    <input type="password" id="admin-password" required placeholder="••••••••" autocomplete="current-password" class="w-full bg-darkBg border border-borderCol rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-500 font-mono shadow-inner">
+                </div>
+
+                <!-- Quick Autofill Demo Credentials -->
+                <div class="flex items-center justify-between text-[11px] text-slate-400 pt-1">
+                    <span>Default: <code class="text-cyan-400 bg-darkBg px-1.5 py-0.5 rounded font-mono">admin</code> / <code class="text-cyan-400 bg-darkBg px-1.5 py-0.5 rounded font-mono">admin</code></span>
+                    <button type="button" onclick="autofillAdmin()" class="text-indigo-400 hover:text-indigo-300 font-semibold underline underline-offset-2">
+                        Autofill Demo
+                    </button>
+                </div>
+
+                <div class="pt-2 flex gap-3">
+                    <button type="button" onclick="closeLoginModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold py-2.5 rounded-xl text-xs transition border border-borderCol">
+                        Cancel
+                    </button>
+                    <button type="submit" id="btn-submit-login" class="flex-1 bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-1.5">
+                        <span>🔓</span> Authenticate
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

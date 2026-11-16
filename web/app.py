@@ -269,7 +269,21 @@ class RequestHandler(SimpleHTTPRequestHandler):
         except Exception:
             data = {}
 
-        if parsed.path == "/api/train_round":
+        if parsed.path == "/api/login":
+            username = data.get("username", "")
+            password = data.get("password", "")
+            # Default demo admin credentials: admin / admin or admin / admin123
+            if username == "admin" and (password == "admin" or password == "admin123" or password == "aegisnet2026"):
+                self._send_json({
+                    "success": True,
+                    "token": "aegis_admin_token_" + str(int(time.time())),
+                    "user": "Administrator",
+                    "role": "SDN_ROOT_ADMIN",
+                    "permissions": ["all", "fl_train", "mitigate", "purge_rules"]
+                })
+            else:
+                self._send_json({"success": False, "error": "Invalid username or password. Use admin / admin."}, status_code=401)
+        elif parsed.path == "/api/train_round":
             res = backend.train_next_fl_round()
             self._send_json(res)
         elif parsed.path == "/api/inject_traffic":
