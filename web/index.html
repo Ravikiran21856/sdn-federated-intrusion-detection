@@ -719,6 +719,114 @@
         }
 
         // Ingest flow and update all visual elements
+        function handleEventUI(event) {
+            const isZeroDay = event.traffic_type.includes("Zero-Day");
+
+            // Trigger audio chirp
+            playChirp(event.is_anomaly, isZeroDay);
+
+            // Spawn animated visual packet
+            spawnParticle(event.domain_id, event.is_anomaly, isZeroDay);
+
+            // Update Chart
+            chartLabels.push(event.timestamp);
+            chartScores.push(event.anomaly_score);
+            chartThresholds.push(event.threshold);
+
+            const ptColor = isZeroDay ? '#f43f5e' : (event.is_anomaly ? '#f59e0b' : '#10b981');
+            pointColors.push(ptColor);
+
+            if (chartLabels.length > 25) {
+                chartLabels.shift();
+                chartScores.shift();
+                chartThresholds.shift();
+                pointColors.shift();
+            }
+            scoreChart.update('none'); // fast update without reset
+
+            // Update latency badge
+            document.getElementById('badge-latency').innerText = event.latency_ms;
+
+            // Animate Alert Banner on Zero-Day or Anomaly
+            if (event.mitigation_applied) {
+                const banner = document.getElementById('alert-banner');
+                const bannerText = document.getElementById('alert-banner-text');
+                bannerText.innerText = `🚨 ${event.traffic_type.toUpperCase()} BLOCKED ON ${event.switch_name}!`;
+                banner.classList.remove('hidden');
+                setTimeout(() => banner.classList.add('hidden'), 2500);
+
+                // Flash switch node
+                const nodeCircle = document.getElementById(`node-circle-${event.domain_id}`);
+                if (nodeCircle) {
+                    nodeCircle.setAttribute("fill", "#e11d48");
+                    setTimeout(() => nodeCircle.setAttribute("fill", "#0f172a"), 800);
+                }
+            }
+
+            // Append row to Event Table with slide-in animation
+            prependEventRow(event);
+        }
+
+        let simForwarded = 45;
+        let simDropped = 12;
+        let simRules = [];
+
+        function simulatedFallbackFlow(type, domain) {
+            const isZeroDay = type.includes("zeroday");
+            const isAnomaly = isZeroDay || type === "known_attack";
+            const labelMap = {
+                "benign": "Legitimate Flow (HTTP/DNS/SSH)",
+                "known_attack": "Known Attack (SYN Flood)",
+                "zeroday_slowloris": "Zero-Day (Stealth Slowloris)",
+                "zeroday_covert": "Zero-Day (Covert C2 DNS Tunnel)"
+            };
+            const score = isZeroDay ? (2.15 + Math.random() * 1.4) : (isAnomaly ? (1.98 + Math.random() * 0.75) : (0.42 + Math.random() * 0.85));
+            const now = new Date();
+            const timeStr = now.toTimeString().split(' ')[0];
+            const dstPort = type === "zeroday_covert" ? 53 : (type === "zeroday_slowloris" ? 8080 : (type === "known_attack" ? 443 : 80));
+            const srcIp = `10.${domain}.${Math.floor(Math.random()*150)+1}.${Math.floor(Math.random()*250)+1}`;
+            const dstIp = `172.16.${domain}.10`;
+
+            if (isAnomaly) {
+                simDropped++;
+                simRules.unshift({
+                    switch: `s${domain}`,
+                    match: { src_ip: srcIp, dst_ip: dstIp, dst_port: dstPort },
+                    priority: 65535,
+                    action: "DROP",
+                    packet_count: Math.floor(Math.random() * 45) + 1
+                });
+                if (simRules.length > 15) simRules.pop();
+            } else {
+                simForwarded++;
+            }
+
+            const simEvent = {
+                id: Date.now(),
+                timestamp: timeStr,
+                domain_id: domain,
+                switch_name: `s${domain}`,
+                traffic_type: labelMap[type] || "Benign Flow",
+                src_ip: srcIp,
+                dst_ip: dstIp,
+                dst_port: dstPort,
+                anomaly_score: parseFloat(score.toFixed(4)),
+                threshold: 1.9325,
+                is_anomaly: isAnomaly,
+                mitigation_applied: isAnomaly,
+                data_plane_action: isAnomaly ? "DROP" : "FORWARD",
+                latency_ms: (0.35 + Math.random() * 0.35).toFixed(2)
+            };
+
+            handleEventUI(simEvent);
+
+            document.getElementById('badge-forwarded').innerText = simForwarded;
+            document.getElementById('badge-dropped').innerText = simDropped;
+            document.getElementById('badge-rules').innerText = simRules.length;
+
+            renderRulesTable(simRules);
+        }
+
         async function processFlow(type, domain) {
             try {
                 const res = await fetch('/api/inject_traffic', {
@@ -726,59 +834,14 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ type: type, domain: domain })
                 });
+                if (!res.ok) throw new Error("API not reachable");
                 const event = await res.json();
-                const isZeroDay = event.traffic_type.includes("Zero-Day");
-
-                // Trigger audio chirp
-                playChirp(event.is_anomaly, isZeroDay);
-
-                // Spawn animated visual packet
-                spawnParticle(domain, event.is_anomaly, isZeroDay);
-
-                // Update Chart
-                chartLabels.push(event.timestamp);
-                chartScores.push(event.anomaly_score);
-                chartThresholds.push(event.threshold);
-
-                const ptColor = isZeroDay ? '#f43f5e' : (event.is_anomaly ? '#f59e0b' : '#10b981');
-                pointColors.push(ptColor);
-
-                if (chartLabels.length > 25) {
-                    chartLabels.shift();
-                    chartScores.shift();
-                    chartThresholds.shift();
-                    pointColors.shift();
-                }
-                scoreChart.update('none'); // fast update without reset
-
-                // Update latency badge
-                document.getElementById('badge-latency').innerText = event.latency_ms;
-
-                // Animate Alert Banner on Zero-Day or Anomaly
-                if (event.mitigation_applied) {
-                    const banner = document.getElementById('alert-banner');
-                    const bannerText = document.getElementById('alert-banner-text');
-                    bannerText.innerText = `🚨 ${event.traffic_type.toUpperCase()} BLOCKED ON ${event.switch_name}!`;
-                    banner.classList.remove('hidden');
-                    setTimeout(() => banner.classList.add('hidden'), 2500);
-
-                    // Flash switch node
-                    const nodeCircle = document.getElementById(`node-circle-${domain}`);
-                    if (nodeCircle) {
-                        nodeCircle.setAttribute("fill", "#e11d48");
-                        setTimeout(() => nodeCircle.setAttribute("fill", "#0f172a"), 800);
-                    }
-                }
-
-                // Append row to Event Table with slide-in animation
-                prependEventRow(event);
-
-                // Refresh table rules and status counters
+                handleEventUI(event);
                 fetchStatus();
                 fetchRules();
-
             } catch (err) {
-                console.error("Traffic injection error:", err);
+                // Client-side fallback simulation for GitHub Pages / Static hosting
+                simulatedFallbackFlow(type, domain);
             }
         }
 
@@ -916,28 +979,31 @@
             }
         }
 
+        function renderRulesTable(rules) {
+            const tbody = document.getElementById('flow-rules-body');
+            if (!rules || rules.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">Normal traffic baseline active. Reactive rules will appear upon anomaly interception.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = rules.map(r => `
+                <tr class="hover:bg-slate-800/40 transition">
+                    <td class="p-2.5 font-bold text-cyan-400">${r.switch}</td>
+                    <td class="p-2.5 font-mono text-[11px]">${r.match.src_ip} &rarr; ${r.match.dst_ip}:${r.match.dst_port}</td>
+                    <td class="p-2.5"><span class="bg-indigo-900/60 text-indigo-300 px-2 py-0.5 rounded text-[10px] font-bold">${r.priority}</span></td>
+                    <td class="p-2.5"><span class="bg-rose-950 text-rose-300 border border-rose-500/40 px-2 py-0.5 rounded text-[10px] font-black">${r.action}</span></td>
+                    <td class="p-2.5 text-rose-400 font-extrabold font-mono">${r.packet_count}</td>
+                </tr>
+            `).join('');
+        }
+
         async function fetchRules() {
             try {
                 const res = await fetch('/api/rules');
+                if (!res.ok) throw new Error("API not reachable");
                 const rules = await res.json();
-                const tbody = document.getElementById('flow-rules-body');
-
-                if (rules.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">Normal traffic baseline active. Reactive rules will appear upon anomaly interception.</td></tr>';
-                    return;
-                }
-
-                tbody.innerHTML = rules.map(r => `
-                    <tr class="hover:bg-slate-800/40 transition">
-                        <td class="p-2.5 font-bold text-cyan-400">${r.switch}</td>
-                        <td class="p-2.5 font-mono text-[11px]">${r.match.src_ip} &rarr; ${r.match.dst_ip}:${r.match.dst_port}</td>
-                        <td class="p-2.5"><span class="bg-indigo-900/60 text-indigo-300 px-2 py-0.5 rounded text-[10px] font-bold">${r.priority}</span></td>
-                        <td class="p-2.5"><span class="bg-rose-950 text-rose-300 border border-rose-500/40 px-2 py-0.5 rounded text-[10px] font-black">${r.action}</span></td>
-                        <td class="p-2.5 text-rose-400 font-extrabold font-mono">${r.packet_count}</td>
-                    </tr>
-                `).join('');
+                renderRulesTable(rules);
             } catch (err) {
-                console.error("Error fetching rules:", err);
+                if (simRules.length > 0) renderRulesTable(simRules);
             }
         }
 

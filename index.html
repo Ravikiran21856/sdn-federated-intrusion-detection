@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AegisNet // Real-Time Federated Zero-Day IDS</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#070b13',
+                        panelBg: '#0f172a',
+                        cardBg: '#131d31',
+                        borderCol: '#1e293b',
+                        cyanAccent: '#06b6d4',
+                        greenAccent: '#10b981',
+                        redAccent: '#f43f5e',
+                        yellowAccent: '#f59e0b',
+                        purpleAccent: '#a855f7'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #070b13;
+            color: #e2e8f0;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            overflow-x: hidden;
+        }
+        .glow-cyan {
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.35);
+        }
+        .glow-red {
+            box-shadow: 0 0 25px rgba(244, 63, 94, 0.45);
+        }
+        /* AEGISNET Middle-Top Animations */
+        @keyframes aegis-shimmer {
+            0% {
+                background-position: 0% 50%;
+                filter: drop-shadow(0 0 25px rgba(6, 182, 212, 0.85)) drop-shadow(0 0 50px rgba(99, 102, 241, 0.5));
+            }
+            50% {
+                background-position: 100% 50%;
+                filter: drop-shadow(0 0 50px rgba(99, 102, 241, 0.95)) drop-shadow(0 0 70px rgba(244, 63, 94, 0.6)) drop-shadow(0 0 30px rgba(6, 182, 212, 0.9));
+            }
+            100% {
+                background-position: 0% 50%;
+                filter: drop-shadow(0 0 25px rgba(6, 182, 212, 0.85)) drop-shadow(0 0 50px rgba(99, 102, 241, 0.5));
+            }
+        }
+        .aegis-shimmer {
+            background-size: 300% 300%;
+            animation: aegis-shimmer 3.5s ease-in-out infinite;
+        }
+        @keyframes aegis-glow-pulse {
+            0%, 100% {
+                opacity: 0.65;
+                transform: scale(0.97);
+                filter: blur(14px);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+                filter: blur(24px);
+            }
+        }
+        .aegis-glow-anim {
+            animation: aegis-glow-pulse 3s infinite ease-in-out;
+        }
+        @keyframes aegis-sub-pulse {
+            0%, 100% { opacity: 0.75; letter-spacing: 0.22em; }
+            50% { opacity: 1; letter-spacing: 0.28em; text-shadow: 0 0 15px #06b6d4; }
+        }
+        .aegis-sub-pulse {
+            animation: aegis-sub-pulse 3s infinite ease-in-out;
+        }
+
+        .pulse-node {
+            animation: pulse-animation 1.5s infinite ease-in-out;
+        }
+        @keyframes pulse-animation {
+            0% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 10px #06b6d4); }
+            100% { transform: scale(1); opacity: 0.9; }
+        }
+        @keyframes shockwave {
+            0% { r: 5; opacity: 1; stroke-width: 3; }
+            100% { r: 35; opacity: 0; stroke-width: 0.5; }
+        }
+        .shockwave-anim {
+            animation: shockwave 0.8s ease-out forwards;
+        }
+        .row-highlight {
+            animation: flash-row 1.2s ease-out;
+        }
+        @keyframes flash-row {
+            0% { background-color: rgba(6, 182, 212, 0.3); }
+            100% { background-color: transparent; }
+        }
+        .row-highlight-danger {
+            animation: flash-row-danger 1.5s ease-out;
+        }
+        @keyframes flash-row-danger {
+            0% { background-color: rgba(244, 63, 94, 0.45); }
+            100% { background-color: transparent; }
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b1120;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-darkBg text-slate-200">
+
+    <!-- Top Centered Hero Header -->
+    <header class="border-b border-borderCol bg-panelBg/95 backdrop-blur sticky top-0 z-50 px-6 py-6 shadow-2xl">
+        <div class="max-w-7xl mx-auto flex flex-col items-center justify-center text-center space-y-4">
+            
+            <!-- Large Centered Animated AEGISNET at Middle Top -->
+            <div class="relative group cursor-default">
+                <!-- Multi-layer background glowing neon blur aura -->
+                <div class="absolute -inset-4 bg-gradient-to-r from-cyan-500 via-indigo-600 to-fuchsia-500 rounded-3xl blur-2xl opacity-75 aegis-glow-anim"></div>
+                <div class="absolute -inset-1.5 bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-500 rounded-2xl blur-md opacity-60"></div>
+                
+                <!-- Main Grand Large Title -->
+                <h1 class="relative text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-[0.32em] sm:tracking-[0.38em] text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-white to-indigo-300 uppercase select-none aegis-shimmer">
+                    AEGISNET
+                </h1>
+            </div>
+
+            <!-- Subtitle Tagline -->
+            <div class="flex items-center gap-3 relative max-w-xl w-full justify-center">
+                <span class="h-[1px] flex-1 bg-gradient-to-r from-transparent to-cyan-500/70"></span>
+                <span class="text-xs sm:text-sm font-mono tracking-[0.25em] text-cyan-400 font-extrabold uppercase aegis-sub-pulse">
+                    Federated Zero-Day IDS // SDN Defense Matrix
+                </span>
+                <span class="h-[1px] flex-1 bg-gradient-to-l from-transparent to-cyan-500/70"></span>
+            </div>
+
+            <!-- Controls & Badges Placed Down of AEGISNET -->
+            <div class="flex flex-wrap items-center justify-center gap-3 pt-1 text-xs">
+                
+                <!-- System Badges Group: CORE v2.4 + LIVE (1s TICK) -->
+                <div class="flex items-center bg-darkBg/90 border border-borderCol rounded-xl px-3.5 py-2 gap-3 shadow-inner">
+                    <span class="text-xs font-mono font-bold text-cyan-400">CORE v2.4</span>
+                    <span class="h-3.5 w-[1px] bg-slate-700"></span>
+                    <span id="live-indicator" class="flex items-center gap-1.5 text-[11px] font-bold text-emerald-400">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                        LIVE (1s TICK)
+                    </span>
+                </div>
+
+                <!-- Tag: Multi-Domain OpenFlow & Beta-VAE -->
+                <div class="bg-darkBg/90 border border-borderCol text-slate-300 px-3.5 py-2 rounded-xl font-medium text-[11px] flex items-center gap-2 shadow-inner">
+                    <span class="text-indigo-400 font-bold">⚡</span>
+                    <span>Multi-Domain OpenFlow & Beta-VAE</span>
+                </div>
+
+                <!-- Speed Control Group: 0.5s Fast | 1.0s Live | 2.0s Slow | Pause -->
+                <div class="flex items-center bg-darkBg border border-borderCol rounded-xl p-1 shadow-inner">
+                    <button onclick="setStreamSpeed(500)" id="btn-speed-fast" class="px-3 py-1 rounded-lg text-slate-400 hover:text-white transition text-[11px] font-semibold">0.5s Fast</button>
+                    <button onclick="setStreamSpeed(1000)" id="btn-speed-normal" class="px-3 py-1 rounded-lg bg-cyan-500 text-white transition text-[11px] font-bold shadow-md shadow-cyan-500/30">1.0s Live</button>
+                    <button onclick="setStreamSpeed(2000)" id="btn-speed-slow" class="px-3 py-1 rounded-lg text-slate-400 hover:text-white transition text-[11px] font-semibold">2.0s Slow</button>
+                    <button onclick="toggleStream()" id="btn-toggle-stream" class="px-3 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30 transition text-[11px] font-bold ml-1 hover:bg-amber-500/30">Pause</button>
+                </div>
+
+                <!-- Audio Toggle: 🔇 Muted -->
+                <button onclick="toggleAudio()" id="btn-audio" class="bg-darkBg border border-borderCol hover:border-slate-600 px-3 py-2 rounded-xl text-slate-300 font-medium transition flex items-center gap-1.5 shadow-inner">
+                    <span id="audio-icon">🔇</span> <span id="audio-label">Muted</span>
+                </button>
+
+                <!-- Reset: Reset Tables -->
+                <button onclick="clearRules()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-2 rounded-xl font-medium transition border border-borderCol shadow">
+                    Reset
+                </button>
+
+            </div>
+
+        </div>
+    </header>
+
+    <!-- Global Key Metrics Ticker -->
+    <section class="max-w-7xl mx-auto px-6 pt-5">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            <div class="bg-panelBg/80 border border-borderCol/80 p-3 rounded-xl">
+                <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">FL Training Round</div>
+                <div class="text-xl font-extrabold text-cyan-400 mt-0.5 flex items-baseline gap-1.5">
+                    <span id="badge-fl-round">3</span>
+                    <span class="text-[10px] text-slate-500 font-normal">FedProx</span>
+                </div>
+            </div>
+
+            <div class="bg-panelBg/80 border border-borderCol/80 p-3 rounded-xl">
+                <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Anomaly Cutoff (τ)</div>
+                <div class="text-xl font-extrabold text-yellow-400 mt-0.5 font-mono">
+                    <span id="badge-threshold">1.9325</span>
+                </div>
+            </div>
+
+            <div class="bg-panelBg/80 border border-borderCol/80 p-3 rounded-xl">
+                <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Active OVS Rules</div>
+                <div class="text-xl font-extrabold text-indigo-400 mt-0.5 flex items-baseline gap-1.5">
+                    <span id="badge-rules">0</span>
+                    <span class="text-[10px] text-slate-500 font-normal">FlowMod</span>
+                </div>
+            </div>
+
+            <div class="bg-panelBg/80 border border-borderCol/80 p-3 rounded-xl">
+                <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Packets Forwarded</div>
+                <div class="text-xl font-extrabold text-emerald-400 mt-0.5 font-mono">
+                    <span id="badge-forwarded">0</span>
+                </div>
+            </div>
+
+            <div class="bg-panelBg/80 border border-borderCol/80 p-3 rounded-xl">
+                <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Packets Blocked</div>
+                <div class="text-xl font-extrabold text-rose-400 mt-0.5 font-mono">
+                    <span id="badge-dropped">0</span>
+                </div>
+            </div>
+
+            <div class="bg-panelBg/80 border border-borderCol/80 p-3 rounded-xl">
+                <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Defense Latency</div>
+                <div class="text-xl font-extrabold text-purple-400 mt-0.5 font-mono flex items-baseline gap-1">
+                    <span id="badge-latency">0.45</span>
+                    <span class="text-xs font-normal text-slate-400">ms</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="p-6 max-w-7xl mx-auto space-y-6">
+
+        <!-- Top Section: Animated Topology & Exploit Launcher -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- Interactive Animated SDN Topology View (2 cols) -->
+            <div class="lg:col-span-2 bg-panelBg border border-borderCol rounded-2xl p-5 shadow-2xl relative overflow-hidden flex flex-col justify-between">
+                <div class="flex items-center justify-between mb-2">
+                    <h2 class="text-xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
+                        SDN Data Plane & Federated Coordination Fabric
+                    </h2>
+                    <span class="text-[11px] font-mono text-cyan-400/90 bg-cyan-950/40 border border-cyan-800/40 px-2 py-0.5 rounded">
+                        Active Telemetry Polling (1000ms)
+                    </span>
+                </div>
+
+                <!-- Animated SVG Topology Canvas -->
+                <div class="h-72 w-full flex items-center justify-center bg-darkBg/90 rounded-xl border border-borderCol/60 relative overflow-hidden">
+                    <svg id="topo-svg" viewBox="0 0 640 260" class="w-full h-full">
+                        <defs>
+                            <!-- Linear Gradients for links -->
+                            <linearGradient id="link-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#6366f1" stop-opacity="0.8"/>
+                                <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.8"/>
+                            </linearGradient>
+                            <!-- Glow Filter -->
+                            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="3" result="blur" />
+                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                            </filter>
+                        </defs>
+
+                        <!-- Static Connection Lines -->
+                        <line x1="320" y1="50" x2="110" y2="185" stroke="#1e293b" stroke-width="3" stroke-dasharray="4,4" />
+                        <line x1="320" y1="50" x2="320" y2="185" stroke="#1e293b" stroke-width="3" stroke-dasharray="4,4" />
+                        <line x1="320" y1="50" x2="530" y2="185" stroke="#1e293b" stroke-width="3" stroke-dasharray="4,4" />
+
+                        <!-- Active Highlight Cables -->
+                        <line id="cable-1" x1="320" y1="50" x2="110" y2="185" stroke="#06b6d4" stroke-width="2.5" opacity="0.3" />
+                        <line id="cable-2" x1="320" y1="50" x2="320" y2="185" stroke="#10b981" stroke-width="2.5" opacity="0.3" />
+                        <line id="cable-3" x1="320" y1="50" x2="530" y2="185" stroke="#f59e0b" stroke-width="2.5" opacity="0.3" />
+
+                        <!-- Dynamic Animated Packet Stream Layer -->
+                        <g id="packet-stream-layer"></g>
+
+                        <!-- Central Federated Server Node -->
+                        <g transform="translate(320, 50)">
+                            <circle r="30" fill="#1e1b4b" stroke="#818cf8" stroke-width="2.5" filter="url(#glow)"/>
+                            <circle r="36" fill="none" stroke="#6366f1" stroke-width="1" opacity="0.4" class="pulse-node"/>
+                            <text y="-5" fill="#e0e7ff" font-size="11" font-weight="900" text-anchor="middle">FED SERVER</text>
+                            <text y="9" fill="#a5b4fc" font-size="8" font-family="monospace" text-anchor="middle">FedProx Sync</text>
+                        </g>
+
+                        <!-- Domain 1 Node (Enterprise) -->
+                        <g id="node-group-1" transform="translate(110, 185)" class="cursor-pointer" onclick="selectDomain(1)">
+                            <circle id="node-ring-1" r="32" fill="none" stroke="#06b6d4" stroke-width="1.5" opacity="0.3" />
+                            <circle id="node-circle-1" r="26" fill="#0f172a" stroke="#06b6d4" stroke-width="2.5" />
+                            <text y="-4" fill="#ffffff" font-size="10" font-weight="bold" text-anchor="middle">Ryu C1</text>
+                            <text y="9" fill="#38bdf8" font-size="8" font-family="monospace" text-anchor="middle">Switch s1</text>
+                            <text y="42" fill="#94a3b8" font-size="10" font-weight="bold" text-anchor="middle">Domain 1 (Enterprise)</text>
+                        </g>
+
+                        <!-- Domain 2 Node (Data Center) -->
+                        <g id="node-group-2" transform="translate(320, 185)" class="cursor-pointer" onclick="selectDomain(2)">
+                            <circle id="node-ring-2" r="32" fill="none" stroke="#10b981" stroke-width="1.5" opacity="0.3" />
+                            <circle id="node-circle-2" r="26" fill="#0f172a" stroke="#10b981" stroke-width="2.5" />
+                            <text y="-4" fill="#ffffff" font-size="10" font-weight="bold" text-anchor="middle">Ryu C2</text>
+                            <text y="9" fill="#34d399" font-size="8" font-family="monospace" text-anchor="middle">Switch s2</text>
+                            <text y="42" fill="#94a3b8" font-size="10" font-weight="bold" text-anchor="middle">Domain 2 (Data Center)</text>
+                        </g>
+
+                        <!-- Domain 3 Node (IoT Edge) -->
+                        <g id="node-group-3" transform="translate(530, 185)" class="cursor-pointer" onclick="selectDomain(3)">
+                            <circle id="node-ring-3" r="32" fill="none" stroke="#f59e0b" stroke-width="1.5" opacity="0.3" />
+                            <circle id="node-circle-3" r="26" fill="#0f172a" stroke="#f59e0b" stroke-width="2.5" />
+                            <text y="-4" fill="#ffffff" font-size="10" font-weight="bold" text-anchor="middle">Ryu C3</text>
+                            <text y="9" fill="#fbbf24" font-size="8" font-family="monospace" text-anchor="middle">Switch s3</text>
+                            <text y="42" fill="#94a3b8" font-size="10" font-weight="bold" text-anchor="middle">Domain 3 (Edge / IoT)</text>
+                        </g>
+                    </svg>
+
+                    <!-- Real-time Alert Banner -->
+                    <div id="alert-banner" class="hidden absolute top-3 inset-x-6 bg-rose-600/90 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-2xl flex items-center justify-between backdrop-blur animate-bounce">
+                        <div class="flex items-center gap-2">
+                            <span class="text-base">🚨</span>
+                            <span id="alert-banner-text">ZERO-DAY ATTACK INTERCEPTED & MITIGATED!</span>
+                        </div>
+                        <span class="bg-black/30 px-2 py-0.5 rounded text-[10px] font-mono">OpenFlow DROP Rule Active</span>
+                    </div>
+                </div>
+
+                <!-- Domain Telemetry Mini-Cards -->
+                <div class="grid grid-cols-3 gap-3 mt-4 text-xs">
+                    <div id="card-d1" class="bg-darkBg/80 border border-borderCol p-3 rounded-xl transition">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-extrabold text-cyan-400">Enterprise LAN (s1)</span>
+                            <span id="d1-status" class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                        </div>
+                        <div class="text-[11px] text-slate-400 flex justify-between">
+                            <span>Passed: <b id="d1-fwd" class="text-white">0</b></span>
+                            <span>Blocked: <b id="d1-drop" class="text-rose-400">0</b></span>
+                        </div>
+                    </div>
+
+                    <div id="card-d2" class="bg-darkBg/80 border border-borderCol p-3 rounded-xl transition">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-extrabold text-emerald-400">Cloud Data Center (s2)</span>
+                            <span id="d2-status" class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                        </div>
+                        <div class="text-[11px] text-slate-400 flex justify-between">
+                            <span>Passed: <b id="d2-fwd" class="text-white">0</b></span>
+                            <span>Blocked: <b id="d2-drop" class="text-rose-400">0</b></span>
+                        </div>
+                    </div>
+
+                    <div id="card-d3" class="bg-darkBg/80 border border-borderCol p-3 rounded-xl transition">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-extrabold text-amber-400">IoT Edge Subnet (s3)</span>
+                            <span id="d3-status" class="w-2 h-2 rounded-full bg-amber-400"></span>
+                        </div>
+                        <div class="text-[11px] text-slate-400 flex justify-between">
+                            <span>Passed: <b id="d3-fwd" class="text-white">0</b></span>
+                            <span>Blocked: <b id="d3-drop" class="text-rose-400">0</b></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manual Exploit & Traffic Launcher (1 col) -->
+            <div class="bg-panelBg border border-borderCol rounded-2xl p-5 shadow-2xl flex flex-col justify-between">
+                <div>
+                    <h2 class="text-xs font-black uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-2">
+                        <span class="text-cyan-400">🎯</span> Manual Exploit Injection
+                    </h2>
+                    <p class="text-xs text-slate-400 mb-4">
+                        Manually trigger specific flow anomalies or novel zero-day exploits into any domain to test immediate line-rate mitigation.
+                    </p>
+
+                    <!-- Domain Selector -->
+                    <div class="mb-3.5">
+                        <label class="block text-[11px] font-bold uppercase text-slate-400 mb-1">Target Controller / Switch:</label>
+                        <select id="target-domain" class="w-full bg-darkBg border border-borderCol text-xs rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-cyan-500 font-medium">
+                            <option value="1">Domain 1 - Enterprise Campus (s1)</option>
+                            <option value="2">Domain 2 - Cloud Data Center (s2)</option>
+                            <option value="3">Domain 3 - Edge / IoT Subnet (s3)</option>
+                        </select>
+                    </div>
+
+                    <!-- Flow Attack Trigger Buttons -->
+                    <div class="space-y-2">
+                        <button onclick="manualInject('benign')" class="w-full bg-emerald-950/40 hover:bg-emerald-900/50 text-emerald-300 border border-emerald-500/30 p-2.5 rounded-xl text-xs font-bold text-left flex items-center justify-between transition group">
+                            <div class="flex items-center gap-2">
+                                <span class="text-emerald-400">✔</span>
+                                <span>Legitimate Flow (HTTP/DNS/SSH)</span>
+                            </div>
+                            <span class="text-[10px] bg-emerald-500/20 px-2 py-0.5 rounded text-emerald-400 font-mono">FORWARD</span>
+                        </button>
+
+                        <button onclick="manualInject('known_attack')" class="w-full bg-amber-950/40 hover:bg-amber-900/50 text-amber-300 border border-amber-500/30 p-2.5 rounded-xl text-xs font-bold text-left flex items-center justify-between transition group">
+                            <div class="flex items-center gap-2">
+                                <span class="text-amber-400">⚠</span>
+                                <span>Known Signature (SYN Flood DoS)</span>
+                            </div>
+                            <span class="text-[10px] bg-amber-500/20 px-2 py-0.5 rounded text-amber-400 font-mono">KNOWN ATTACK</span>
+                        </button>
+
+                        <button onclick="manualInject('zeroday_slowloris')" class="w-full bg-rose-950/40 hover:bg-rose-900/50 text-rose-300 border border-rose-500/30 p-2.5 rounded-xl text-xs font-bold text-left flex items-center justify-between transition group glow-red">
+                            <div class="flex items-center gap-2">
+                                <span class="text-rose-400">💀</span>
+                                <span>Zero-Day: Stealth Slowloris</span>
+                            </div>
+                            <span class="text-[10px] bg-rose-500/30 px-2 py-0.5 rounded text-rose-300 font-mono">NOVEL ATTACK</span>
+                        </button>
+
+                        <button onclick="manualInject('zeroday_covert')" class="w-full bg-purple-950/40 hover:bg-purple-900/50 text-purple-300 border border-purple-500/30 p-2.5 rounded-xl text-xs font-bold text-left flex items-center justify-between transition group">
+                            <div class="flex items-center gap-2">
+                                <span class="text-purple-400">🕵</span>
+                                <span>Zero-Day: Covert C2 DNS Tunnel</span>
+                            </div>
+                            <span class="text-[10px] bg-purple-500/30 px-2 py-0.5 rounded text-purple-300 font-mono">NOVEL ATTACK</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- FL Control Action -->
+                <div class="pt-4 border-t border-borderCol mt-4 flex gap-2">
+                    <button onclick="trainFLRound()" id="btn-fl" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30">
+                        <span>🔄</span> Trigger Federated Round (FedProx)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Middle Section: Anomaly Scoring Chart & Active OpenFlow Rules -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+            <!-- Real-time Anomaly Score Monitor (Chart.js) -->
+            <div class="bg-panelBg border border-borderCol rounded-2xl p-5 shadow-2xl">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                        <span>📈</span> Real-time VAE Reconstruction Loss (Updated Every 1s)
+                    </h2>
+                    <span class="text-xs font-mono text-yellow-400 bg-yellow-950/40 border border-yellow-800/40 px-2 py-0.5 rounded">
+                        τ Cutoff: <span id="chart-threshold">1.9325</span>
+                    </span>
+                </div>
+                <div class="h-64">
+                    <canvas id="scoreChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Active OpenFlow 1.3 Flow Table Inspector -->
+            <div class="bg-panelBg border border-borderCol rounded-2xl p-5 shadow-2xl flex flex-col">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                        <span>🛡</span> OpenFlow 1.3 Flow Tables (Live Reactive Rules)
+                    </h2>
+                    <span class="text-[11px] text-slate-400">OVS Line-Rate Drop Enforcement</span>
+                </div>
+                <div class="flex-1 overflow-y-auto max-h-64 border border-borderCol/60 rounded-xl">
+                    <table class="w-full text-left text-xs text-slate-300">
+                        <thead class="bg-darkBg text-slate-400 uppercase text-[10px] sticky top-0 font-bold">
+                            <tr>
+                                <th class="p-2.5">Switch</th>
+                                <th class="p-2.5">Match 5-Tuple</th>
+                                <th class="p-2.5">Priority</th>
+                                <th class="p-2.5">Action</th>
+                                <th class="p-2.5">Blocked Pkts</th>
+                            </tr>
+                        </thead>
+                        <tbody id="flow-rules-body" class="divide-y divide-borderCol">
+                            <tr>
+                                <td colspan="5" class="p-4 text-center text-slate-500">Normal traffic baseline active. Reactive rules will appear upon anomaly interception.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Section: Live Detection & Mitigation Telemetry Feed -->
+        <div class="bg-panelBg border border-borderCol rounded-2xl p-5 shadow-2xl">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                    <span>📡</span> Live Telemetry Inspection & Decision Stream
+                </h2>
+                <span class="text-xs text-cyan-400 font-mono">1.0s Autonomous Flow Stream</span>
+            </div>
+            <div class="overflow-x-auto max-h-72 overflow-y-auto border border-borderCol/60 rounded-xl">
+                <table class="w-full text-left text-xs text-slate-300">
+                    <thead class="bg-darkBg text-slate-400 uppercase text-[10px] sticky top-0 font-bold">
+                        <tr>
+                            <th class="p-2.5">Time</th>
+                            <th class="p-2.5">Domain</th>
+                            <th class="p-2.5">Traffic Signature</th>
+                            <th class="p-2.5">Source IP</th>
+                            <th class="p-2.5">Destination IP</th>
+                            <th class="p-2.5">Port</th>
+                            <th class="p-2.5">Anomaly Score</th>
+                            <th class="p-2.5">Decision</th>
+                            <th class="p-2.5">Data Plane</th>
+                            <th class="p-2.5">Latency</th>
+                        </tr>
+                    </thead>
+                    <tbody id="event-log-body" class="divide-y divide-borderCol font-mono text-[11px]">
+                        <tr>
+                            <td colspan="10" class="p-4 text-center text-slate-500 font-sans">Connecting to live SDN telemetry stream...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Interactive Client Script -->
+    <script>
+        let isStreaming = true;
+        let streamSpeed = 1000;
+        let streamTimer = null;
+        let currentThreshold = 1.9325;
+        let audioEnabled = false;
+        let audioCtx = null;
+
+        let scoreChart = null;
+        let chartLabels = [];
+        let chartScores = [];
+        let chartThresholds = [];
+        let pointColors = [];
+
+        // Audio Synthesizer via Web Audio API
+        function playChirp(isAnomaly, isZeroDay) {
+            if (!audioEnabled) return;
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (isZeroDay) {
+                    // Dramatic high alert alarm
+                    osc.type = "sawtooth";
+                    osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(220, audioCtx.currentTime + 0.25);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.25);
+                } else if (isAnomaly) {
+                    // Warning beep
+                    osc.type = "triangle";
+                    osc.frequency.setValueAtTime(550, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.15);
+                    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.15);
+                } else {
+                    // Soft digital click
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.05);
+                }
+            } catch (e) {
+                console.warn("Audio error:", e);
+            }
+        }
+
+        function toggleAudio() {
+            audioEnabled = !audioEnabled;
+            const icon = document.getElementById('audio-icon');
+            const label = document.getElementById('audio-label');
+            if (audioEnabled) {
+                icon.innerText = "🔊";
+                label.innerText = "Audio On";
+                playChirp(false, false);
+            } else {
+                icon.innerText = "🔇";
+                label.innerText = "Muted";
+            }
+        }
+
+        // Initialize Chart.js
+        function initChart() {
+            const ctx = document.getElementById('scoreChart').getContext('2d');
+            scoreChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: chartLabels,
+                    datasets: [
+                        {
+                            label: 'Reconstruction Loss (MSE)',
+                            data: chartScores,
+                            borderColor: '#38bdf8',
+                            backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                            pointBackgroundColor: pointColors,
+                            pointBorderColor: pointColors,
+                            pointRadius: 5,
+                            borderWidth: 2,
+                            tension: 0.35
+                        },
+                        {
+                            label: 'Anomaly Cutoff (τ)',
+                            data: chartThresholds,
+                            borderColor: '#eab308',
+                            borderDash: [6, 6],
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: { duration: 300 },
+                    scales: {
+                        x: {
+                            grid: { color: '#1e293b' },
+                            ticks: { color: '#94a3b8', font: { size: 10 } }
+                        },
+                        y: {
+                            grid: { color: '#1e293b' },
+                            ticks: { color: '#94a3b8', font: { size: 10 } },
+                            min: 0
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { color: '#e2e8f0', font: { size: 11 } } }
+                    }
+                }
+            });
+        }
+
+        // Animated SVG Particle Flow
+        function spawnParticle(domainId, isAnomaly, isZeroDay) {
+            const svgGroup = document.getElementById('packet-stream-layer');
+            const particle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+
+            const startX = domainId === 1 ? 110 : (domainId === 2 ? 320 : 530);
+            const startY = 185;
+            const targetX = 320;
+            const targetY = 50;
+
+            const color = isZeroDay ? "#f43f5e" : (isAnomaly ? "#f59e0b" : "#06b6d4");
+            particle.setAttribute("r", isZeroDay ? "6" : "4.5");
+            particle.setAttribute("fill", color);
+            particle.setAttribute("filter", "url(#glow)");
+            particle.setAttribute("cx", startX);
+            particle.setAttribute("cy", startY);
+            svgGroup.appendChild(particle);
+
+            const startTime = performance.now();
+            const duration = 650; // ms
+
+            function animate(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(1, elapsed / duration);
+
+                // Interpolate position
+                const currentX = startX + (targetX - startX) * progress;
+                const currentY = startY + (targetY - startY) * progress;
+                particle.setAttribute("cx", currentX);
+                particle.setAttribute("cy", currentY);
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    // Shockwave impact at server/controller
+                    if (isAnomaly) {
+                        spawnShockwave(targetX, targetY, color);
+                    }
+                    svgGroup.removeChild(particle);
+                }
+            }
+            requestAnimationFrame(animate);
+
+            // Highlight cable line
+            const cable = document.getElementById(`cable-${domainId}`);
+            if (cable) {
+                cable.setAttribute("stroke", color);
+                cable.setAttribute("opacity", "1");
+                cable.setAttribute("stroke-width", "4");
+                setTimeout(() => {
+                    cable.setAttribute("stroke", domainId === 1 ? "#06b6d4" : (domainId === 2 ? "#10b981" : "#f59e0b"));
+                    cable.setAttribute("opacity", "0.3");
+                    cable.setAttribute("stroke-width", "2.5");
+                }, 500);
+            }
+        }
+
+        function spawnShockwave(cx, cy, color) {
+            const svgGroup = document.getElementById('packet-stream-layer');
+            const wave = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            wave.setAttribute("cx", cx);
+            wave.setAttribute("cy", cy);
+            wave.setAttribute("fill", "none");
+            wave.setAttribute("stroke", color);
+            wave.setAttribute("class", "shockwave-anim");
+            svgGroup.appendChild(wave);
+            setTimeout(() => {
+                if (wave.parentNode) wave.parentNode.removeChild(wave);
+            }, 800);
+        }
+
+        // Ingest flow and update all visual elements
+        function handleEventUI(event) {
+            const isZeroDay = event.traffic_type.includes("Zero-Day");
+
+            // Trigger audio chirp
+            playChirp(event.is_anomaly, isZeroDay);
+
+            // Spawn animated visual packet
+            spawnParticle(event.domain_id, event.is_anomaly, isZeroDay);
+
+            // Update Chart
+            chartLabels.push(event.timestamp);
+            chartScores.push(event.anomaly_score);
+            chartThresholds.push(event.threshold);
+
+            const ptColor = isZeroDay ? '#f43f5e' : (event.is_anomaly ? '#f59e0b' : '#10b981');
+            pointColors.push(ptColor);
+
+            if (chartLabels.length > 25) {
+                chartLabels.shift();
+                chartScores.shift();
+                chartThresholds.shift();
+                pointColors.shift();
+            }
+            scoreChart.update('none'); // fast update without reset
+
+            // Update latency badge
+            document.getElementById('badge-latency').innerText = event.latency_ms;
+
+            // Animate Alert Banner on Zero-Day or Anomaly
+            if (event.mitigation_applied) {
+                const banner = document.getElementById('alert-banner');
+                const bannerText = document.getElementById('alert-banner-text');
+                bannerText.innerText = `🚨 ${event.traffic_type.toUpperCase()} BLOCKED ON ${event.switch_name}!`;
+                banner.classList.remove('hidden');
+                setTimeout(() => banner.classList.add('hidden'), 2500);
+
+                // Flash switch node
+                const nodeCircle = document.getElementById(`node-circle-${event.domain_id}`);
+                if (nodeCircle) {
+                    nodeCircle.setAttribute("fill", "#e11d48");
+                    setTimeout(() => nodeCircle.setAttribute("fill", "#0f172a"), 800);
+                }
+            }
+
+            // Append row to Event Table with slide-in animation
+            prependEventRow(event);
+        }
+
+        let simForwarded = 45;
+        let simDropped = 12;
+        let simRules = [];
+
+        function simulatedFallbackFlow(type, domain) {
+            const isZeroDay = type.includes("zeroday");
+            const isAnomaly = isZeroDay || type === "known_attack";
+            const labelMap = {
+                "benign": "Legitimate Flow (HTTP/DNS/SSH)",
+                "known_attack": "Known Attack (SYN Flood)",
+                "zeroday_slowloris": "Zero-Day (Stealth Slowloris)",
+                "zeroday_covert": "Zero-Day (Covert C2 DNS Tunnel)"
+            };
+            const score = isZeroDay ? (2.15 + Math.random() * 1.4) : (isAnomaly ? (1.98 + Math.random() * 0.75) : (0.42 + Math.random() * 0.85));
+            const now = new Date();
+            const timeStr = now.toTimeString().split(' ')[0];
+            const dstPort = type === "zeroday_covert" ? 53 : (type === "zeroday_slowloris" ? 8080 : (type === "known_attack" ? 443 : 80));
+            const srcIp = `10.${domain}.${Math.floor(Math.random()*150)+1}.${Math.floor(Math.random()*250)+1}`;
+            const dstIp = `172.16.${domain}.10`;
+
+            if (isAnomaly) {
+                simDropped++;
+                simRules.unshift({
+                    switch: `s${domain}`,
+                    match: { src_ip: srcIp, dst_ip: dstIp, dst_port: dstPort },
+                    priority: 65535,
+                    action: "DROP",
+                    packet_count: Math.floor(Math.random() * 45) + 1
+                });
+                if (simRules.length > 15) simRules.pop();
+            } else {
+                simForwarded++;
+            }
+
+            const simEvent = {
+                id: Date.now(),
+                timestamp: timeStr,
+                domain_id: domain,
+                switch_name: `s${domain}`,
+                traffic_type: labelMap[type] || "Benign Flow",
+                src_ip: srcIp,
+                dst_ip: dstIp,
+                dst_port: dstPort,
+                anomaly_score: parseFloat(score.toFixed(4)),
+                threshold: 1.9325,
+                is_anomaly: isAnomaly,
+                mitigation_applied: isAnomaly,
+                data_plane_action: isAnomaly ? "DROP" : "FORWARD",
+                latency_ms: (0.35 + Math.random() * 0.35).toFixed(2)
+            };
+
+            handleEventUI(simEvent);
+
+            document.getElementById('badge-forwarded').innerText = simForwarded;
+            document.getElementById('badge-dropped').innerText = simDropped;
+            document.getElementById('badge-rules').innerText = simRules.length;
+
+            renderRulesTable(simRules);
+        }
+
+        async function processFlow(type, domain) {
+            try {
+                const res = await fetch('/api/inject_traffic', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ type: type, domain: domain })
+                });
+                if (!res.ok) throw new Error("API not reachable");
+                const event = await res.json();
+                handleEventUI(event);
+                fetchStatus();
+                fetchRules();
+            } catch (err) {
+                // Client-side fallback simulation for GitHub Pages / Static hosting
+                simulatedFallbackFlow(type, domain);
+            }
+        }
+
+        function prependEventRow(e) {
+            const tbody = document.getElementById('event-log-body');
+            const isZeroDay = e.traffic_type.includes("Zero-Day");
+            const isAnomaly = e.is_anomaly;
+
+            let badgeColor = "bg-emerald-950 text-emerald-300 border-emerald-500/30";
+            if (isZeroDay) {
+                badgeColor = "bg-rose-950 text-rose-300 border-rose-500/50";
+            } else if (isAnomaly) {
+                badgeColor = "bg-amber-950 text-amber-300 border-amber-500/40";
+            }
+
+            const tr = document.createElement('tr');
+            tr.className = isZeroDay ? "row-highlight-danger font-mono text-[11px]" : "row-highlight font-mono text-[11px]";
+            tr.innerHTML = `
+                <td class="p-2.5 text-slate-400">${e.timestamp}</td>
+                <td class="p-2.5 font-bold text-cyan-400">Domain ${e.domain_id}</td>
+                <td class="p-2.5"><span class="px-2 py-0.5 rounded border ${badgeColor} font-sans font-bold">${e.traffic_type}</span></td>
+                <td class="p-2.5 text-slate-300">${e.src_ip}</td>
+                <td class="p-2.5 text-slate-300">${e.dst_ip}</td>
+                <td class="p-2.5 text-slate-400">${e.dst_port}</td>
+                <td class="p-2.5 font-bold ${e.anomaly_score > e.threshold ? 'text-rose-400' : 'text-emerald-400'}">${e.anomaly_score}</td>
+                <td class="p-2.5 font-sans">${e.is_anomaly ? '<span class="text-rose-400 font-extrabold">BLOCKED</span>' : '<span class="text-emerald-400 font-bold">FORWARDED</span>'}</td>
+                <td class="p-2.5 font-sans font-black ${e.data_plane_action === 'DROP' ? 'text-rose-400' : 'text-emerald-400'}">${e.data_plane_action}</td>
+                <td class="p-2.5 text-slate-400 font-mono">${e.latency_ms} ms</td>
+            `;
+
+            if (tbody.children[0] && tbody.children[0].children.length === 1) {
+                tbody.innerHTML = '';
+            }
+            tbody.insertBefore(tr, tbody.firstChild);
+
+            if (tbody.children.length > 50) {
+                tbody.removeChild(tbody.lastChild);
+            }
+        }
+
+        // Real-Time 1-Second Autonomous Stream Loop
+        function autonomousStreamTick() {
+            if (!isStreaming) return;
+
+            // Stochastic distribution:
+            // 65% Benign, 15% Known Attack, 10% Zero-Day Slowloris, 10% Zero-Day Covert
+            const rand = Math.random();
+            let flowType = "benign";
+            if (rand > 0.85) {
+                flowType = "zeroday_slowloris";
+            } else if (rand > 0.75) {
+                flowType = "zeroday_covert";
+            } else if (rand > 0.60) {
+                flowType = "known_attack";
+            }
+
+            const domain = Math.floor(Math.random() * 3) + 1;
+            processFlow(flowType, domain);
+        }
+
+        function startStream() {
+            if (streamTimer) clearInterval(streamTimer);
+            streamTimer = setInterval(autonomousStreamTick, streamSpeed);
+        }
+
+        function toggleStream() {
+            isStreaming = !isStreaming;
+            const btn = document.getElementById('btn-toggle-stream');
+            const ind = document.getElementById('live-indicator');
+            if (isStreaming) {
+                btn.innerText = "Pause";
+                btn.className = "px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 transition text-[11px] font-bold ml-1 hover:bg-amber-500/30";
+                ind.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> LIVE (${(streamSpeed/1000).toFixed(1)}s TICK)`;
+                ind.className = "flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-500/30";
+            } else {
+                btn.innerText = "Resume";
+                btn.className = "px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 transition text-[11px] font-bold ml-1 hover:bg-emerald-500/30";
+                ind.innerHTML = `<span class="w-2 h-2 rounded-full bg-slate-500"></span> PAUSED`;
+                ind.className = "flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-900 text-slate-400 border border-slate-700";
+            }
+        }
+
+        function setStreamSpeed(speedMs) {
+            streamSpeed = speedMs;
+            ['fast', 'normal', 'slow'].forEach(s => {
+                document.getElementById(`btn-speed-${s}`).className = "px-2.5 py-1 rounded text-slate-400 hover:text-white transition text-[11px] font-semibold";
+            });
+
+            if (speedMs === 500) {
+                document.getElementById('btn-speed-fast').className = "px-2.5 py-1 rounded bg-cyan-500 text-white transition text-[11px] font-bold shadow";
+            } else if (speedMs === 1000) {
+                document.getElementById('btn-speed-normal').className = "px-2.5 py-1 rounded bg-cyan-500 text-white transition text-[11px] font-bold shadow";
+            } else {
+                document.getElementById('btn-speed-slow').className = "px-2.5 py-1 rounded bg-cyan-500 text-white transition text-[11px] font-bold shadow";
+            }
+
+            if (isStreaming) {
+                const ind = document.getElementById('live-indicator');
+                ind.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> LIVE (${(streamSpeed/1000).toFixed(1)}s TICK)`;
+            }
+
+            startStream();
+        }
+
+        // Manual Trigger from Button Click
+        function manualInject(type) {
+            const domain = parseInt(document.getElementById('target-domain').value);
+            processFlow(type, domain);
+        }
+
+        async function fetchStatus() {
+            try {
+                const res = await fetch('/api/status');
+                const data = await res.json();
+
+                document.getElementById('badge-fl-round').innerText = data.fl_round;
+                document.getElementById('badge-threshold').innerText = data.threshold;
+                document.getElementById('chart-threshold').innerText = data.threshold;
+                document.getElementById('badge-rules').innerText = data.active_rules_count;
+                document.getElementById('badge-forwarded').innerText = data.total_forwarded;
+                document.getElementById('badge-dropped').innerText = data.total_dropped;
+
+                if (data.switches && data.switches.length >= 3) {
+                    document.getElementById('d1-fwd').innerText = data.switches[0].forwarded_pkts;
+                    document.getElementById('d1-drop').innerText = data.switches[0].dropped_pkts;
+
+                    document.getElementById('d2-fwd').innerText = data.switches[1].forwarded_pkts;
+                    document.getElementById('d2-drop').innerText = data.switches[1].dropped_pkts;
+
+                    document.getElementById('d3-fwd').innerText = data.switches[2].forwarded_pkts;
+                    document.getElementById('d3-drop').innerText = data.switches[2].dropped_pkts;
+                }
+            } catch (err) {
+                console.error("Error fetching status:", err);
+            }
+        }
+
+        function renderRulesTable(rules) {
+            const tbody = document.getElementById('flow-rules-body');
+            if (!rules || rules.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">Normal traffic baseline active. Reactive rules will appear upon anomaly interception.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = rules.map(r => `
+                <tr class="hover:bg-slate-800/40 transition">
+                    <td class="p-2.5 font-bold text-cyan-400">${r.switch}</td>
+                    <td class="p-2.5 font-mono text-[11px]">${r.match.src_ip} &rarr; ${r.match.dst_ip}:${r.match.dst_port}</td>
+                    <td class="p-2.5"><span class="bg-indigo-900/60 text-indigo-300 px-2 py-0.5 rounded text-[10px] font-bold">${r.priority}</span></td>
+                    <td class="p-2.5"><span class="bg-rose-950 text-rose-300 border border-rose-500/40 px-2 py-0.5 rounded text-[10px] font-black">${r.action}</span></td>
+                    <td class="p-2.5 text-rose-400 font-extrabold font-mono">${r.packet_count}</td>
+                </tr>
+            `).join('');
+        }
+
+        async function fetchRules() {
+            try {
+                const res = await fetch('/api/rules');
+                if (!res.ok) throw new Error("API not reachable");
+                const rules = await res.json();
+                renderRulesTable(rules);
+            } catch (err) {
+                if (simRules.length > 0) renderRulesTable(simRules);
+            }
+        }
+
+        async function trainFLRound() {
+            const btn = document.getElementById('btn-fl');
+            btn.disabled = true;
+            btn.innerHTML = `<span class="animate-spin">🔄</span> Syncing Weights Across Domains...`;
+
+            try {
+                const res = await fetch('/api/train_round', { method: 'POST' });
+                const data = await res.json();
+                btn.innerHTML = `<span>✔</span> Round ${data.round} Completed (Loss: ${data.loss.toFixed(4)})`;
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = `<span>🔄</span> Trigger Federated Round (FedProx)`;
+                }, 2000);
+            } catch (err) {
+                btn.disabled = false;
+                btn.innerHTML = `<span>🔄</span> Trigger Federated Round (FedProx)`;
+            }
+            fetchStatus();
+        }
+
+        async function clearRules() {
+            await fetch('/api/clear_rules', { method: 'POST' });
+            chartLabels = [];
+            chartScores = [];
+            chartThresholds = [];
+            pointColors = [];
+            scoreChart.data.labels = [];
+            scoreChart.data.datasets[0].data = [];
+            scoreChart.data.datasets[1].data = [];
+            scoreChart.update();
+
+            document.getElementById('event-log-body').innerHTML = '<tr><td colspan="10" class="p-4 text-center text-slate-500 font-sans">Connecting to live SDN telemetry stream...</td></tr>';
+            fetchStatus();
+            fetchRules();
+        }
+
+        function selectDomain(id) {
+            document.getElementById('target-domain').value = id;
+        }
+
+        // Initialize on page load
+        window.onload = () => {
+            initChart();
+            fetchStatus();
+            fetchRules();
+
+            // Kick off the 1-second autonomous stream
+            startStream();
+        };
+    </script>
+</body>
+</html>
