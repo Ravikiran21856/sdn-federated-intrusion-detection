@@ -200,6 +200,38 @@
             100% { background-color: transparent; }
         }
 
+        /* Anomaly Strobe & Rule Pop Effects */
+        @keyframes border-alert-pulse {
+            0%, 100% { border-color: rgba(255, 255, 255, 0.12); box-shadow: 0 14px 45px 0 rgba(0, 0, 0, 0.5); }
+            50% { border-color: rgba(244, 63, 94, 0.95); box-shadow: 0 0 35px rgba(244, 63, 94, 0.5); }
+        }
+        .chart-alert-active {
+            animation: border-alert-pulse 0.9s ease-in-out 2 !important;
+        }
+        @keyframes rule-pop {
+            0% { transform: scale(0.97); background-color: rgba(244, 63, 94, 0.35); }
+            100% { transform: scale(1); background-color: transparent; }
+        }
+        .rule-pop-anim {
+            animation: rule-pop 0.6s ease-out;
+        }
+        @keyframes number-bump {
+            0% { transform: scale(1.35); color: #f43f5e; }
+            100% { transform: scale(1); }
+        }
+        .num-bump {
+            display: inline-block;
+            animation: number-bump 0.35s ease-out;
+        }
+        @keyframes shield-burst {
+            0% { transform: scale(0.6); opacity: 1; }
+            50% { transform: scale(1.25); opacity: 0.9; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        .shield-burst-anim {
+            animation: shield-burst 0.75s ease-out forwards;
+        }
+
         /* Live Second Countdown Radial Ring */
         @keyframes tick-sweep {
             0% { stroke-dashoffset: 100; }
@@ -660,42 +692,102 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
             <!-- Real-time Anomaly Score Monitor in Glass -->
-            <div class="glass-panel p-6 shadow-2xl">
-                <div class="flex items-center justify-between mb-3">
-                    <h2 class="text-xs font-black uppercase tracking-wider text-slate-300 flex items-center gap-2">
-                        <span>📈</span> Real-time VAE Reconstruction Loss (Updated Every 1s)
-                    </h2>
-                    <span class="text-xs font-mono text-yellow-400 glass-pill px-2.5 py-0.5 rounded-lg border-yellow-500/30">
-                        τ Cutoff: <span id="chart-threshold">1.9325</span>
-                    </span>
+            <div id="panel-chart" class="glass-panel p-6 shadow-2xl relative overflow-hidden transition-all duration-300">
+                <!-- Top Header Row -->
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="text-base">📈</span>
+                        <div>
+                            <h2 class="text-xs font-black uppercase tracking-wider text-slate-200">
+                                Real-Time VAE Reconstruction Loss (Updated Every 1s)
+                            </h2>
+                            <span class="text-[10px] text-cyan-400 font-mono">Unsupervised Latent Space Anomaly Scoring</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-mono text-yellow-400 glass-pill px-2.5 py-1 rounded-lg border-yellow-500/30 flex items-center gap-1.5 shadow-sm">
+                            <span class="w-1.5 h-1.5 rounded-full bg-yellow-400"></span>
+                            τ Cutoff: <span id="chart-threshold" class="font-bold">1.9325</span>
+                        </span>
+                        <span id="chart-live-status" class="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                            ● NOMINAL
+                        </span>
+                    </div>
                 </div>
-                <div class="h-64">
+
+                <!-- Live Cyber HUD Strip with Current Loss, Cutoff Delta, and Meter Gauge -->
+                <div class="glass-inner p-3 rounded-xl mb-3 flex items-center justify-between gap-4 text-xs font-mono">
+                    <div class="flex items-center gap-3">
+                        <div class="flex flex-col">
+                            <span class="text-[9px] uppercase font-bold text-slate-400 tracking-wider font-sans">Latest MSE Loss</span>
+                            <span id="hud-current-loss" class="text-lg font-black text-cyan-400">0.0000</span>
+                        </div>
+                        <div class="h-7 w-[1px] bg-white/10"></div>
+                        <div class="flex flex-col">
+                            <span class="text-[9px] uppercase font-bold text-slate-400 tracking-wider font-sans">Threshold Delta</span>
+                            <span id="hud-loss-delta" class="text-xs font-bold text-emerald-400">0.0000 (SAFE)</span>
+                        </div>
+                    </div>
+                    <!-- Anomaly Threat Meter Bar -->
+                    <div class="flex-1 max-w-[140px] flex flex-col gap-1">
+                        <div class="flex justify-between text-[9px] text-slate-400 font-sans">
+                            <span>Threat Level</span>
+                            <span id="hud-meter-percent" class="font-mono text-cyan-300 font-bold">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-900/80 rounded-full h-2 overflow-hidden border border-white/10 p-0.5">
+                            <div id="hud-loss-bar" class="bg-gradient-to-r from-emerald-400 to-cyan-400 h-full rounded-full transition-all duration-300" style="width: 20%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Canvas Area -->
+                <div class="h-60 relative">
                     <canvas id="scoreChart"></canvas>
                 </div>
             </div>
 
             <!-- Active OpenFlow 1.3 Flow Table Inspector in Glass -->
-            <div class="glass-panel p-6 shadow-2xl flex flex-col">
-                <div class="flex items-center justify-between mb-3">
-                    <h2 class="text-xs font-black uppercase tracking-wider text-slate-300 flex items-center gap-2">
-                        <span>🛡</span> OpenFlow 1.3 Flow Tables (Live Reactive Rules)
-                    </h2>
-                    <span class="text-[11px] text-slate-400 font-medium">OVS Line-Rate Drop Enforcement</span>
+            <div class="glass-panel p-6 shadow-2xl flex flex-col justify-between">
+                <!-- Header -->
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="text-base">🛡</span>
+                        <div>
+                            <h2 class="text-xs font-black uppercase tracking-wider text-slate-200">
+                                OpenFlow 1.3 Flow Tables (Live Reactive Rules)
+                            </h2>
+                            <span class="text-[10px] text-slate-400 font-medium">OVS Hardware Line-Rate Drop Enforcement</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[11px] font-mono text-rose-400 glass-pill px-2.5 py-1 rounded-lg border-rose-500/30 flex items-center gap-1.5 shadow-sm">
+                            <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
+                            <span id="active-drop-rate">1,480 pkts/s</span>
+                        </span>
+                        <button onclick="clearRules()" class="glass-btn px-2.5 py-1 rounded-lg text-[10px] font-bold text-slate-300 hover:text-rose-300 hover:border-rose-500/40 transition">
+                            Flush
+                        </button>
+                    </div>
                 </div>
-                <div class="flex-1 overflow-y-auto max-h-64 glass-inner overflow-hidden">
+
+                <!-- Rules Table Container -->
+                <div class="flex-1 overflow-y-auto max-h-72 glass-inner overflow-hidden">
                     <table class="w-full text-left text-xs text-slate-300">
-                        <thead class="bg-black/30 text-slate-400 uppercase text-[10px] sticky top-0 font-bold backdrop-blur-md">
+                        <thead class="bg-black/40 text-slate-400 uppercase text-[10px] sticky top-0 font-bold backdrop-blur-md border-b border-white/10">
                             <tr>
                                 <th class="p-3">Switch</th>
                                 <th class="p-3">Match 5-Tuple</th>
                                 <th class="p-3">Priority</th>
                                 <th class="p-3">Action</th>
                                 <th class="p-3">Blocked Pkts</th>
+                                <th class="p-3">TTL</th>
                             </tr>
                         </thead>
                         <tbody id="flow-rules-body" class="divide-y divide-white/5">
                             <tr>
-                                <td colspan="5" class="p-5 text-center text-slate-400 font-medium">Normal traffic baseline active. Reactive rules will appear upon anomaly interception.</td>
+                                <td colspan="6" class="p-5 text-center text-slate-400 font-medium">
+                                    Normal traffic baseline active. Reactive rules will appear upon anomaly interception.
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -752,6 +844,8 @@
         let chartScores = [];
         let chartThresholds = [];
         let pointColors = [];
+        let pointBorderColors = [];
+        let pointRadii = [];
 
         // Dynamic State Counters
         let liveForwarded = 0;
@@ -759,6 +853,7 @@
         let domainForwarded = { 1: 0, 2: 0, 3: 0 };
         let domainDropped = { 1: 0, 2: 0, 3: 0 };
         let liveRules = [];
+        let ambientTimer = null;
 
         // Audio Synthesizer via Web Audio API
         function playChirp(isAnomaly, isZeroDay) {
@@ -813,9 +908,17 @@
             }
         }
 
-        // Initialize Chart.js with Glassmorphic styling
+        // Initialize Chart.js with Cyber Glow & Horizontal Time Labels
         function initChart() {
-            const ctx = document.getElementById('scoreChart').getContext('2d');
+            const canvas = document.getElementById('scoreChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            const gradient = ctx.createLinearGradient(0, 0, 0, 220);
+            gradient.addColorStop(0, 'rgba(6, 182, 212, 0.45)');
+            gradient.addColorStop(0.4, 'rgba(99, 102, 241, 0.15)');
+            gradient.addColorStop(1, 'rgba(6, 182, 212, 0.0)');
+
             scoreChart = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -824,20 +927,21 @@
                         {
                             label: 'Reconstruction Loss (MSE)',
                             data: chartScores,
-                            borderColor: '#38bdf8',
-                            backgroundColor: 'rgba(56, 189, 248, 0.15)',
+                            borderColor: '#06b6d4',
+                            backgroundColor: gradient,
                             pointBackgroundColor: pointColors,
-                            pointBorderColor: pointColors,
-                            pointRadius: 5,
-                            borderWidth: 2.2,
-                            tension: 0.35,
+                            pointBorderColor: pointBorderColors,
+                            pointRadius: pointRadii,
+                            pointHoverRadius: 8,
+                            borderWidth: 2.4,
+                            tension: 0.38,
                             fill: true
                         },
                         {
                             label: 'Anomaly Cutoff (τ)',
                             data: chartThresholds,
-                            borderColor: '#eab308',
-                            borderDash: [6, 6],
+                            borderColor: '#f59e0b',
+                            borderDash: [6, 4],
                             borderWidth: 2,
                             pointRadius: 0,
                             fill: false
@@ -847,28 +951,55 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    animation: { duration: 250 },
+                    animation: { duration: 150, easing: 'easeOutQuad' },
+                    interaction: { mode: 'index', intersect: false },
                     scales: {
                         x: {
-                            grid: { color: 'rgba(255, 255, 255, 0.07)' },
-                            ticks: { color: '#94a3b8', font: { size: 10 } }
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: {
+                                color: '#94a3b8',
+                                font: { size: 10, family: 'monospace' },
+                                maxTicksLimit: 7,
+                                autoSkip: true,
+                                maxRotation: 0,
+                                minRotation: 0
+                            }
                         },
                         y: {
-                            grid: { color: 'rgba(255, 255, 255, 0.07)' },
-                            ticks: { color: '#94a3b8', font: { size: 10 } },
-                            min: 0
+                            grid: { color: 'rgba(255, 255, 255, 0.06)' },
+                            ticks: { color: '#94a3b8', font: { size: 10, family: 'monospace' } },
+                            min: 0,
+                            suggestedMax: 3.8
                         }
                     },
                     plugins: {
-                        legend: { labels: { color: '#e2e8f0', font: { size: 11 } } }
+                        legend: {
+                            labels: {
+                                color: '#e2e8f0',
+                                font: { size: 11, family: 'monospace', weight: 'bold' },
+                                usePointStyle: true,
+                                boxWidth: 8
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(9, 14, 28, 0.9)',
+                            titleFont: { size: 11, family: 'monospace', weight: 'bold' },
+                            bodyFont: { size: 11, family: 'monospace' },
+                            borderColor: 'rgba(6, 182, 212, 0.4)',
+                            borderWidth: 1,
+                            padding: 8,
+                            cornerRadius: 8
+                        }
                     }
                 }
             });
         }
 
-        // Multi-Stage Animated SVG Particle Flow
+        // Multi-Stage Animated SVG Particle Flow with Reactive Wire-Speed Drop Semantics
         function spawnParticle(domainId, isAnomaly, isZeroDay) {
             const svgGroup = document.getElementById('packet-stream-layer');
+            if (!svgGroup) return;
+
             const particle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
 
             const hostX = domainId === 1 ? 130 : (domainId === 2 ? 350 : 570);
@@ -879,7 +1010,7 @@
             const serverY = 45;
 
             const color = isZeroDay ? "#f43f5e" : (isAnomaly ? "#f59e0b" : "#06b6d4");
-            particle.setAttribute("r", isZeroDay ? "6.5" : "5");
+            particle.setAttribute("r", isZeroDay ? "7" : (isAnomaly ? "6" : "4.5"));
             particle.setAttribute("fill", color);
             particle.setAttribute("filter", "url(#glow)");
             particle.setAttribute("cx", hostX);
@@ -887,23 +1018,27 @@
             svgGroup.appendChild(particle);
 
             const startTime = performance.now();
-            const totalDuration = 750; // ms
+            const totalDuration = isAnomaly ? 450 : 800; // ms
 
             function animate(now) {
                 const elapsed = now - startTime;
                 const progress = Math.min(1, elapsed / totalDuration);
 
                 let curX, curY;
-                if (progress < 0.5) {
-                    // Host to Switch
-                    const p1 = progress / 0.5;
+                if (isAnomaly) {
+                    // Attack stops at switch (OpenFlow reactive drop)
                     curX = hostX;
-                    curY = hostY + (switchY - hostY) * p1;
+                    curY = hostY + (switchY - hostY) * progress;
                 } else {
-                    // Switch to Server
-                    const p2 = (progress - 0.5) / 0.5;
-                    curX = switchX + (serverX - switchX) * p2;
-                    curY = switchY + (serverY - switchY) * p2;
+                    if (progress < 0.5) {
+                        const p1 = progress / 0.5;
+                        curX = hostX;
+                        curY = hostY + (switchY - hostY) * p1;
+                    } else {
+                        const p2 = (progress - 0.5) / 0.5;
+                        curX = switchX + (serverX - switchX) * p2;
+                        curY = switchY + (serverY - switchY) * p2;
+                    }
                 }
 
                 particle.setAttribute("cx", curX);
@@ -913,7 +1048,10 @@
                     requestAnimationFrame(animate);
                 } else {
                     if (isAnomaly) {
-                        spawnShockwave(serverX, serverY, color);
+                        spawnShockwave(switchX, switchY, color);
+                        flashSwitchShield(domainId, isZeroDay);
+                    } else {
+                        spawnSoftPulse(serverX, serverY);
                     }
                     if (particle.parentNode) svgGroup.removeChild(particle);
                 }
@@ -925,17 +1063,26 @@
             if (cable) {
                 cable.setAttribute("stroke", color);
                 cable.setAttribute("opacity", "1");
-                cable.setAttribute("stroke-width", "4");
+                cable.setAttribute("stroke-width", "3.5");
                 setTimeout(() => {
                     cable.setAttribute("stroke", domainId === 1 ? "#06b6d4" : (domainId === 2 ? "#10b981" : "#f59e0b"));
                     cable.setAttribute("opacity", "0.4");
                     cable.setAttribute("stroke-width", "2.5");
-                }, 500);
+                }, 400);
+            }
+        }
+
+        function flashSwitchShield(domainId, isZeroDay) {
+            const nodeCircle = document.getElementById(`node-circle-${domainId}`);
+            if (nodeCircle) {
+                nodeCircle.setAttribute("fill", isZeroDay ? "#e11d48" : "#d97706");
+                setTimeout(() => nodeCircle.setAttribute("fill", "rgba(15, 23, 42, 0.95)"), 700);
             }
         }
 
         function spawnShockwave(cx, cy, color) {
             const svgGroup = document.getElementById('packet-stream-layer');
+            if (!svgGroup) return;
             const wave = document.createElementNS("http://www.w3.org/2000/svg", "circle");
             wave.setAttribute("cx", cx);
             wave.setAttribute("cy", cy);
@@ -945,16 +1092,80 @@
             svgGroup.appendChild(wave);
             setTimeout(() => {
                 if (wave.parentNode) wave.parentNode.removeChild(wave);
-            }, 800);
+            }, 750);
+        }
+
+        function spawnSoftPulse(cx, cy) {
+            const svgGroup = document.getElementById('packet-stream-layer');
+            if (!svgGroup) return;
+            const pulse = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            pulse.setAttribute("cx", cx);
+            pulse.setAttribute("cy", cy);
+            pulse.setAttribute("r", "8");
+            pulse.setAttribute("fill", "none");
+            pulse.setAttribute("stroke", "#06b6d4");
+            pulse.setAttribute("opacity", "0.8");
+            svgGroup.appendChild(pulse);
+            setTimeout(() => {
+                if (pulse.parentNode) svgGroup.removeChild(pulse);
+            }, 300);
+        }
+
+        // Ambient Continuous Packet Stream (Runs every 380ms)
+        function spawnAmbientPhoton() {
+            if (!isStreaming) return;
+            const d = Math.floor(Math.random() * 3) + 1;
+            const svgGroup = document.getElementById('packet-stream-layer');
+            if (!svgGroup) return;
+
+            const photon = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            const hostX = d === 1 ? 130 : (d === 2 ? 350 : 570);
+            const hostY = 255;
+            const switchX = hostX;
+            const switchY = 155;
+            const serverX = 350;
+            const serverY = 45;
+
+            photon.setAttribute("r", "2.8");
+            photon.setAttribute("fill", d === 1 ? "#38bdf8" : (d === 2 ? "#34d399" : "#fbbf24"));
+            photon.setAttribute("opacity", "0.75");
+            photon.setAttribute("cx", hostX);
+            photon.setAttribute("cy", hostY);
+            svgGroup.appendChild(photon);
+
+            const startTime = performance.now();
+            const dur = 950;
+            function step(now) {
+                const p = Math.min(1, (now - startTime) / dur);
+                let x, y;
+                if (p < 0.5) {
+                    const p1 = p / 0.5;
+                    x = hostX;
+                    y = hostY + (switchY - hostY) * p1;
+                } else {
+                    const p2 = (p - 0.5) / 0.5;
+                    x = switchX + (serverX - switchX) * p2;
+                    y = switchY + (serverY - switchY) * p2;
+                }
+                photon.setAttribute("cx", x);
+                photon.setAttribute("cy", y);
+                if (p < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                    if (photon.parentNode) svgGroup.removeChild(photon);
+                }
+            }
+            requestAnimationFrame(step);
         }
 
         // Ingest Flow & Instantly Update Everything
         function handleEventUI(event) {
             const isZeroDay = event.traffic_type.includes("Zero-Day");
+            const isAnomaly = event.is_anomaly;
             const domain = event.domain_id;
 
             // Update internal state counters
-            if (event.is_anomaly) {
+            if (isAnomaly) {
                 liveDropped++;
                 domainDropped[domain] = (domainDropped[domain] || 0) + 1;
             } else {
@@ -963,10 +1174,10 @@
             }
 
             // Immediately reflect in DOM
-            document.getElementById('badge-forwarded').innerText = liveForwarded;
-            document.getElementById('badge-dropped').innerText = liveDropped;
-            document.getElementById(`d${domain}-fwd`).innerText = domainForwarded[domain];
-            document.getElementById(`d${domain}-drop`).innerText = domainDropped[domain];
+            document.getElementById('badge-forwarded').innerText = liveForwarded.toLocaleString();
+            document.getElementById('badge-dropped').innerText = liveDropped.toLocaleString();
+            document.getElementById(`d${domain}-fwd`).innerText = domainForwarded[domain].toLocaleString();
+            document.getElementById(`d${domain}-drop`).innerText = domainDropped[domain].toLocaleString();
 
             // Update live throughput jitter
             if (domain === 1) document.getElementById('d1-tp').innerText = (120 + Math.random() * 50).toFixed(1) + " KB/s";
@@ -974,26 +1185,90 @@
             if (domain === 3) document.getElementById('d3-tp').innerText = (25 + Math.random() * 20).toFixed(1) + " KB/s";
 
             // Trigger audio chirp
-            playChirp(event.is_anomaly, isZeroDay);
+            playChirp(isAnomaly, isZeroDay);
 
             // Spawn animated packet photons
-            spawnParticle(domain, event.is_anomaly, isZeroDay);
+            spawnParticle(domain, isAnomaly, isZeroDay);
 
             // Update Chart
             chartLabels.push(event.timestamp);
             chartScores.push(event.anomaly_score);
             chartThresholds.push(event.threshold);
 
-            const ptColor = isZeroDay ? '#f43f5e' : (event.is_anomaly ? '#f59e0b' : '#10b981');
-            pointColors.push(ptColor);
+            if (isZeroDay) {
+                pointColors.push('#f43f5e');
+                pointBorderColors.push('#ffffff');
+                pointRadii.push(7.5);
+            } else if (isAnomaly) {
+                pointColors.push('#f59e0b');
+                pointBorderColors.push('#fef08a');
+                pointRadii.push(6);
+            } else {
+                pointColors.push('#10b981');
+                pointBorderColors.push('#6ee7b7');
+                pointRadii.push(3.5);
+            }
 
-            if (chartLabels.length > 25) {
+            if (chartLabels.length > 22) {
                 chartLabels.shift();
                 chartScores.shift();
                 chartThresholds.shift();
                 pointColors.shift();
+                pointBorderColors.shift();
+                pointRadii.shift();
             }
             if (scoreChart) scoreChart.update('none');
+
+            // Update Live Cyber HUD
+            const curLossEl = document.getElementById('hud-current-loss');
+            const deltaEl = document.getElementById('hud-loss-delta');
+            const statusEl = document.getElementById('chart-live-status');
+            const barEl = document.getElementById('hud-loss-bar');
+            const meterEl = document.getElementById('hud-meter-percent');
+            const panelChart = document.getElementById('panel-chart');
+
+            if (curLossEl) curLossEl.innerText = event.anomaly_score.toFixed(4);
+
+            const delta = event.anomaly_score - event.threshold;
+            const ratio = Math.min(100, Math.max(5, Math.round((event.anomaly_score / (event.threshold * 1.6)) * 100)));
+            if (meterEl) meterEl.innerText = `${ratio}%`;
+            if (barEl) barEl.style.width = `${ratio}%`;
+
+            if (isZeroDay) {
+                if (deltaEl) {
+                    deltaEl.innerText = `+${delta.toFixed(4)} (EXPLOIT)`;
+                    deltaEl.className = "text-xs font-bold text-rose-400 font-mono";
+                }
+                if (statusEl) {
+                    statusEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-500 animate-ping inline-block mr-1"></span>● ZERO-DAY EXPLOIT`;
+                    statusEl.className = "px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-rose-500/30 text-rose-300 border border-rose-500/60 shadow-lg shadow-rose-500/20";
+                }
+                if (barEl) barEl.className = "bg-rose-500 h-full rounded-full transition-all duration-300 shadow-md shadow-rose-500/50";
+                if (panelChart) {
+                    panelChart.classList.add('chart-alert-active');
+                    setTimeout(() => panelChart.classList.remove('chart-alert-active'), 1800);
+                }
+            } else if (isAnomaly) {
+                if (deltaEl) {
+                    deltaEl.innerText = `+${delta.toFixed(4)} (ATTACK)`;
+                    deltaEl.className = "text-xs font-bold text-amber-400 font-mono";
+                }
+                if (statusEl) {
+                    statusEl.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block mr-1"></span>● KNOWN ATTACK`;
+                    statusEl.className = "px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-amber-500/25 text-amber-300 border border-amber-500/50";
+                }
+                if (barEl) barEl.className = "bg-amber-400 h-full rounded-full transition-all duration-300";
+            } else {
+                if (deltaEl) {
+                    deltaEl.innerText = `${delta.toFixed(4)} (SAFE)`;
+                    deltaEl.className = "text-xs font-bold text-emerald-400 font-mono";
+                }
+                if (statusEl) {
+                    statusEl.innerHTML = `● NOMINAL`;
+                    statusEl.className = "px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40";
+                }
+                if (barEl) barEl.className = "bg-gradient-to-r from-emerald-400 to-cyan-400 h-full rounded-full transition-all duration-300";
+            }
 
             document.getElementById('badge-latency').innerText = event.latency_ms;
 
@@ -1005,19 +1280,16 @@
                 banner.classList.remove('hidden');
                 setTimeout(() => banner.classList.add('hidden'), 2500);
 
-                const nodeCircle = document.getElementById(`node-circle-${domain}`);
-                if (nodeCircle) {
-                    nodeCircle.setAttribute("fill", "#e11d48");
-                    setTimeout(() => nodeCircle.setAttribute("fill", "rgba(15, 23, 42, 0.95)"), 800);
-                }
-
                 // Add or update live rule
                 liveRules.unshift({
                     switch: `s${domain}`,
                     match: { src_ip: event.src_ip, dst_ip: event.dst_ip, dst_port: event.dst_port },
                     priority: 65535,
                     action: "DROP",
-                    packet_count: Math.floor(Math.random() * 35) + 1
+                    packet_count: Math.floor(Math.random() * 25) + 12,
+                    delta: Math.floor(Math.random() * 5) + 2,
+                    ttl: 30,
+                    isNew: true
                 });
                 if (liveRules.length > 15) liveRules.pop();
                 document.getElementById('badge-rules').innerText = liveRules.length;
@@ -1025,6 +1297,35 @@
             }
 
             prependEventRow(event);
+        }
+
+        // Rules state updater: increments packet drop counters and ticks TTL every second
+        function tickRulesState() {
+            let changed = false;
+            let totalDropRate = 0;
+
+            for (let i = liveRules.length - 1; i >= 0; i--) {
+                const r = liveRules[i];
+                const delta = Math.floor(Math.random() * 4) + 1;
+                r.packet_count += delta;
+                r.delta = delta;
+                r.isNew = false;
+                totalDropRate += delta * 120;
+
+                r.ttl = (r.ttl || 30) - 1;
+                if (r.ttl <= 0) {
+                    liveRules.splice(i, 1);
+                    changed = true;
+                }
+            }
+
+            const dropRateEl = document.getElementById('active-drop-rate');
+            if (dropRateEl) {
+                dropRateEl.innerText = `${(1250 + totalDropRate).toLocaleString()} pkts/s`;
+            }
+
+            document.getElementById('badge-rules').innerText = liveRules.length;
+            renderRulesTable(liveRules);
         }
 
         function simulatedFallbackFlow(type, domain) {
@@ -1119,6 +1420,9 @@
         // Real-Time 1-Second Autonomous Stream Loop
         function autonomousStreamTick() {
             if (!isStreaming) return;
+
+            // Tick existing active rules every second
+            tickRulesState();
 
             // 65% Benign, 15% Known Attack, 10% Zero-Day Slowloris, 10% Zero-Day Covert
             const rand = Math.random();
@@ -1217,18 +1521,57 @@
         function renderRulesTable(rules) {
             const tbody = document.getElementById('flow-rules-body');
             if (!rules || rules.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="p-5 text-center text-slate-400 font-medium">Normal traffic baseline active. Reactive rules will appear upon anomaly interception.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" class="p-5 text-center text-slate-400 font-medium">Normal traffic baseline active. Reactive rules will appear upon anomaly interception.</td></tr>';
                 return;
             }
-            tbody.innerHTML = rules.map(r => `
-                <tr class="hover:bg-white/5 transition">
-                    <td class="p-3 font-bold text-cyan-400">${r.switch}</td>
-                    <td class="p-3 font-mono text-[11px]">${r.match.src_ip} &rarr; ${r.match.dst_ip}:${r.match.dst_port}</td>
-                    <td class="p-3"><span class="bg-indigo-900/60 border border-indigo-500/30 text-indigo-300 px-2 py-0.5 rounded text-[10px] font-bold">${r.priority}</span></td>
-                    <td class="p-3"><span class="bg-rose-950/80 text-rose-300 border border-rose-500/50 px-2.5 py-0.5 rounded text-[10px] font-black">${r.action}</span></td>
-                    <td class="p-3 text-rose-400 font-extrabold font-mono">${r.packet_count}</td>
-                </tr>
-            `).join('');
+
+            const switchLabels = {
+                's1': 'Domain 1 (Enterprise)',
+                's2': 'Domain 2 (Data Center)',
+                's3': 'Domain 3 (Edge/IoT)'
+            };
+
+            tbody.innerHTML = rules.map((r, idx) => {
+                const swLabel = switchLabels[r.switch] || r.switch;
+                const protoBadge = r.match.dst_port == 53
+                    ? `<span class="px-1.5 py-0.5 rounded text-[9px] font-mono bg-purple-950/80 border border-purple-500/40 text-purple-300 font-bold">UDP:53 (DNS)</span>`
+                    : (r.match.dst_port == 443
+                        ? `<span class="px-1.5 py-0.5 rounded text-[9px] font-mono bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 font-bold">TCP:443 (TLS)</span>`
+                        : `<span class="px-1.5 py-0.5 rounded text-[9px] font-mono bg-indigo-950/80 border border-indigo-500/40 text-indigo-300 font-bold">TCP:${r.match.dst_port}</span>`);
+
+                const ttlColor = r.ttl < 8 ? 'text-rose-400 font-extrabold' : 'text-amber-300 font-bold';
+
+                return `
+                    <tr class="hover:bg-white/5 transition ${idx === 0 && r.isNew ? 'rule-pop-anim' : ''}">
+                        <td class="p-3">
+                            <span class="font-bold text-cyan-400 font-mono">${r.switch}</span>
+                            <div class="text-[9px] text-slate-400 font-sans">${swLabel}</div>
+                        </td>
+                        <td class="p-3">
+                            <div class="font-mono text-[11px] text-slate-200">${r.match.src_ip} &rarr; ${r.match.dst_ip}</div>
+                            <div class="mt-0.5">${protoBadge}</div>
+                        </td>
+                        <td class="p-3">
+                            <span class="bg-indigo-950/80 border border-indigo-500/40 text-indigo-300 px-2 py-0.5 rounded text-[10px] font-mono font-bold">${r.priority}</span>
+                        </td>
+                        <td class="p-3">
+                            <span class="inline-flex items-center gap-1.5 bg-rose-950/80 text-rose-300 border border-rose-500/50 px-2.5 py-0.5 rounded text-[10px] font-black tracking-wide">
+                                <span class="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping"></span>
+                                DROP
+                            </span>
+                        </td>
+                        <td class="p-3">
+                            <div class="flex items-center gap-1.5 font-mono">
+                                <span class="text-rose-400 font-extrabold text-xs num-bump">${r.packet_count.toLocaleString()}</span>
+                                <span class="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-1 py-0.2 rounded">+${r.delta || 1}/s</span>
+                            </div>
+                        </td>
+                        <td class="p-3 font-mono text-[11px] ${ttlColor}">
+                            ${r.ttl || 30}s
+                        </td>
+                    </tr>
+                `;
+            }).join('');
         }
 
         async function fetchRules() {
@@ -1237,7 +1580,16 @@
                 if (!res.ok) throw new Error("API not reachable");
                 const rules = await res.json();
                 if (rules && rules.length > 0) {
-                    liveRules = rules;
+                    liveRules = rules.map(r => ({
+                        switch: r.switch,
+                        match: r.match,
+                        priority: r.priority,
+                        action: r.action,
+                        packet_count: r.packet_count || 12,
+                        delta: 2,
+                        ttl: 30,
+                        isNew: false
+                    }));
                     document.getElementById('badge-rules').innerText = liveRules.length;
                     renderRulesTable(liveRules);
                 }
@@ -1269,17 +1621,37 @@
 
         async function clearRules() {
             if (!requireAdmin("purge OpenFlow tables")) return;
-            await fetch('/api/clear_rules', { method: 'POST' });
+            try {
+                await fetch('/api/clear_rules', { method: 'POST' });
+            } catch (e) {}
+
             chartLabels = [];
             chartScores = [];
             chartThresholds = [];
             pointColors = [];
+            pointBorderColors = [];
+            pointRadii = [];
+
             if (scoreChart) {
                 scoreChart.data.labels = [];
                 scoreChart.data.datasets[0].data = [];
                 scoreChart.data.datasets[1].data = [];
+                scoreChart.data.datasets[0].pointBackgroundColor = [];
+                scoreChart.data.datasets[0].pointBorderColor = [];
+                scoreChart.data.datasets[0].pointRadius = [];
                 scoreChart.update();
             }
+
+            const curLossEl = document.getElementById('hud-current-loss');
+            const deltaEl = document.getElementById('hud-loss-delta');
+            const statusEl = document.getElementById('chart-live-status');
+            const barEl = document.getElementById('hud-loss-bar');
+            const meterEl = document.getElementById('hud-meter-percent');
+            if (curLossEl) curLossEl.innerText = "0.0000";
+            if (deltaEl) { deltaEl.innerText = "0.0000 (SAFE)"; deltaEl.className = "text-xs font-bold text-emerald-400 font-mono"; }
+            if (statusEl) { statusEl.innerHTML = "● NOMINAL"; statusEl.className = "px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"; }
+            if (barEl) { barEl.style.width = "10%"; barEl.className = "bg-gradient-to-r from-emerald-400 to-cyan-400 h-full rounded-full transition-all duration-300"; }
+            if (meterEl) meterEl.innerText = "0%";
 
             liveRules = [];
             liveForwarded = 0;
@@ -1415,6 +1787,10 @@
             checkAdminSession();
             fetchStatus();
             fetchRules();
+
+            // Ambient continuous packet photon stream (every 380ms)
+            if (ambientTimer) clearInterval(ambientTimer);
+            ambientTimer = setInterval(spawnAmbientPhoton, 380);
 
             // Immediately launch fast 1-second auto stream
             startStream();
