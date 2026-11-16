@@ -14,10 +14,9 @@
             theme: {
                 extend: {
                     colors: {
-                        darkBg: '#070b13',
-                        panelBg: '#0f172a',
-                        cardBg: '#131d31',
-                        borderCol: '#1e293b',
+                        darkBg: '#060911',
+                        panelBg: 'rgba(15, 23, 42, 0.45)',
+                        borderCol: 'rgba(255, 255, 255, 0.12)',
                         cyanAccent: '#06b6d4',
                         greenAccent: '#10b981',
                         redAccent: '#f43f5e',
@@ -29,18 +28,95 @@
         }
     </script>
     <style>
+        /* Complete Glassmorphic Theme */
         body {
-            background-color: #070b13;
+            background-color: #060911;
             color: #e2e8f0;
             font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
         }
+
+        /* Ambient Glass Refraction Styling */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.42);
+            backdrop-filter: blur(24px) saturate(200%);
+            -webkit-backdrop-filter: blur(24px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+            border-radius: 1.25rem;
+        }
+
+        .glass-panel-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-panel-hover:hover {
+            background: rgba(15, 23, 42, 0.55);
+            border-color: rgba(6, 182, 212, 0.4);
+            box-shadow: 0 16px 50px 0 rgba(6, 182, 212, 0.2), inset 0 1px 0 0 rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .glass-header {
+            background: rgba(10, 16, 31, 0.6);
+            backdrop-filter: blur(28px) saturate(210%);
+            -webkit-backdrop-filter: blur(28px) saturate(210%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 35px 0 rgba(0, 0, 0, 0.4), inset 0 -1px 0 0 rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-inner {
+            background: rgba(7, 12, 24, 0.48);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 1rem;
+        }
+
+        .glass-pill {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+        }
+
+        .glass-btn {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(6, 182, 212, 0.45);
+            box-shadow: 0 6px 25px rgba(6, 182, 212, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .glass-input {
+            background: rgba(7, 12, 24, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
+        }
+        .glass-input:focus {
+            border-color: rgba(6, 182, 212, 0.6);
+            box-shadow: 0 0 18px rgba(6, 182, 212, 0.35), inset 0 1px 4px rgba(0, 0, 0, 0.3);
+        }
+
         .glow-cyan {
-            box-shadow: 0 0 20px rgba(6, 182, 212, 0.35);
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.45);
         }
         .glow-red {
-            box-shadow: 0 0 25px rgba(244, 63, 94, 0.45);
+            box-shadow: 0 0 30px rgba(244, 63, 94, 0.55);
         }
+
         /* AEGISNET Middle-Top Animations */
         @keyframes aegis-shimmer {
             0% {
@@ -64,12 +140,12 @@
             0%, 100% {
                 opacity: 0.65;
                 transform: scale(0.97);
-                filter: blur(14px);
+                filter: blur(16px);
             }
             50% {
                 opacity: 1;
                 transform: scale(1.05);
-                filter: blur(24px);
+                filter: blur(28px);
             }
         }
         .aegis-glow-anim {
@@ -88,7 +164,7 @@
         }
         @keyframes pulse-animation {
             0% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 10px #06b6d4); }
+            50% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 12px #06b6d4); }
             100% { transform: scale(1); opacity: 0.9; }
         }
         @keyframes shockwave {
@@ -102,37 +178,46 @@
             animation: flash-row 1.2s ease-out;
         }
         @keyframes flash-row {
-            0% { background-color: rgba(6, 182, 212, 0.3); }
+            0% { background-color: rgba(6, 182, 212, 0.35); }
             100% { background-color: transparent; }
         }
         .row-highlight-danger {
             animation: flash-row-danger 1.5s ease-out;
         }
         @keyframes flash-row-danger {
-            0% { background-color: rgba(244, 63, 94, 0.45); }
+            0% { background-color: rgba(244, 63, 94, 0.5); }
             100% { background-color: transparent; }
         }
         /* Custom scrollbar */
         ::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
+            width: 6px;
+            height: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #0b1120;
+            background: rgba(10, 16, 31, 0.5);
+            backdrop-filter: blur(10px);
         }
         ::-webkit-scrollbar-thumb {
-            background: #1e293b;
+            background: rgba(255, 255, 255, 0.15);
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #334155;
+            background: rgba(255, 255, 255, 0.25);
         }
     </style>
 </head>
-<body class="min-h-screen bg-darkBg text-slate-200">
+<body class="min-h-screen text-slate-200">
 
-    <!-- Top Centered Hero Header -->
-    <header class="border-b border-borderCol bg-panelBg/95 backdrop-blur sticky top-0 z-50 px-6 py-6 shadow-2xl">
+    <!-- Fixed Ambient Glowing Orbs for Glassmorphic Refraction -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+        <div class="absolute -top-32 -left-32 w-[30rem] h-[30rem] bg-cyan-500/20 rounded-full blur-[140px] animate-pulse"></div>
+        <div class="absolute top-1/4 -right-32 w-[36rem] h-[36rem] bg-indigo-600/25 rounded-full blur-[160px] animate-pulse" style="animation-duration: 8s;"></div>
+        <div class="absolute bottom-20 left-1/4 w-[32rem] h-[32rem] bg-fuchsia-600/18 rounded-full blur-[150px] animate-pulse" style="animation-duration: 10s;"></div>
+        <div class="absolute -bottom-24 right-1/4 w-[28rem] h-[28rem] bg-emerald-500/15 rounded-full blur-[140px]"></div>
+    </div>
+
+    <!-- Top Centered Hero Header in Glass -->
+    <header class="glass-header sticky top-0 z-50 px-6 py-6 shadow-2xl">
         <div class="max-w-7xl mx-auto flex flex-col items-center justify-center text-center space-y-4">
             
             <!-- Large Centered Animated AEGISNET at Middle Top -->
@@ -156,13 +241,13 @@
                 <span class="h-[1px] flex-1 bg-gradient-to-l from-transparent to-cyan-500/70"></span>
             </div>
 
-            <!-- Controls & Badges Placed Down of AEGISNET -->
+            <!-- Controls & Badges Placed Down of AEGISNET in Frosted Glass -->
             <div class="flex flex-wrap items-center justify-center gap-3 pt-1 text-xs">
                 
                 <!-- System Badges Group: CORE v2.4 + LIVE (1s TICK) -->
-                <div class="flex items-center bg-darkBg/90 border border-borderCol rounded-xl px-3.5 py-2 gap-3 shadow-inner">
+                <div class="flex items-center glass-pill rounded-xl px-3.5 py-2 gap-3">
                     <span class="text-xs font-mono font-bold text-cyan-400">CORE v2.4</span>
-                    <span class="h-3.5 w-[1px] bg-slate-700"></span>
+                    <span class="h-3.5 w-[1px] bg-white/20"></span>
                     <span id="live-indicator" class="flex items-center gap-1.5 text-[11px] font-bold text-emerald-400">
                         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
                         LIVE (1s TICK)
@@ -170,38 +255,38 @@
                 </div>
 
                 <!-- Tag: Multi-Domain OpenFlow & Beta-VAE -->
-                <div class="bg-darkBg/90 border border-borderCol text-slate-300 px-3.5 py-2 rounded-xl font-medium text-[11px] flex items-center gap-2 shadow-inner">
+                <div class="glass-pill text-slate-300 px-3.5 py-2 rounded-xl font-medium text-[11px] flex items-center gap-2">
                     <span class="text-indigo-400 font-bold">⚡</span>
                     <span>Multi-Domain OpenFlow & Beta-VAE</span>
                 </div>
 
                 <!-- Speed Control Group: 0.5s Fast | 1.0s Live | 2.0s Slow | Pause -->
-                <div class="flex items-center bg-darkBg border border-borderCol rounded-xl p-1 shadow-inner">
+                <div class="flex items-center glass-pill rounded-xl p-1">
                     <button onclick="setStreamSpeed(500)" id="btn-speed-fast" class="px-3 py-1 rounded-lg text-slate-400 hover:text-white transition text-[11px] font-semibold">0.5s Fast</button>
-                    <button onclick="setStreamSpeed(1000)" id="btn-speed-normal" class="px-3 py-1 rounded-lg bg-cyan-500 text-white transition text-[11px] font-bold shadow-md shadow-cyan-500/30">1.0s Live</button>
+                    <button onclick="setStreamSpeed(1000)" id="btn-speed-normal" class="px-3 py-1 rounded-lg bg-cyan-500/90 text-white transition text-[11px] font-bold shadow-md shadow-cyan-500/30">1.0s Live</button>
                     <button onclick="setStreamSpeed(2000)" id="btn-speed-slow" class="px-3 py-1 rounded-lg text-slate-400 hover:text-white transition text-[11px] font-semibold">2.0s Slow</button>
                     <button onclick="toggleStream()" id="btn-toggle-stream" class="px-3 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30 transition text-[11px] font-bold ml-1 hover:bg-amber-500/30">Pause</button>
                 </div>
 
                 <!-- Audio Toggle: 🔇 Muted -->
-                <button onclick="toggleAudio()" id="btn-audio" class="bg-darkBg border border-borderCol hover:border-slate-600 px-3 py-2 rounded-xl text-slate-300 font-medium transition flex items-center gap-1.5 shadow-inner">
+                <button onclick="toggleAudio()" id="btn-audio" class="glass-btn px-3 py-2 rounded-xl text-slate-300 font-medium transition flex items-center gap-1.5">
                     <span id="audio-icon">🔇</span> <span id="audio-label">Muted</span>
                 </button>
 
                 <!-- Reset: Reset Tables -->
-                <button onclick="clearRules()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-2 rounded-xl font-medium transition border border-borderCol shadow">
+                <button onclick="clearRules()" class="glass-btn hover:bg-rose-500/20 hover:border-rose-500/40 text-slate-300 px-3.5 py-2 rounded-xl font-medium transition">
                     Reset
                 </button>
 
                 <!-- Admin Authentication Section -->
                 <div id="auth-container" class="flex items-center">
-                    <button onclick="openLoginModal()" id="btn-login-open" class="bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white px-3.5 py-2 rounded-xl font-bold transition flex items-center gap-1.5 shadow-md shadow-cyan-500/25">
+                    <button onclick="openLoginModal()" id="btn-login-open" class="glass-btn bg-gradient-to-r from-cyan-600/70 to-indigo-600/70 hover:from-cyan-500 hover:to-indigo-500 text-white px-3.5 py-2 rounded-xl font-bold transition flex items-center gap-1.5 shadow-lg shadow-cyan-500/25 border-cyan-400/40">
                         <span>🔐</span> <span>Admin Login</span>
                     </button>
-                    <div id="admin-badge-logged" class="hidden flex items-center gap-2 bg-emerald-950/80 border border-emerald-500/50 px-3 py-1.5 rounded-xl shadow-inner">
+                    <div id="admin-badge-logged" class="hidden flex items-center gap-2 bg-emerald-950/70 border border-emerald-500/50 px-3 py-1.5 rounded-xl shadow-inner backdrop-blur-md">
                         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
                         <span class="text-[11px] font-bold text-emerald-300 font-mono">ROOT ADMIN</span>
-                        <button onclick="logoutAdmin()" title="Logout" class="text-[10px] bg-slate-800 hover:bg-rose-950 hover:text-rose-300 text-slate-300 px-2 py-1 rounded-lg ml-1 font-semibold transition border border-borderCol">
+                        <button onclick="logoutAdmin()" title="Logout" class="text-[10px] bg-white/10 hover:bg-rose-950 hover:text-rose-300 text-slate-300 px-2 py-1 rounded-lg ml-1 font-semibold transition border border-white/10">
                             Logout
                         </button>
                     </div>
@@ -212,49 +297,49 @@
         </div>
     </header>
 
-    <!-- Global Key Metrics Ticker -->
-    <section class="max-w-7xl mx-auto px-6 pt-5">
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            <div class="bg-panelBg/80 border border-borderCol/80 p-3 rounded-xl">
+    <!-- Global Key Metrics Ticker in Glass -->
+    <section class="max-w-7xl mx-auto px-6 pt-6">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+            <div class="glass-panel glass-panel-hover p-4 rounded-2xl">
                 <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">FL Training Round</div>
-                <div class="text-xl font-extrabold text-cyan-400 mt-0.5 flex items-baseline gap-1.5">
+                <div class="text-2xl font-extrabold text-cyan-400 mt-1 flex items-baseline gap-1.5">
                     <span id="badge-fl-round">3</span>
-                    <span class="text-[10px] text-slate-500 font-normal">FedProx</span>
+                    <span class="text-[10px] text-slate-400 font-normal">FedProx</span>
                 </div>
             </div>
 
-            <div class="bg-panelBg/80 border border-borderCol/80 p-3 rounded-xl">
+            <div class="glass-panel glass-panel-hover p-4 rounded-2xl">
                 <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Anomaly Cutoff (τ)</div>
-                <div class="text-xl font-extrabold text-yellow-400 mt-0.5 font-mono">
+                <div class="text-2xl font-extrabold text-yellow-400 mt-1 font-mono">
                     <span id="badge-threshold">1.9325</span>
                 </div>
             </div>
 
-            <div class="bg-panelBg/80 border border-borderCol/80 p-3 rounded-xl">
+            <div class="glass-panel glass-panel-hover p-4 rounded-2xl">
                 <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Active OVS Rules</div>
-                <div class="text-xl font-extrabold text-indigo-400 mt-0.5 flex items-baseline gap-1.5">
+                <div class="text-2xl font-extrabold text-indigo-400 mt-1 flex items-baseline gap-1.5">
                     <span id="badge-rules">0</span>
-                    <span class="text-[10px] text-slate-500 font-normal">FlowMod</span>
+                    <span class="text-[10px] text-slate-400 font-normal">FlowMod</span>
                 </div>
             </div>
 
-            <div class="bg-panelBg/80 border border-borderCol/80 p-3 rounded-xl">
+            <div class="glass-panel glass-panel-hover p-4 rounded-2xl">
                 <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Packets Forwarded</div>
-                <div class="text-xl font-extrabold text-emerald-400 mt-0.5 font-mono">
+                <div class="text-2xl font-extrabold text-emerald-400 mt-1 font-mono">
                     <span id="badge-forwarded">0</span>
                 </div>
             </div>
 
-            <div class="bg-panelBg/80 border border-borderCol/80 p-3 rounded-xl">
+            <div class="glass-panel glass-panel-hover p-4 rounded-2xl">
                 <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Packets Blocked</div>
-                <div class="text-xl font-extrabold text-rose-400 mt-0.5 font-mono">
+                <div class="text-2xl font-extrabold text-rose-400 mt-1 font-mono">
                     <span id="badge-dropped">0</span>
                 </div>
             </div>
 
-            <div class="bg-panelBg/80 border border-borderCol/80 p-3 rounded-xl">
+            <div class="glass-panel glass-panel-hover p-4 rounded-2xl">
                 <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Defense Latency</div>
-                <div class="text-xl font-extrabold text-purple-400 mt-0.5 font-mono flex items-baseline gap-1">
+                <div class="text-2xl font-extrabold text-purple-400 mt-1 font-mono flex items-baseline gap-1">
                     <span id="badge-latency">0.45</span>
                     <span class="text-xs font-normal text-slate-400">ms</span>
                 </div>
@@ -264,23 +349,23 @@
 
     <main class="p-6 max-w-7xl mx-auto space-y-6">
 
-        <!-- Top Section: Animated Topology & Exploit Launcher -->
+        <!-- Top Section: Glass Topology & Exploit Launcher -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-            <!-- Interactive Animated SDN Topology View (2 cols) -->
-            <div class="lg:col-span-2 bg-panelBg border border-borderCol rounded-2xl p-5 shadow-2xl relative overflow-hidden flex flex-col justify-between">
-                <div class="flex items-center justify-between mb-2">
-                    <h2 class="text-xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-2">
+            <!-- Interactive Animated SDN Topology View in Frosted Glass (2 cols) -->
+            <div class="lg:col-span-2 glass-panel p-6 shadow-2xl relative overflow-hidden flex flex-col justify-between">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-xs font-black uppercase tracking-wider text-slate-300 flex items-center gap-2">
                         <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
                         SDN Data Plane & Federated Coordination Fabric
                     </h2>
-                    <span class="text-[11px] font-mono text-cyan-400/90 bg-cyan-950/40 border border-cyan-800/40 px-2 py-0.5 rounded">
+                    <span class="text-[11px] font-mono text-cyan-300 bg-cyan-500/10 border border-cyan-400/30 px-2.5 py-0.5 rounded-lg backdrop-blur-md">
                         Active Telemetry Polling (1000ms)
                     </span>
                 </div>
 
-                <!-- Animated SVG Topology Canvas -->
-                <div class="h-72 w-full flex items-center justify-center bg-darkBg/90 rounded-xl border border-borderCol/60 relative overflow-hidden">
+                <!-- Animated SVG Topology Canvas encased in Glass Inner -->
+                <div class="h-72 w-full flex items-center justify-center glass-inner relative overflow-hidden">
                     <svg id="topo-svg" viewBox="0 0 640 260" class="w-full h-full">
                         <defs>
                             <!-- Linear Gradients for links -->
@@ -290,20 +375,20 @@
                             </linearGradient>
                             <!-- Glow Filter -->
                             <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-                                <feGaussianBlur stdDeviation="3" result="blur" />
+                                <feGaussianBlur stdDeviation="3.5" result="blur" />
                                 <feComposite in="SourceGraphic" in2="blur" operator="over" />
                             </filter>
                         </defs>
 
                         <!-- Static Connection Lines -->
-                        <line x1="320" y1="50" x2="110" y2="185" stroke="#1e293b" stroke-width="3" stroke-dasharray="4,4" />
-                        <line x1="320" y1="50" x2="320" y2="185" stroke="#1e293b" stroke-width="3" stroke-dasharray="4,4" />
-                        <line x1="320" y1="50" x2="530" y2="185" stroke="#1e293b" stroke-width="3" stroke-dasharray="4,4" />
+                        <line x1="320" y1="50" x2="110" y2="185" stroke="rgba(255,255,255,0.15)" stroke-width="2.5" stroke-dasharray="4,4" />
+                        <line x1="320" y1="50" x2="320" y2="185" stroke="rgba(255,255,255,0.15)" stroke-width="2.5" stroke-dasharray="4,4" />
+                        <line x1="320" y1="50" x2="530" y2="185" stroke="rgba(255,255,255,0.15)" stroke-width="2.5" stroke-dasharray="4,4" />
 
                         <!-- Active Highlight Cables -->
-                        <line id="cable-1" x1="320" y1="50" x2="110" y2="185" stroke="#06b6d4" stroke-width="2.5" opacity="0.3" />
-                        <line id="cable-2" x1="320" y1="50" x2="320" y2="185" stroke="#10b981" stroke-width="2.5" opacity="0.3" />
-                        <line id="cable-3" x1="320" y1="50" x2="530" y2="185" stroke="#f59e0b" stroke-width="2.5" opacity="0.3" />
+                        <line id="cable-1" x1="320" y1="50" x2="110" y2="185" stroke="#06b6d4" stroke-width="2.5" opacity="0.35" />
+                        <line id="cable-2" x1="320" y1="50" x2="320" y2="185" stroke="#10b981" stroke-width="2.5" opacity="0.35" />
+                        <line id="cable-3" x1="320" y1="50" x2="530" y2="185" stroke="#f59e0b" stroke-width="2.5" opacity="0.35" />
 
                         <!-- Dynamic Animated Packet Stream Layer -->
                         <g id="packet-stream-layer"></g>
@@ -311,15 +396,15 @@
                         <!-- Central Federated Server Node -->
                         <g transform="translate(320, 50)">
                             <circle r="30" fill="#1e1b4b" stroke="#818cf8" stroke-width="2.5" filter="url(#glow)"/>
-                            <circle r="36" fill="none" stroke="#6366f1" stroke-width="1" opacity="0.4" class="pulse-node"/>
+                            <circle r="36" fill="none" stroke="#6366f1" stroke-width="1.2" opacity="0.5" class="pulse-node"/>
                             <text y="-5" fill="#e0e7ff" font-size="11" font-weight="900" text-anchor="middle">FED SERVER</text>
                             <text y="9" fill="#a5b4fc" font-size="8" font-family="monospace" text-anchor="middle">FedProx Sync</text>
                         </g>
 
                         <!-- Domain 1 Node (Enterprise) -->
                         <g id="node-group-1" transform="translate(110, 185)" class="cursor-pointer" onclick="selectDomain(1)">
-                            <circle id="node-ring-1" r="32" fill="none" stroke="#06b6d4" stroke-width="1.5" opacity="0.3" />
-                            <circle id="node-circle-1" r="26" fill="#0f172a" stroke="#06b6d4" stroke-width="2.5" />
+                            <circle id="node-ring-1" r="32" fill="none" stroke="#06b6d4" stroke-width="1.5" opacity="0.4" />
+                            <circle id="node-circle-1" r="26" fill="rgba(15, 23, 42, 0.9)" stroke="#06b6d4" stroke-width="2.5" />
                             <text y="-4" fill="#ffffff" font-size="10" font-weight="bold" text-anchor="middle">Ryu C1</text>
                             <text y="9" fill="#38bdf8" font-size="8" font-family="monospace" text-anchor="middle">Switch s1</text>
                             <text y="42" fill="#94a3b8" font-size="10" font-weight="bold" text-anchor="middle">Domain 1 (Enterprise)</text>
@@ -327,8 +412,8 @@
 
                         <!-- Domain 2 Node (Data Center) -->
                         <g id="node-group-2" transform="translate(320, 185)" class="cursor-pointer" onclick="selectDomain(2)">
-                            <circle id="node-ring-2" r="32" fill="none" stroke="#10b981" stroke-width="1.5" opacity="0.3" />
-                            <circle id="node-circle-2" r="26" fill="#0f172a" stroke="#10b981" stroke-width="2.5" />
+                            <circle id="node-ring-2" r="32" fill="none" stroke="#10b981" stroke-width="1.5" opacity="0.4" />
+                            <circle id="node-circle-2" r="26" fill="rgba(15, 23, 42, 0.9)" stroke="#10b981" stroke-width="2.5" />
                             <text y="-4" fill="#ffffff" font-size="10" font-weight="bold" text-anchor="middle">Ryu C2</text>
                             <text y="9" fill="#34d399" font-size="8" font-family="monospace" text-anchor="middle">Switch s2</text>
                             <text y="42" fill="#94a3b8" font-size="10" font-weight="bold" text-anchor="middle">Domain 2 (Data Center)</text>
@@ -336,28 +421,28 @@
 
                         <!-- Domain 3 Node (IoT Edge) -->
                         <g id="node-group-3" transform="translate(530, 185)" class="cursor-pointer" onclick="selectDomain(3)">
-                            <circle id="node-ring-3" r="32" fill="none" stroke="#f59e0b" stroke-width="1.5" opacity="0.3" />
-                            <circle id="node-circle-3" r="26" fill="#0f172a" stroke="#f59e0b" stroke-width="2.5" />
+                            <circle id="node-ring-3" r="32" fill="none" stroke="#f59e0b" stroke-width="1.5" opacity="0.4" />
+                            <circle id="node-circle-3" r="26" fill="rgba(15, 23, 42, 0.9)" stroke="#f59e0b" stroke-width="2.5" />
                             <text y="-4" fill="#ffffff" font-size="10" font-weight="bold" text-anchor="middle">Ryu C3</text>
                             <text y="9" fill="#fbbf24" font-size="8" font-family="monospace" text-anchor="middle">Switch s3</text>
                             <text y="42" fill="#94a3b8" font-size="10" font-weight="bold" text-anchor="middle">Domain 3 (Edge / IoT)</text>
                         </g>
                     </svg>
 
-                    <!-- Real-time Alert Banner -->
-                    <div id="alert-banner" class="hidden absolute top-3 inset-x-6 bg-rose-600/90 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-2xl flex items-center justify-between backdrop-blur animate-bounce">
-                        <div class="flex items-center gap-2">
+                    <!-- Real-time Alert Banner in Frosted Glass -->
+                    <div id="alert-banner" class="hidden absolute top-3 inset-x-6 bg-rose-600/80 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-2xl flex items-center justify-between backdrop-blur-xl border border-rose-400/50 animate-bounce">
+                        <div class="flex items-center gap-2.5">
                             <span class="text-base">🚨</span>
                             <span id="alert-banner-text">ZERO-DAY ATTACK INTERCEPTED & MITIGATED!</span>
                         </div>
-                        <span class="bg-black/30 px-2 py-0.5 rounded text-[10px] font-mono">OpenFlow DROP Rule Active</span>
+                        <span class="bg-black/40 border border-white/20 px-2 py-0.5 rounded text-[10px] font-mono">OpenFlow DROP Active</span>
                     </div>
                 </div>
 
-                <!-- Domain Telemetry Mini-Cards -->
-                <div class="grid grid-cols-3 gap-3 mt-4 text-xs">
-                    <div id="card-d1" class="bg-darkBg/80 border border-borderCol p-3 rounded-xl transition">
-                        <div class="flex justify-between items-center mb-1">
+                <!-- Domain Telemetry Mini-Cards in Glass -->
+                <div class="grid grid-cols-3 gap-3.5 mt-4 text-xs">
+                    <div id="card-d1" class="glass-inner p-3.5 rounded-xl transition hover:border-cyan-400/40">
+                        <div class="flex justify-between items-center mb-1.5">
                             <span class="font-extrabold text-cyan-400">Enterprise LAN (s1)</span>
                             <span id="d1-status" class="w-2 h-2 rounded-full bg-cyan-400"></span>
                         </div>
@@ -367,8 +452,8 @@
                         </div>
                     </div>
 
-                    <div id="card-d2" class="bg-darkBg/80 border border-borderCol p-3 rounded-xl transition">
-                        <div class="flex justify-between items-center mb-1">
+                    <div id="card-d2" class="glass-inner p-3.5 rounded-xl transition hover:border-emerald-400/40">
+                        <div class="flex justify-between items-center mb-1.5">
                             <span class="font-extrabold text-emerald-400">Cloud Data Center (s2)</span>
                             <span id="d2-status" class="w-2 h-2 rounded-full bg-emerald-400"></span>
                         </div>
@@ -378,8 +463,8 @@
                         </div>
                     </div>
 
-                    <div id="card-d3" class="bg-darkBg/80 border border-borderCol p-3 rounded-xl transition">
-                        <div class="flex justify-between items-center mb-1">
+                    <div id="card-d3" class="glass-inner p-3.5 rounded-xl transition hover:border-amber-400/40">
+                        <div class="flex justify-between items-center mb-1.5">
                             <span class="font-extrabold text-amber-400">IoT Edge Subnet (s3)</span>
                             <span id="d3-status" class="w-2 h-2 rounded-full bg-amber-400"></span>
                         </div>
@@ -391,81 +476,81 @@
                 </div>
             </div>
 
-            <!-- Manual Exploit & Traffic Launcher (1 col) -->
-            <div class="bg-panelBg border border-borderCol rounded-2xl p-5 shadow-2xl flex flex-col justify-between">
+            <!-- Manual Exploit & Traffic Launcher in Frosted Glass (1 col) -->
+            <div class="glass-panel p-6 shadow-2xl flex flex-col justify-between">
                 <div>
-                    <h2 class="text-xs font-black uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-2">
+                    <h2 class="text-xs font-black uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-2">
                         <span class="text-cyan-400">🎯</span> Manual Exploit Injection
                     </h2>
                     <p class="text-xs text-slate-400 mb-4">
-                        Manually trigger specific flow anomalies or novel zero-day exploits into any domain to test immediate line-rate mitigation.
+                        Manually trigger flow anomalies or novel zero-day exploits into any domain to test immediate line-rate mitigation.
                     </p>
 
                     <!-- Domain Selector -->
-                    <div class="mb-3.5">
-                        <label class="block text-[11px] font-bold uppercase text-slate-400 mb-1">Target Controller / Switch:</label>
-                        <select id="target-domain" class="w-full bg-darkBg border border-borderCol text-xs rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-cyan-500 font-medium">
+                    <div class="mb-4">
+                        <label class="block text-[11px] font-bold uppercase text-slate-400 mb-1.5">Target Controller / Switch:</label>
+                        <select id="target-domain" class="w-full glass-input text-xs rounded-xl p-2.5 text-slate-200 focus:outline-none font-medium">
                             <option value="1">Domain 1 - Enterprise Campus (s1)</option>
                             <option value="2">Domain 2 - Cloud Data Center (s2)</option>
                             <option value="3">Domain 3 - Edge / IoT Subnet (s3)</option>
                         </select>
                     </div>
 
-                    <!-- Flow Attack Trigger Buttons -->
-                    <div class="space-y-2">
-                        <button onclick="manualInject('benign')" class="w-full bg-emerald-950/40 hover:bg-emerald-900/50 text-emerald-300 border border-emerald-500/30 p-2.5 rounded-xl text-xs font-bold text-left flex items-center justify-between transition group">
-                            <div class="flex items-center gap-2">
+                    <!-- Flow Attack Trigger Buttons in Glass -->
+                    <div class="space-y-2.5">
+                        <button onclick="manualInject('benign')" class="w-full glass-btn hover:bg-emerald-500/20 text-emerald-300 border-emerald-500/30 p-3 rounded-xl text-xs font-bold text-left flex items-center justify-between group">
+                            <div class="flex items-center gap-2.5">
                                 <span class="text-emerald-400">✔</span>
                                 <span>Legitimate Flow (HTTP/DNS/SSH)</span>
                             </div>
-                            <span class="text-[10px] bg-emerald-500/20 px-2 py-0.5 rounded text-emerald-400 font-mono">FORWARD</span>
+                            <span class="text-[10px] bg-emerald-500/20 border border-emerald-500/30 px-2 py-0.5 rounded text-emerald-400 font-mono">FORWARD</span>
                         </button>
 
-                        <button onclick="manualInject('known_attack')" class="w-full bg-amber-950/40 hover:bg-amber-900/50 text-amber-300 border border-amber-500/30 p-2.5 rounded-xl text-xs font-bold text-left flex items-center justify-between transition group">
-                            <div class="flex items-center gap-2">
+                        <button onclick="manualInject('known_attack')" class="w-full glass-btn hover:bg-amber-500/20 text-amber-300 border-amber-500/30 p-3 rounded-xl text-xs font-bold text-left flex items-center justify-between group">
+                            <div class="flex items-center gap-2.5">
                                 <span class="text-amber-400">⚠</span>
                                 <span>Known Signature (SYN Flood DoS)</span>
                             </div>
-                            <span class="text-[10px] bg-amber-500/20 px-2 py-0.5 rounded text-amber-400 font-mono">KNOWN ATTACK</span>
+                            <span class="text-[10px] bg-amber-500/20 border border-amber-500/30 px-2 py-0.5 rounded text-amber-400 font-mono">KNOWN ATTACK</span>
                         </button>
 
-                        <button onclick="manualInject('zeroday_slowloris')" class="w-full bg-rose-950/40 hover:bg-rose-900/50 text-rose-300 border border-rose-500/30 p-2.5 rounded-xl text-xs font-bold text-left flex items-center justify-between transition group glow-red">
-                            <div class="flex items-center gap-2">
+                        <button onclick="manualInject('zeroday_slowloris')" class="w-full glass-btn hover:bg-rose-500/25 text-rose-300 border-rose-500/40 p-3 rounded-xl text-xs font-bold text-left flex items-center justify-between group glow-red">
+                            <div class="flex items-center gap-2.5">
                                 <span class="text-rose-400">💀</span>
                                 <span>Zero-Day: Stealth Slowloris</span>
                             </div>
-                            <span class="text-[10px] bg-rose-500/30 px-2 py-0.5 rounded text-rose-300 font-mono">NOVEL ATTACK</span>
+                            <span class="text-[10px] bg-rose-500/30 border border-rose-500/40 px-2 py-0.5 rounded text-rose-300 font-mono">NOVEL ATTACK</span>
                         </button>
 
-                        <button onclick="manualInject('zeroday_covert')" class="w-full bg-purple-950/40 hover:bg-purple-900/50 text-purple-300 border border-purple-500/30 p-2.5 rounded-xl text-xs font-bold text-left flex items-center justify-between transition group">
-                            <div class="flex items-center gap-2">
+                        <button onclick="manualInject('zeroday_covert')" class="w-full glass-btn hover:bg-purple-500/25 text-purple-300 border-purple-500/40 p-3 rounded-xl text-xs font-bold text-left flex items-center justify-between group">
+                            <div class="flex items-center gap-2.5">
                                 <span class="text-purple-400">🕵</span>
                                 <span>Zero-Day: Covert C2 DNS Tunnel</span>
                             </div>
-                            <span class="text-[10px] bg-purple-500/30 px-2 py-0.5 rounded text-purple-300 font-mono">NOVEL ATTACK</span>
+                            <span class="text-[10px] bg-purple-500/30 border border-purple-500/40 px-2 py-0.5 rounded text-purple-300 font-mono">NOVEL ATTACK</span>
                         </button>
                     </div>
                 </div>
 
                 <!-- FL Control Action -->
-                <div class="pt-4 border-t border-borderCol mt-4 flex gap-2">
-                    <button onclick="trainFLRound()" id="btn-fl" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30">
+                <div class="pt-4 border-t border-white/10 mt-4 flex gap-2">
+                    <button onclick="trainFLRound()" id="btn-fl" class="w-full glass-btn bg-gradient-to-r from-indigo-600/80 to-purple-600/80 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-3 px-3 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 border-indigo-400/30">
                         <span>🔄</span> Trigger Federated Round (FedProx)
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Middle Section: Anomaly Scoring Chart & Active OpenFlow Rules -->
+        <!-- Middle Section: Anomaly Scoring Chart & Active OpenFlow Rules in Glass -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-            <!-- Real-time Anomaly Score Monitor (Chart.js) -->
-            <div class="bg-panelBg border border-borderCol rounded-2xl p-5 shadow-2xl">
+            <!-- Real-time Anomaly Score Monitor in Glass -->
+            <div class="glass-panel p-6 shadow-2xl">
                 <div class="flex items-center justify-between mb-3">
-                    <h2 class="text-xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                    <h2 class="text-xs font-black uppercase tracking-wider text-slate-300 flex items-center gap-2">
                         <span>📈</span> Real-time VAE Reconstruction Loss (Updated Every 1s)
                     </h2>
-                    <span class="text-xs font-mono text-yellow-400 bg-yellow-950/40 border border-yellow-800/40 px-2 py-0.5 rounded">
+                    <span class="text-xs font-mono text-yellow-400 glass-pill px-2.5 py-0.5 rounded-lg border-yellow-500/30">
                         τ Cutoff: <span id="chart-threshold">1.9325</span>
                     </span>
                 </div>
@@ -474,28 +559,28 @@
                 </div>
             </div>
 
-            <!-- Active OpenFlow 1.3 Flow Table Inspector -->
-            <div class="bg-panelBg border border-borderCol rounded-2xl p-5 shadow-2xl flex flex-col">
+            <!-- Active OpenFlow 1.3 Flow Table Inspector in Glass -->
+            <div class="glass-panel p-6 shadow-2xl flex flex-col">
                 <div class="flex items-center justify-between mb-3">
-                    <h2 class="text-xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                    <h2 class="text-xs font-black uppercase tracking-wider text-slate-300 flex items-center gap-2">
                         <span>🛡</span> OpenFlow 1.3 Flow Tables (Live Reactive Rules)
                     </h2>
-                    <span class="text-[11px] text-slate-400">OVS Line-Rate Drop Enforcement</span>
+                    <span class="text-[11px] text-slate-400 font-medium">OVS Line-Rate Drop Enforcement</span>
                 </div>
-                <div class="flex-1 overflow-y-auto max-h-64 border border-borderCol/60 rounded-xl">
+                <div class="flex-1 overflow-y-auto max-h-64 glass-inner overflow-hidden">
                     <table class="w-full text-left text-xs text-slate-300">
-                        <thead class="bg-darkBg text-slate-400 uppercase text-[10px] sticky top-0 font-bold">
+                        <thead class="bg-black/30 text-slate-400 uppercase text-[10px] sticky top-0 font-bold backdrop-blur-md">
                             <tr>
-                                <th class="p-2.5">Switch</th>
-                                <th class="p-2.5">Match 5-Tuple</th>
-                                <th class="p-2.5">Priority</th>
-                                <th class="p-2.5">Action</th>
-                                <th class="p-2.5">Blocked Pkts</th>
+                                <th class="p-3">Switch</th>
+                                <th class="p-3">Match 5-Tuple</th>
+                                <th class="p-3">Priority</th>
+                                <th class="p-3">Action</th>
+                                <th class="p-3">Blocked Pkts</th>
                             </tr>
                         </thead>
-                        <tbody id="flow-rules-body" class="divide-y divide-borderCol">
+                        <tbody id="flow-rules-body" class="divide-y divide-white/5">
                             <tr>
-                                <td colspan="5" class="p-4 text-center text-slate-500">Normal traffic baseline active. Reactive rules will appear upon anomaly interception.</td>
+                                <td colspan="5" class="p-5 text-center text-slate-400 font-medium">Normal traffic baseline active. Reactive rules will appear upon anomaly interception.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -503,33 +588,33 @@
             </div>
         </div>
 
-        <!-- Bottom Section: Live Detection & Mitigation Telemetry Feed -->
-        <div class="bg-panelBg border border-borderCol rounded-2xl p-5 shadow-2xl">
+        <!-- Bottom Section: Live Detection & Mitigation Telemetry Feed in Glass -->
+        <div class="glass-panel p-6 shadow-2xl">
             <div class="flex items-center justify-between mb-3">
-                <h2 class="text-xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                <h2 class="text-xs font-black uppercase tracking-wider text-slate-300 flex items-center gap-2">
                     <span>📡</span> Live Telemetry Inspection & Decision Stream
                 </h2>
-                <span class="text-xs text-cyan-400 font-mono">1.0s Autonomous Flow Stream</span>
+                <span class="text-xs text-cyan-400 font-mono glass-pill px-2.5 py-0.5 rounded-lg border-cyan-400/30">1.0s Autonomous Flow Stream</span>
             </div>
-            <div class="overflow-x-auto max-h-72 overflow-y-auto border border-borderCol/60 rounded-xl">
+            <div class="overflow-x-auto max-h-72 overflow-y-auto glass-inner">
                 <table class="w-full text-left text-xs text-slate-300">
-                    <thead class="bg-darkBg text-slate-400 uppercase text-[10px] sticky top-0 font-bold">
+                    <thead class="bg-black/30 text-slate-400 uppercase text-[10px] sticky top-0 font-bold backdrop-blur-md">
                         <tr>
-                            <th class="p-2.5">Time</th>
-                            <th class="p-2.5">Domain</th>
-                            <th class="p-2.5">Traffic Signature</th>
-                            <th class="p-2.5">Source IP</th>
-                            <th class="p-2.5">Destination IP</th>
-                            <th class="p-2.5">Port</th>
-                            <th class="p-2.5">Anomaly Score</th>
-                            <th class="p-2.5">Decision</th>
-                            <th class="p-2.5">Data Plane</th>
-                            <th class="p-2.5">Latency</th>
+                            <th class="p-3">Time</th>
+                            <th class="p-3">Domain</th>
+                            <th class="p-3">Traffic Signature</th>
+                            <th class="p-3">Source IP</th>
+                            <th class="p-3">Destination IP</th>
+                            <th class="p-3">Port</th>
+                            <th class="p-3">Anomaly Score</th>
+                            <th class="p-3">Decision</th>
+                            <th class="p-3">Data Plane</th>
+                            <th class="p-3">Latency</th>
                         </tr>
                     </thead>
-                    <tbody id="event-log-body" class="divide-y divide-borderCol font-mono text-[11px]">
+                    <tbody id="event-log-body" class="divide-y divide-white/5 font-mono text-[11px]">
                         <tr>
-                            <td colspan="10" class="p-4 text-center text-slate-500 font-sans">Connecting to live SDN telemetry stream...</td>
+                            <td colspan="10" class="p-5 text-center text-slate-400 font-sans font-medium">Connecting to live SDN telemetry stream...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -564,7 +649,6 @@
                 gain.connect(audioCtx.destination);
 
                 if (isZeroDay) {
-                    // Dramatic high alert alarm
                     osc.type = "sawtooth";
                     osc.frequency.setValueAtTime(880, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(220, audioCtx.currentTime + 0.25);
@@ -573,7 +657,6 @@
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.25);
                 } else if (isAnomaly) {
-                    // Warning beep
                     osc.type = "triangle";
                     osc.frequency.setValueAtTime(550, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.15);
@@ -582,7 +665,6 @@
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.15);
                 } else {
-                    // Soft digital click
                     osc.type = "sine";
                     osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
                     gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
@@ -609,7 +691,7 @@
             }
         }
 
-        // Initialize Chart.js
+        // Initialize Chart.js with Glassmorphic styling
         function initChart() {
             const ctx = document.getElementById('scoreChart').getContext('2d');
             scoreChart = new Chart(ctx, {
@@ -621,12 +703,13 @@
                             label: 'Reconstruction Loss (MSE)',
                             data: chartScores,
                             borderColor: '#38bdf8',
-                            backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                            backgroundColor: 'rgba(56, 189, 248, 0.12)',
                             pointBackgroundColor: pointColors,
                             pointBorderColor: pointColors,
                             pointRadius: 5,
                             borderWidth: 2,
-                            tension: 0.35
+                            tension: 0.35,
+                            fill: true
                         },
                         {
                             label: 'Anomaly Cutoff (τ)',
@@ -645,11 +728,11 @@
                     animation: { duration: 300 },
                     scales: {
                         x: {
-                            grid: { color: '#1e293b' },
+                            grid: { color: 'rgba(255, 255, 255, 0.07)' },
                             ticks: { color: '#94a3b8', font: { size: 10 } }
                         },
                         y: {
-                            grid: { color: '#1e293b' },
+                            grid: { color: 'rgba(255, 255, 255, 0.07)' },
                             ticks: { color: '#94a3b8', font: { size: 10 } },
                             min: 0
                         }
@@ -672,7 +755,7 @@
             const targetY = 50;
 
             const color = isZeroDay ? "#f43f5e" : (isAnomaly ? "#f59e0b" : "#06b6d4");
-            particle.setAttribute("r", isZeroDay ? "6" : "4.5");
+            particle.setAttribute("r", isZeroDay ? "6.5" : "5");
             particle.setAttribute("fill", color);
             particle.setAttribute("filter", "url(#glow)");
             particle.setAttribute("cx", startX);
@@ -686,7 +769,6 @@
                 const elapsed = now - startTime;
                 const progress = Math.min(1, elapsed / duration);
 
-                // Interpolate position
                 const currentX = startX + (targetX - startX) * progress;
                 const currentY = startY + (targetY - startY) * progress;
                 particle.setAttribute("cx", currentX);
@@ -695,7 +777,6 @@
                 if (progress < 1) {
                     requestAnimationFrame(animate);
                 } else {
-                    // Shockwave impact at server/controller
                     if (isAnomaly) {
                         spawnShockwave(targetX, targetY, color);
                     }
@@ -704,7 +785,6 @@
             }
             requestAnimationFrame(animate);
 
-            // Highlight cable line
             const cable = document.getElementById(`cable-${domainId}`);
             if (cable) {
                 cable.setAttribute("stroke", color);
@@ -712,7 +792,7 @@
                 cable.setAttribute("stroke-width", "4");
                 setTimeout(() => {
                     cable.setAttribute("stroke", domainId === 1 ? "#06b6d4" : (domainId === 2 ? "#10b981" : "#f59e0b"));
-                    cable.setAttribute("opacity", "0.3");
+                    cable.setAttribute("opacity", "0.35");
                     cable.setAttribute("stroke-width", "2.5");
                 }, 500);
             }
@@ -736,13 +816,9 @@
         function handleEventUI(event) {
             const isZeroDay = event.traffic_type.includes("Zero-Day");
 
-            // Trigger audio chirp
             playChirp(event.is_anomaly, isZeroDay);
-
-            // Spawn animated visual packet
             spawnParticle(event.domain_id, event.is_anomaly, isZeroDay);
 
-            // Update Chart
             chartLabels.push(event.timestamp);
             chartScores.push(event.anomaly_score);
             chartThresholds.push(event.threshold);
@@ -756,12 +832,10 @@
                 chartThresholds.shift();
                 pointColors.shift();
             }
-            scoreChart.update('none'); // fast update without reset
+            scoreChart.update('none');
 
-            // Update latency badge
             document.getElementById('badge-latency').innerText = event.latency_ms;
 
-            // Animate Alert Banner on Zero-Day or Anomaly
             if (event.mitigation_applied) {
                 const banner = document.getElementById('alert-banner');
                 const bannerText = document.getElementById('alert-banner-text');
@@ -769,15 +843,13 @@
                 banner.classList.remove('hidden');
                 setTimeout(() => banner.classList.add('hidden'), 2500);
 
-                // Flash switch node
                 const nodeCircle = document.getElementById(`node-circle-${event.domain_id}`);
                 if (nodeCircle) {
                     nodeCircle.setAttribute("fill", "#e11d48");
-                    setTimeout(() => nodeCircle.setAttribute("fill", "#0f172a"), 800);
+                    setTimeout(() => nodeCircle.setAttribute("fill", "rgba(15, 23, 42, 0.9)"), 800);
                 }
             }
 
-            // Append row to Event Table with slide-in animation
             prependEventRow(event);
         }
 
@@ -854,7 +926,6 @@
                 fetchStatus();
                 fetchRules();
             } catch (err) {
-                // Client-side fallback simulation for GitHub Pages / Static hosting
                 simulatedFallbackFlow(type, domain);
             }
         }
@@ -864,26 +935,26 @@
             const isZeroDay = e.traffic_type.includes("Zero-Day");
             const isAnomaly = e.is_anomaly;
 
-            let badgeColor = "bg-emerald-950 text-emerald-300 border-emerald-500/30";
+            let badgeColor = "bg-emerald-950/70 text-emerald-300 border-emerald-500/40";
             if (isZeroDay) {
-                badgeColor = "bg-rose-950 text-rose-300 border-rose-500/50";
+                badgeColor = "bg-rose-950/70 text-rose-300 border-rose-500/50";
             } else if (isAnomaly) {
-                badgeColor = "bg-amber-950 text-amber-300 border-amber-500/40";
+                badgeColor = "bg-amber-950/70 text-amber-300 border-amber-500/40";
             }
 
             const tr = document.createElement('tr');
             tr.className = isZeroDay ? "row-highlight-danger font-mono text-[11px]" : "row-highlight font-mono text-[11px]";
             tr.innerHTML = `
-                <td class="p-2.5 text-slate-400">${e.timestamp}</td>
-                <td class="p-2.5 font-bold text-cyan-400">Domain ${e.domain_id}</td>
-                <td class="p-2.5"><span class="px-2 py-0.5 rounded border ${badgeColor} font-sans font-bold">${e.traffic_type}</span></td>
-                <td class="p-2.5 text-slate-300">${e.src_ip}</td>
-                <td class="p-2.5 text-slate-300">${e.dst_ip}</td>
-                <td class="p-2.5 text-slate-400">${e.dst_port}</td>
-                <td class="p-2.5 font-bold ${e.anomaly_score > e.threshold ? 'text-rose-400' : 'text-emerald-400'}">${e.anomaly_score}</td>
-                <td class="p-2.5 font-sans">${e.is_anomaly ? '<span class="text-rose-400 font-extrabold">BLOCKED</span>' : '<span class="text-emerald-400 font-bold">FORWARDED</span>'}</td>
-                <td class="p-2.5 font-sans font-black ${e.data_plane_action === 'DROP' ? 'text-rose-400' : 'text-emerald-400'}">${e.data_plane_action}</td>
-                <td class="p-2.5 text-slate-400 font-mono">${e.latency_ms} ms</td>
+                <td class="p-3 text-slate-400">${e.timestamp}</td>
+                <td class="p-3 font-bold text-cyan-400">Domain ${e.domain_id}</td>
+                <td class="p-3"><span class="px-2.5 py-0.5 rounded-lg border ${badgeColor} font-sans font-bold backdrop-blur-md">${e.traffic_type}</span></td>
+                <td class="p-3 text-slate-300">${e.src_ip}</td>
+                <td class="p-3 text-slate-300">${e.dst_ip}</td>
+                <td class="p-3 text-slate-400">${e.dst_port}</td>
+                <td class="p-3 font-bold ${e.anomaly_score > e.threshold ? 'text-rose-400' : 'text-emerald-400'}">${e.anomaly_score}</td>
+                <td class="p-3 font-sans">${e.is_anomaly ? '<span class="text-rose-400 font-extrabold">BLOCKED</span>' : '<span class="text-emerald-400 font-bold">FORWARDED</span>'}</td>
+                <td class="p-3 font-sans font-black ${e.data_plane_action === 'DROP' ? 'text-rose-400' : 'text-emerald-400'}">${e.data_plane_action}</td>
+                <td class="p-3 text-slate-400 font-mono">${e.latency_ms} ms</td>
             `;
 
             if (tbody.children[0] && tbody.children[0].children.length === 1) {
@@ -900,8 +971,6 @@
         function autonomousStreamTick() {
             if (!isStreaming) return;
 
-            // Stochastic distribution:
-            // 65% Benign, 15% Known Attack, 10% Zero-Day Slowloris, 10% Zero-Day Covert
             const rand = Math.random();
             let flowType = "benign";
             if (rand > 0.85) {
@@ -927,29 +996,29 @@
             const ind = document.getElementById('live-indicator');
             if (isStreaming) {
                 btn.innerText = "Pause";
-                btn.className = "px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 transition text-[11px] font-bold ml-1 hover:bg-amber-500/30";
+                btn.className = "px-3 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30 transition text-[11px] font-bold ml-1 hover:bg-amber-500/30";
                 ind.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> LIVE (${(streamSpeed/1000).toFixed(1)}s TICK)`;
-                ind.className = "flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-500/30";
+                ind.className = "flex items-center gap-1.5 text-[11px] font-bold text-emerald-400";
             } else {
                 btn.innerText = "Resume";
-                btn.className = "px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 transition text-[11px] font-bold ml-1 hover:bg-emerald-500/30";
+                btn.className = "px-3 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 transition text-[11px] font-bold ml-1 hover:bg-emerald-500/30";
                 ind.innerHTML = `<span class="w-2 h-2 rounded-full bg-slate-500"></span> PAUSED`;
-                ind.className = "flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-900 text-slate-400 border border-slate-700";
+                ind.className = "flex items-center gap-1.5 text-[11px] font-bold text-slate-400";
             }
         }
 
         function setStreamSpeed(speedMs) {
             streamSpeed = speedMs;
             ['fast', 'normal', 'slow'].forEach(s => {
-                document.getElementById(`btn-speed-${s}`).className = "px-2.5 py-1 rounded text-slate-400 hover:text-white transition text-[11px] font-semibold";
+                document.getElementById(`btn-speed-${s}`).className = "px-3 py-1 rounded-lg text-slate-400 hover:text-white transition text-[11px] font-semibold";
             });
 
             if (speedMs === 500) {
-                document.getElementById('btn-speed-fast').className = "px-2.5 py-1 rounded bg-cyan-500 text-white transition text-[11px] font-bold shadow";
+                document.getElementById('btn-speed-fast').className = "px-3 py-1 rounded-lg bg-cyan-500 text-white transition text-[11px] font-bold shadow-md shadow-cyan-500/30";
             } else if (speedMs === 1000) {
-                document.getElementById('btn-speed-normal').className = "px-2.5 py-1 rounded bg-cyan-500 text-white transition text-[11px] font-bold shadow";
+                document.getElementById('btn-speed-normal').className = "px-3 py-1 rounded-lg bg-cyan-500 text-white transition text-[11px] font-bold shadow-md shadow-cyan-500/30";
             } else {
-                document.getElementById('btn-speed-slow').className = "px-2.5 py-1 rounded bg-cyan-500 text-white transition text-[11px] font-bold shadow";
+                document.getElementById('btn-speed-slow').className = "px-3 py-1 rounded-lg bg-cyan-500 text-white transition text-[11px] font-bold shadow-md shadow-cyan-500/30";
             }
 
             if (isStreaming) {
@@ -960,7 +1029,7 @@
             startStream();
         }
 
-        // Manual Trigger from Button Click
+        // Manual Trigger from Button Click with Admin Protection
         function manualInject(type) {
             if (!requireAdmin("inject manual flow exploits")) return;
             const domain = parseInt(document.getElementById('target-domain').value);
@@ -997,16 +1066,16 @@
         function renderRulesTable(rules) {
             const tbody = document.getElementById('flow-rules-body');
             if (!rules || rules.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">Normal traffic baseline active. Reactive rules will appear upon anomaly interception.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" class="p-5 text-center text-slate-400 font-medium">Normal traffic baseline active. Reactive rules will appear upon anomaly interception.</td></tr>';
                 return;
             }
             tbody.innerHTML = rules.map(r => `
-                <tr class="hover:bg-slate-800/40 transition">
-                    <td class="p-2.5 font-bold text-cyan-400">${r.switch}</td>
-                    <td class="p-2.5 font-mono text-[11px]">${r.match.src_ip} &rarr; ${r.match.dst_ip}:${r.match.dst_port}</td>
-                    <td class="p-2.5"><span class="bg-indigo-900/60 text-indigo-300 px-2 py-0.5 rounded text-[10px] font-bold">${r.priority}</span></td>
-                    <td class="p-2.5"><span class="bg-rose-950 text-rose-300 border border-rose-500/40 px-2 py-0.5 rounded text-[10px] font-black">${r.action}</span></td>
-                    <td class="p-2.5 text-rose-400 font-extrabold font-mono">${r.packet_count}</td>
+                <tr class="hover:bg-white/5 transition">
+                    <td class="p-3 font-bold text-cyan-400">${r.switch}</td>
+                    <td class="p-3 font-mono text-[11px]">${r.match.src_ip} &rarr; ${r.match.dst_ip}:${r.match.dst_port}</td>
+                    <td class="p-3"><span class="bg-indigo-900/60 border border-indigo-500/30 text-indigo-300 px-2 py-0.5 rounded text-[10px] font-bold">${r.priority}</span></td>
+                    <td class="p-3"><span class="bg-rose-950/80 text-rose-300 border border-rose-500/50 px-2.5 py-0.5 rounded text-[10px] font-black">${r.action}</span></td>
+                    <td class="p-3 text-rose-400 font-extrabold font-mono">${r.packet_count}</td>
                 </tr>
             `).join('');
         }
@@ -1055,7 +1124,7 @@
             scoreChart.data.datasets[1].data = [];
             scoreChart.update();
 
-            document.getElementById('event-log-body').innerHTML = '<tr><td colspan="10" class="p-4 text-center text-slate-500 font-sans">Connecting to live SDN telemetry stream...</td></tr>';
+            document.getElementById('event-log-body').innerHTML = '<tr><td colspan="10" class="p-5 text-center text-slate-400 font-sans font-medium">Connecting to live SDN telemetry stream...</td></tr>';
             fetchStatus();
             fetchRules();
         }
@@ -1090,7 +1159,7 @@
             if (msg) {
                 errText.innerText = msg;
                 errDiv.classList.remove('hidden');
-                errDiv.className = "mb-4 p-2.5 rounded-xl bg-amber-950/70 border border-amber-500/50 text-amber-300 text-xs font-semibold flex items-center gap-2";
+                errDiv.className = "mb-4 p-3 rounded-xl bg-amber-950/70 border border-amber-500/50 text-amber-300 text-xs font-semibold flex items-center gap-2 backdrop-blur-md";
             } else {
                 errDiv.classList.add('hidden');
             }
@@ -1115,7 +1184,6 @@
             const errText = document.getElementById('login-error-text');
 
             try {
-                // Try backend auth API
                 const res = await fetch('/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -1134,7 +1202,6 @@
                 }
                 throw new Error("Invalid admin credentials");
             } catch (err) {
-                // Client-side fallback authentication for GitHub Pages / Static hosting
                 if (u === "admin" && (p === "admin" || p === "admin123" || p === "aegisnet2026")) {
                     isAdmin = true;
                     localStorage.setItem('aegis_admin', 'true');
@@ -1142,7 +1209,7 @@
                     closeLoginModal();
                 } else {
                     errText.innerText = "Access Denied: Invalid admin credentials (use admin / admin)";
-                    errDiv.className = "mb-4 p-2.5 rounded-xl bg-rose-950/70 border border-rose-500/50 text-rose-300 text-xs font-semibold flex items-center gap-2";
+                    errDiv.className = "mb-4 p-3 rounded-xl bg-rose-950/70 border border-rose-500/50 text-rose-300 text-xs font-semibold flex items-center gap-2 backdrop-blur-md";
                     errDiv.classList.remove('hidden');
                 }
             }
@@ -1178,17 +1245,17 @@
         };
     </script>
 
-    <!-- Cyberpunk Admin Login Modal -->
-    <div id="login-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity">
-        <div class="relative w-full max-w-md bg-panelBg border border-borderCol/90 rounded-2xl shadow-2xl p-6 sm:p-8 overflow-hidden">
+    <!-- Cyberpunk Glass Admin Login Modal -->
+    <div id="login-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-xl transition-opacity">
+        <div class="relative w-full max-w-md glass-panel p-7 sm:p-8 overflow-hidden border border-white/20 shadow-2xl">
             <!-- Ambient Glow Accents -->
-            <div class="absolute -top-12 -right-12 w-40 h-40 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute -bottom-12 -left-12 w-40 h-40 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -top-12 -right-12 w-44 h-44 bg-cyan-500/25 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-12 -left-12 w-44 h-44 bg-indigo-500/25 rounded-full blur-3xl pointer-events-none"></div>
 
             <!-- Modal Header -->
-            <div class="flex items-center justify-between pb-4 border-b border-borderCol mb-5">
+            <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-5">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center text-xl shadow-lg shadow-cyan-500/30">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center text-xl shadow-lg shadow-cyan-500/30 border border-white/20">
                         🛡
                     </div>
                     <div>
@@ -1200,7 +1267,7 @@
             </div>
 
             <!-- Error / Notice Banner -->
-            <div id="login-error" class="hidden mb-4 p-2.5 rounded-xl bg-rose-950/70 border border-rose-500/50 text-rose-300 text-xs font-semibold flex items-center gap-2">
+            <div id="login-error" class="hidden mb-4 p-3 rounded-xl bg-rose-950/70 border border-rose-500/50 text-rose-300 text-xs font-semibold flex items-center gap-2 backdrop-blur-md">
                 <span>⚠</span> <span id="login-error-text">Invalid admin credentials.</span>
             </div>
 
@@ -1208,27 +1275,27 @@
             <form id="admin-login-form" onsubmit="handleLoginSubmit(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-bold uppercase text-slate-400 mb-1.5 tracking-wider">Admin Username</label>
-                    <input type="text" id="admin-username" required placeholder="admin" autocomplete="username" class="w-full bg-darkBg border border-borderCol rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-500 font-mono shadow-inner">
+                    <input type="text" id="admin-username" required placeholder="admin" autocomplete="username" class="w-full glass-input rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none font-mono">
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold uppercase text-slate-400 mb-1.5 tracking-wider">Security Key / Password</label>
-                    <input type="password" id="admin-password" required placeholder="••••••••" autocomplete="current-password" class="w-full bg-darkBg border border-borderCol rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-500 font-mono shadow-inner">
+                    <input type="password" id="admin-password" required placeholder="••••••••" autocomplete="current-password" class="w-full glass-input rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none font-mono">
                 </div>
 
                 <!-- Quick Autofill Demo Credentials -->
                 <div class="flex items-center justify-between text-[11px] text-slate-400 pt-1">
-                    <span>Default: <code class="text-cyan-400 bg-darkBg px-1.5 py-0.5 rounded font-mono">admin</code> / <code class="text-cyan-400 bg-darkBg px-1.5 py-0.5 rounded font-mono">admin</code></span>
+                    <span>Default: <code class="text-cyan-400 glass-pill px-2 py-0.5 rounded font-mono">admin</code> / <code class="text-cyan-400 glass-pill px-2 py-0.5 rounded font-mono">admin</code></span>
                     <button type="button" onclick="autofillAdmin()" class="text-indigo-400 hover:text-indigo-300 font-semibold underline underline-offset-2">
                         Autofill Demo
                     </button>
                 </div>
 
                 <div class="pt-2 flex gap-3">
-                    <button type="button" onclick="closeLoginModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold py-2.5 rounded-xl text-xs transition border border-borderCol">
+                    <button type="button" onclick="closeLoginModal()" class="flex-1 glass-btn py-2.5 rounded-xl text-xs font-semibold text-slate-300 transition">
                         Cancel
                     </button>
-                    <button type="submit" id="btn-submit-login" class="flex-1 bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-1.5">
+                    <button type="submit" id="btn-submit-login" class="flex-1 glass-btn bg-gradient-to-r from-cyan-600/80 to-indigo-600/80 hover:from-cyan-500 hover:to-indigo-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-1.5 border-cyan-400/40">
                         <span>🔓</span> Authenticate
                     </button>
                 </div>
