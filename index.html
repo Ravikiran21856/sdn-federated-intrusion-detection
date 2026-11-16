@@ -14,8 +14,8 @@
             theme: {
                 extend: {
                     colors: {
-                        darkBg: '#060911',
-                        panelBg: 'rgba(15, 23, 42, 0.45)',
+                        darkBg: '#050811',
+                        panelBg: 'rgba(13, 20, 38, 0.45)',
                         borderCol: 'rgba(255, 255, 255, 0.12)',
                         cyanAccent: '#06b6d4',
                         greenAccent: '#10b981',
@@ -28,9 +28,9 @@
         }
     </script>
     <style>
-        /* Complete Glassmorphic Theme */
+        /* Modern Frosted Glass Body */
         body {
-            background-color: #060911;
+            background-color: #050811;
             color: #e2e8f0;
             font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             overflow-x: hidden;
@@ -38,13 +38,13 @@
             min-height: 100vh;
         }
 
-        /* Ambient Glass Refraction Styling */
+        /* Glassmorphism Classes */
         .glass-panel {
-            background: rgba(15, 23, 42, 0.42);
+            background: rgba(13, 20, 38, 0.48);
             backdrop-filter: blur(24px) saturate(200%);
             -webkit-backdrop-filter: blur(24px) saturate(200%);
             border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+            box-shadow: 0 14px 45px 0 rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.22);
             border-radius: 1.25rem;
         }
 
@@ -52,26 +52,26 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .glass-panel-hover:hover {
-            background: rgba(15, 23, 42, 0.55);
-            border-color: rgba(6, 182, 212, 0.4);
-            box-shadow: 0 16px 50px 0 rgba(6, 182, 212, 0.2), inset 0 1px 0 0 rgba(255, 255, 255, 0.3);
+            background: rgba(13, 20, 38, 0.65);
+            border-color: rgba(6, 182, 212, 0.45);
+            box-shadow: 0 18px 55px 0 rgba(6, 182, 212, 0.22), inset 0 1px 0 0 rgba(255, 255, 255, 0.35);
             transform: translateY(-2px);
         }
 
         .glass-header {
-            background: rgba(10, 16, 31, 0.6);
-            backdrop-filter: blur(28px) saturate(210%);
-            -webkit-backdrop-filter: blur(28px) saturate(210%);
+            background: rgba(9, 14, 28, 0.62);
+            backdrop-filter: blur(28px) saturate(220%);
+            -webkit-backdrop-filter: blur(28px) saturate(220%);
             border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 10px 35px 0 rgba(0, 0, 0, 0.4), inset 0 -1px 0 0 rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.45), inset 0 -1px 0 0 rgba(255, 255, 255, 0.08);
         }
 
         .glass-inner {
-            background: rgba(7, 12, 24, 0.48);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background: rgba(6, 10, 22, 0.5);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
             border: 1px solid rgba(255, 255, 255, 0.09);
-            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.2);
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.45), 0 4px 18px rgba(0, 0, 0, 0.25);
             border-radius: 1rem;
         }
 
@@ -92,17 +92,17 @@
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .glass-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.16);
             border-color: rgba(6, 182, 212, 0.45);
-            box-shadow: 0 6px 25px rgba(6, 182, 212, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+            box-shadow: 0 6px 25px rgba(6, 182, 212, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.35);
             transform: translateY(-1px);
         }
 
         .glass-input {
-            background: rgba(7, 12, 24, 0.6);
+            background: rgba(6, 10, 22, 0.65);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.13);
             box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
         }
         .glass-input:focus {
@@ -117,7 +117,7 @@
             box-shadow: 0 0 30px rgba(244, 63, 94, 0.55);
         }
 
-        /* AEGISNET Middle-Top Animations */
+        /* AEGISNET Shimmer & Glow Animations */
         @keyframes aegis-shimmer {
             0% {
                 background-position: 0% 50%;
@@ -159,42 +159,74 @@
             animation: aegis-sub-pulse 3s infinite ease-in-out;
         }
 
+        /* Pulse and Particle Keyframes */
         .pulse-node {
             animation: pulse-animation 1.5s infinite ease-in-out;
         }
         @keyframes pulse-animation {
             0% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 12px #06b6d4); }
+            50% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 14px #06b6d4); }
             100% { transform: scale(1); opacity: 0.9; }
         }
+        @keyframes radar-sweep {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .radar-sweep {
+            transform-origin: 350px 45px;
+            animation: radar-sweep 4s linear infinite;
+        }
+
         @keyframes shockwave {
-            0% { r: 5; opacity: 1; stroke-width: 3; }
-            100% { r: 35; opacity: 0; stroke-width: 0.5; }
+            0% { r: 6; opacity: 1; stroke-width: 4; }
+            100% { r: 45; opacity: 0; stroke-width: 0.5; }
         }
         .shockwave-anim {
-            animation: shockwave 0.8s ease-out forwards;
+            animation: shockwave 0.75s ease-out forwards;
         }
+
         .row-highlight {
             animation: flash-row 1.2s ease-out;
         }
         @keyframes flash-row {
-            0% { background-color: rgba(6, 182, 212, 0.35); }
+            0% { background-color: rgba(6, 182, 212, 0.4); }
             100% { background-color: transparent; }
         }
         .row-highlight-danger {
             animation: flash-row-danger 1.5s ease-out;
         }
         @keyframes flash-row-danger {
-            0% { background-color: rgba(244, 63, 94, 0.5); }
+            0% { background-color: rgba(244, 63, 94, 0.55); }
             100% { background-color: transparent; }
         }
+
+        /* Live Second Countdown Radial Ring */
+        @keyframes tick-sweep {
+            0% { stroke-dashoffset: 100; }
+            100% { stroke-dashoffset: 0; }
+        }
+        .tick-ring {
+            stroke-dasharray: 100;
+            animation: tick-sweep 1s linear infinite;
+        }
+
+        /* Equalizer Animation */
+        @keyframes eq-pulse {
+            0%, 100% { height: 4px; }
+            50% { height: 14px; }
+        }
+        .eq-bar-1 { animation: eq-pulse 0.6s infinite ease-in-out; }
+        .eq-bar-2 { animation: eq-pulse 0.8s infinite ease-in-out 0.2s; }
+        .eq-bar-3 { animation: eq-pulse 0.5s infinite ease-in-out 0.4s; }
+        .eq-bar-4 { animation: eq-pulse 0.7s infinite ease-in-out 0.1s; }
+
         /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: rgba(10, 16, 31, 0.5);
+            background: rgba(6, 10, 22, 0.5);
             backdrop-filter: blur(10px);
         }
         ::-webkit-scrollbar-thumb {
@@ -208,7 +240,7 @@
 </head>
 <body class="min-h-screen text-slate-200">
 
-    <!-- Fixed Ambient Glowing Orbs for Glassmorphic Refraction -->
+    <!-- Fixed Ambient Glowing Orbs for Glassmorphism Refraction -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
         <div class="absolute -top-32 -left-32 w-[30rem] h-[30rem] bg-cyan-500/20 rounded-full blur-[140px] animate-pulse"></div>
         <div class="absolute top-1/4 -right-32 w-[36rem] h-[36rem] bg-indigo-600/25 rounded-full blur-[160px] animate-pulse" style="animation-duration: 8s;"></div>
@@ -244,13 +276,17 @@
             <!-- Controls & Badges Placed Down of AEGISNET in Frosted Glass -->
             <div class="flex flex-wrap items-center justify-center gap-3 pt-1 text-xs">
                 
-                <!-- System Badges Group: CORE v2.4 + LIVE (1s TICK) -->
+                <!-- System Badges Group: CORE v2.4 + LIVE 1s Heartbeat -->
                 <div class="flex items-center glass-pill rounded-xl px-3.5 py-2 gap-3">
                     <span class="text-xs font-mono font-bold text-cyan-400">CORE v2.4</span>
                     <span class="h-3.5 w-[1px] bg-white/20"></span>
-                    <span id="live-indicator" class="flex items-center gap-1.5 text-[11px] font-bold text-emerald-400">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                        LIVE (1s TICK)
+                    <span id="live-indicator" class="flex items-center gap-2 text-[11px] font-bold text-emerald-400">
+                        <!-- 1s Heartbeat Animated Ring -->
+                        <svg class="w-4 h-4" viewBox="0 0 36 36">
+                            <circle cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="3"/>
+                            <circle class="tick-ring" cx="18" cy="18" r="14" fill="none" stroke="#10b981" stroke-width="3" transform="rotate(-90 18 18)"/>
+                        </svg>
+                        <span>LIVE (1s TICK)</span>
                     </span>
                 </div>
 
@@ -325,15 +361,17 @@
 
             <div class="glass-panel glass-panel-hover p-4 rounded-2xl">
                 <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Packets Forwarded</div>
-                <div class="text-2xl font-extrabold text-emerald-400 mt-1 font-mono">
+                <div class="text-2xl font-extrabold text-emerald-400 mt-1 font-mono flex items-center justify-between">
                     <span id="badge-forwarded">0</span>
+                    <span class="text-[11px] text-emerald-400/60 font-sans font-semibold">▲ LIVE</span>
                 </div>
             </div>
 
             <div class="glass-panel glass-panel-hover p-4 rounded-2xl">
                 <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Packets Blocked</div>
-                <div class="text-2xl font-extrabold text-rose-400 mt-1 font-mono">
+                <div class="text-2xl font-extrabold text-rose-400 mt-1 font-mono flex items-center justify-between">
                     <span id="badge-dropped">0</span>
+                    <span class="text-[11px] text-rose-400/60 font-sans font-semibold">▼ DROP</span>
                 </div>
             </div>
 
@@ -349,83 +387,127 @@
 
     <main class="p-6 max-w-7xl mx-auto space-y-6">
 
-        <!-- Top Section: Glass Topology & Exploit Launcher -->
+        <!-- Top Section: Dynamic Multi-Tier SDN Topology & Exploit Launcher -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-            <!-- Interactive Animated SDN Topology View in Frosted Glass (2 cols) -->
+            <!-- Interactive Animated Multi-Tier SDN Topology View (2 cols) -->
             <div class="lg:col-span-2 glass-panel p-6 shadow-2xl relative overflow-hidden flex flex-col justify-between">
                 <div class="flex items-center justify-between mb-3">
-                    <h2 class="text-xs font-black uppercase tracking-wider text-slate-300 flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
-                        SDN Data Plane & Federated Coordination Fabric
-                    </h2>
-                    <span class="text-[11px] font-mono text-cyan-300 bg-cyan-500/10 border border-cyan-400/30 px-2.5 py-0.5 rounded-lg backdrop-blur-md">
-                        Active Telemetry Polling (1000ms)
-                    </span>
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-cyan-400 animate-ping"></span>
+                        <h2 class="text-xs font-black uppercase tracking-wider text-slate-200">
+                            Multi-Tier SDN Architecture & Real-Time Telemetry Stream
+                        </h2>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-400/30 px-2 py-0.5 rounded-lg flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                            AUTONOMOUS FLOW STREAM (1s)
+                        </span>
+                    </div>
                 </div>
 
-                <!-- Animated SVG Topology Canvas encased in Glass Inner -->
-                <div class="h-72 w-full flex items-center justify-center glass-inner relative overflow-hidden">
-                    <svg id="topo-svg" viewBox="0 0 640 260" class="w-full h-full">
+                <!-- Comprehensive Multi-Tier Animated SVG Topology Canvas -->
+                <div class="h-80 w-full flex items-center justify-center glass-inner relative overflow-hidden">
+                    <svg id="topo-svg" viewBox="0 0 700 300" class="w-full h-full">
                         <defs>
-                            <!-- Linear Gradients for links -->
-                            <linearGradient id="link-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" stop-color="#6366f1" stop-opacity="0.8"/>
-                                <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.8"/>
+                            <!-- Gradients -->
+                            <linearGradient id="fiber-d1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#818cf8"/>
+                                <stop offset="100%" stop-color="#06b6d4"/>
                             </linearGradient>
-                            <!-- Glow Filter -->
+                            <linearGradient id="fiber-d2" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#818cf8"/>
+                                <stop offset="100%" stop-color="#10b981"/>
+                            </linearGradient>
+                            <linearGradient id="fiber-d3" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#818cf8"/>
+                                <stop offset="100%" stop-color="#f59e0b"/>
+                            </linearGradient>
+
                             <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
                                 <feGaussianBlur stdDeviation="3.5" result="blur" />
                                 <feComposite in="SourceGraphic" in2="blur" operator="over" />
                             </filter>
                         </defs>
 
-                        <!-- Static Connection Lines -->
-                        <line x1="320" y1="50" x2="110" y2="185" stroke="rgba(255,255,255,0.15)" stroke-width="2.5" stroke-dasharray="4,4" />
-                        <line x1="320" y1="50" x2="320" y2="185" stroke="rgba(255,255,255,0.15)" stroke-width="2.5" stroke-dasharray="4,4" />
-                        <line x1="320" y1="50" x2="530" y2="185" stroke="rgba(255,255,255,0.15)" stroke-width="2.5" stroke-dasharray="4,4" />
+                        <!-- Background Fiber Grid Lines -->
+                        <!-- Central Server -> Switches -->
+                        <line x1="350" y1="45" x2="130" y2="155" stroke="rgba(255,255,255,0.12)" stroke-width="3" stroke-dasharray="6,4"/>
+                        <line x1="350" y1="45" x2="350" y2="155" stroke="rgba(255,255,255,0.12)" stroke-width="3" stroke-dasharray="6,4"/>
+                        <line x1="350" y1="45" x2="570" y2="155" stroke="rgba(255,255,255,0.12)" stroke-width="3" stroke-dasharray="6,4"/>
 
-                        <!-- Active Highlight Cables -->
-                        <line id="cable-1" x1="320" y1="50" x2="110" y2="185" stroke="#06b6d4" stroke-width="2.5" opacity="0.35" />
-                        <line id="cable-2" x1="320" y1="50" x2="320" y2="185" stroke="#10b981" stroke-width="2.5" opacity="0.35" />
-                        <line id="cable-3" x1="320" y1="50" x2="530" y2="185" stroke="#f59e0b" stroke-width="2.5" opacity="0.35" />
+                        <!-- Switches -> Hosts -->
+                        <line x1="130" y1="155" x2="130" y2="255" stroke="rgba(6,182,212,0.3)" stroke-width="2.5" stroke-dasharray="3,3"/>
+                        <line x1="350" y1="155" x2="350" y2="255" stroke="rgba(16,185,129,0.3)" stroke-width="2.5" stroke-dasharray="3,3"/>
+                        <line x1="570" y1="155" x2="570" y2="255" stroke="rgba(245,158,11,0.3)" stroke-width="2.5" stroke-dasharray="3,3"/>
+
+                        <!-- Active Cables -->
+                        <line id="cable-1" x1="350" y1="45" x2="130" y2="155" stroke="#06b6d4" stroke-width="2.5" opacity="0.4"/>
+                        <line id="cable-2" x1="350" y1="45" x2="350" y2="155" stroke="#10b981" stroke-width="2.5" opacity="0.4"/>
+                        <line id="cable-3" x1="350" y1="45" x2="570" y2="155" stroke="#f59e0b" stroke-width="2.5" opacity="0.4"/>
 
                         <!-- Dynamic Animated Packet Stream Layer -->
                         <g id="packet-stream-layer"></g>
 
-                        <!-- Central Federated Server Node -->
-                        <g transform="translate(320, 50)">
-                            <circle r="30" fill="#1e1b4b" stroke="#818cf8" stroke-width="2.5" filter="url(#glow)"/>
-                            <circle r="36" fill="none" stroke="#6366f1" stroke-width="1.2" opacity="0.5" class="pulse-node"/>
+                        <!-- Tier 1: Central Federated Aggregation Server -->
+                        <g transform="translate(350, 45)">
+                            <!-- Rotating Radar Ray -->
+                            <line x1="0" y1="0" x2="0" y2="-38" stroke="#818cf8" stroke-width="1.5" opacity="0.6" class="radar-sweep"/>
+                            <circle r="34" fill="#1e1b4b" stroke="#818cf8" stroke-width="2.5" filter="url(#glow)"/>
+                            <circle r="42" fill="none" stroke="#6366f1" stroke-width="1.2" opacity="0.5" class="pulse-node"/>
                             <text y="-5" fill="#e0e7ff" font-size="11" font-weight="900" text-anchor="middle">FED SERVER</text>
                             <text y="9" fill="#a5b4fc" font-size="8" font-family="monospace" text-anchor="middle">FedProx Sync</text>
+                            <text y="22" fill="#c7d2fe" font-size="7" font-weight="bold" text-anchor="middle">AGGREGATOR</text>
                         </g>
 
-                        <!-- Domain 1 Node (Enterprise) -->
-                        <g id="node-group-1" transform="translate(110, 185)" class="cursor-pointer" onclick="selectDomain(1)">
+                        <!-- Tier 2: Domain 1 Controller + Switch s1 (Enterprise) -->
+                        <g id="node-group-1" transform="translate(130, 155)" class="cursor-pointer" onclick="selectDomain(1)">
                             <circle id="node-ring-1" r="32" fill="none" stroke="#06b6d4" stroke-width="1.5" opacity="0.4" />
-                            <circle id="node-circle-1" r="26" fill="rgba(15, 23, 42, 0.9)" stroke="#06b6d4" stroke-width="2.5" />
+                            <circle id="node-circle-1" r="26" fill="rgba(15, 23, 42, 0.95)" stroke="#06b6d4" stroke-width="2.5" />
                             <text y="-4" fill="#ffffff" font-size="10" font-weight="bold" text-anchor="middle">Ryu C1</text>
                             <text y="9" fill="#38bdf8" font-size="8" font-family="monospace" text-anchor="middle">Switch s1</text>
-                            <text y="42" fill="#94a3b8" font-size="10" font-weight="bold" text-anchor="middle">Domain 1 (Enterprise)</text>
+                            <text y="36" fill="#06b6d4" font-size="9" font-weight="bold" text-anchor="middle">Domain 1</text>
                         </g>
 
-                        <!-- Domain 2 Node (Data Center) -->
-                        <g id="node-group-2" transform="translate(320, 185)" class="cursor-pointer" onclick="selectDomain(2)">
+                        <!-- Tier 2: Domain 2 Controller + Switch s2 (Data Center) -->
+                        <g id="node-group-2" transform="translate(350, 155)" class="cursor-pointer" onclick="selectDomain(2)">
                             <circle id="node-ring-2" r="32" fill="none" stroke="#10b981" stroke-width="1.5" opacity="0.4" />
-                            <circle id="node-circle-2" r="26" fill="rgba(15, 23, 42, 0.9)" stroke="#10b981" stroke-width="2.5" />
+                            <circle id="node-circle-2" r="26" fill="rgba(15, 23, 42, 0.95)" stroke="#10b981" stroke-width="2.5" />
                             <text y="-4" fill="#ffffff" font-size="10" font-weight="bold" text-anchor="middle">Ryu C2</text>
                             <text y="9" fill="#34d399" font-size="8" font-family="monospace" text-anchor="middle">Switch s2</text>
-                            <text y="42" fill="#94a3b8" font-size="10" font-weight="bold" text-anchor="middle">Domain 2 (Data Center)</text>
+                            <text y="36" fill="#10b981" font-size="9" font-weight="bold" text-anchor="middle">Domain 2</text>
                         </g>
 
-                        <!-- Domain 3 Node (IoT Edge) -->
-                        <g id="node-group-3" transform="translate(530, 185)" class="cursor-pointer" onclick="selectDomain(3)">
+                        <!-- Tier 2: Domain 3 Controller + Switch s3 (Edge IoT) -->
+                        <g id="node-group-3" transform="translate(570, 155)" class="cursor-pointer" onclick="selectDomain(3)">
                             <circle id="node-ring-3" r="32" fill="none" stroke="#f59e0b" stroke-width="1.5" opacity="0.4" />
-                            <circle id="node-circle-3" r="26" fill="rgba(15, 23, 42, 0.9)" stroke="#f59e0b" stroke-width="2.5" />
+                            <circle id="node-circle-3" r="26" fill="rgba(15, 23, 42, 0.95)" stroke="#f59e0b" stroke-width="2.5" />
                             <text y="-4" fill="#ffffff" font-size="10" font-weight="bold" text-anchor="middle">Ryu C3</text>
                             <text y="9" fill="#fbbf24" font-size="8" font-family="monospace" text-anchor="middle">Switch s3</text>
-                            <text y="42" fill="#94a3b8" font-size="10" font-weight="bold" text-anchor="middle">Domain 3 (Edge / IoT)</text>
+                            <text y="36" fill="#f59e0b" font-size="9" font-weight="bold" text-anchor="middle">Domain 3</text>
+                        </g>
+
+                        <!-- Tier 3: Connected Host Endpoints (Bottom Row) -->
+                        <!-- Domain 1 Hosts: Enterprise Workstations -->
+                        <g transform="translate(130, 255)">
+                            <rect x="-35" y="-14" width="70" height="28" rx="8" fill="rgba(6, 182, 212, 0.12)" stroke="#06b6d4" stroke-width="1.5"/>
+                            <text y="-1" fill="#e2e8f0" font-size="8" font-weight="bold" text-anchor="middle">💻 Workstations</text>
+                            <text y="10" fill="#94a3b8" font-size="7" font-family="monospace" text-anchor="middle">10.1.0.0/16</text>
+                        </g>
+
+                        <!-- Domain 2 Hosts: Cloud Servers -->
+                        <g transform="translate(350, 255)">
+                            <rect x="-35" y="-14" width="70" height="28" rx="8" fill="rgba(16, 185, 129, 0.12)" stroke="#10b981" stroke-width="1.5"/>
+                            <text y="-1" fill="#e2e8f0" font-size="8" font-weight="bold" text-anchor="middle">🖧 Data Racks</text>
+                            <text y="10" fill="#94a3b8" font-size="7" font-family="monospace" text-anchor="middle">10.2.0.0/16</text>
+                        </g>
+
+                        <!-- Domain 3 Hosts: IoT Sensor Network -->
+                        <g transform="translate(570, 255)">
+                            <rect x="-35" y="-14" width="70" height="28" rx="8" fill="rgba(245, 158, 11, 0.12)" stroke="#f59e0b" stroke-width="1.5"/>
+                            <text y="-1" fill="#e2e8f0" font-size="8" font-weight="bold" text-anchor="middle">📡 IoT Nodes</text>
+                            <text y="10" fill="#94a3b8" font-size="7" font-family="monospace" text-anchor="middle">10.3.0.0/16</text>
                         </g>
                     </svg>
 
@@ -439,38 +521,71 @@
                     </div>
                 </div>
 
-                <!-- Domain Telemetry Mini-Cards in Glass -->
+                <!-- Domain Telemetry Mini-Cards with Live Activity Equalizers -->
                 <div class="grid grid-cols-3 gap-3.5 mt-4 text-xs">
                     <div id="card-d1" class="glass-inner p-3.5 rounded-xl transition hover:border-cyan-400/40">
                         <div class="flex justify-between items-center mb-1.5">
-                            <span class="font-extrabold text-cyan-400">Enterprise LAN (s1)</span>
+                            <div class="flex items-center gap-2">
+                                <span class="font-extrabold text-cyan-400">Enterprise LAN (s1)</span>
+                                <span class="inline-flex items-end gap-0.5 h-3">
+                                    <span class="w-1 bg-cyan-400 rounded-sm eq-bar-1"></span>
+                                    <span class="w-1 bg-cyan-400 rounded-sm eq-bar-2"></span>
+                                    <span class="w-1 bg-cyan-400 rounded-sm eq-bar-3"></span>
+                                </span>
+                            </div>
                             <span id="d1-status" class="w-2 h-2 rounded-full bg-cyan-400"></span>
                         </div>
                         <div class="text-[11px] text-slate-400 flex justify-between">
                             <span>Passed: <b id="d1-fwd" class="text-white">0</b></span>
                             <span>Blocked: <b id="d1-drop" class="text-rose-400">0</b></span>
                         </div>
+                        <div class="text-[10px] text-slate-500 font-mono mt-1 flex justify-between">
+                            <span>Throughput:</span>
+                            <span id="d1-tp" class="text-cyan-300 font-bold">142.5 KB/s</span>
+                        </div>
                     </div>
 
                     <div id="card-d2" class="glass-inner p-3.5 rounded-xl transition hover:border-emerald-400/40">
                         <div class="flex justify-between items-center mb-1.5">
-                            <span class="font-extrabold text-emerald-400">Cloud Data Center (s2)</span>
+                            <div class="flex items-center gap-2">
+                                <span class="font-extrabold text-emerald-400">Cloud Data Center (s2)</span>
+                                <span class="inline-flex items-end gap-0.5 h-3">
+                                    <span class="w-1 bg-emerald-400 rounded-sm eq-bar-3"></span>
+                                    <span class="w-1 bg-emerald-400 rounded-sm eq-bar-1"></span>
+                                    <span class="w-1 bg-emerald-400 rounded-sm eq-bar-4"></span>
+                                </span>
+                            </div>
                             <span id="d2-status" class="w-2 h-2 rounded-full bg-emerald-400"></span>
                         </div>
                         <div class="text-[11px] text-slate-400 flex justify-between">
                             <span>Passed: <b id="d2-fwd" class="text-white">0</b></span>
                             <span>Blocked: <b id="d2-drop" class="text-rose-400">0</b></span>
                         </div>
+                        <div class="text-[10px] text-slate-500 font-mono mt-1 flex justify-between">
+                            <span>Throughput:</span>
+                            <span id="d2-tp" class="text-emerald-300 font-bold">4.82 MB/s</span>
+                        </div>
                     </div>
 
                     <div id="card-d3" class="glass-inner p-3.5 rounded-xl transition hover:border-amber-400/40">
                         <div class="flex justify-between items-center mb-1.5">
-                            <span class="font-extrabold text-amber-400">IoT Edge Subnet (s3)</span>
+                            <div class="flex items-center gap-2">
+                                <span class="font-extrabold text-amber-400">IoT Edge Subnet (s3)</span>
+                                <span class="inline-flex items-end gap-0.5 h-3">
+                                    <span class="w-1 bg-amber-400 rounded-sm eq-bar-2"></span>
+                                    <span class="w-1 bg-amber-400 rounded-sm eq-bar-4"></span>
+                                    <span class="w-1 bg-amber-400 rounded-sm eq-bar-1"></span>
+                                </span>
+                            </div>
                             <span id="d3-status" class="w-2 h-2 rounded-full bg-amber-400"></span>
                         </div>
                         <div class="text-[11px] text-slate-400 flex justify-between">
                             <span>Passed: <b id="d3-fwd" class="text-white">0</b></span>
                             <span>Blocked: <b id="d3-drop" class="text-rose-400">0</b></span>
+                        </div>
+                        <div class="text-[10px] text-slate-500 font-mono mt-1 flex justify-between">
+                            <span>Throughput:</span>
+                            <span id="d3-tp" class="text-amber-300 font-bold">34.8 KB/s</span>
                         </div>
                     </div>
                 </div>
@@ -638,6 +753,13 @@
         let chartThresholds = [];
         let pointColors = [];
 
+        // Dynamic State Counters
+        let liveForwarded = 0;
+        let liveDropped = 0;
+        let domainForwarded = { 1: 0, 2: 0, 3: 0 };
+        let domainDropped = { 1: 0, 2: 0, 3: 0 };
+        let liveRules = [];
+
         // Audio Synthesizer via Web Audio API
         function playChirp(isAnomaly, isZeroDay) {
             if (!audioEnabled) return;
@@ -703,11 +825,11 @@
                             label: 'Reconstruction Loss (MSE)',
                             data: chartScores,
                             borderColor: '#38bdf8',
-                            backgroundColor: 'rgba(56, 189, 248, 0.12)',
+                            backgroundColor: 'rgba(56, 189, 248, 0.15)',
                             pointBackgroundColor: pointColors,
                             pointBorderColor: pointColors,
                             pointRadius: 5,
-                            borderWidth: 2,
+                            borderWidth: 2.2,
                             tension: 0.35,
                             fill: true
                         },
@@ -725,7 +847,7 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    animation: { duration: 300 },
+                    animation: { duration: 250 },
                     scales: {
                         x: {
                             grid: { color: 'rgba(255, 255, 255, 0.07)' },
@@ -744,47 +866,61 @@
             });
         }
 
-        // Animated SVG Particle Flow
+        // Multi-Stage Animated SVG Particle Flow
         function spawnParticle(domainId, isAnomaly, isZeroDay) {
             const svgGroup = document.getElementById('packet-stream-layer');
             const particle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
 
-            const startX = domainId === 1 ? 110 : (domainId === 2 ? 320 : 530);
-            const startY = 185;
-            const targetX = 320;
-            const targetY = 50;
+            const hostX = domainId === 1 ? 130 : (domainId === 2 ? 350 : 570);
+            const hostY = 255;
+            const switchX = hostX;
+            const switchY = 155;
+            const serverX = 350;
+            const serverY = 45;
 
             const color = isZeroDay ? "#f43f5e" : (isAnomaly ? "#f59e0b" : "#06b6d4");
             particle.setAttribute("r", isZeroDay ? "6.5" : "5");
             particle.setAttribute("fill", color);
             particle.setAttribute("filter", "url(#glow)");
-            particle.setAttribute("cx", startX);
-            particle.setAttribute("cy", startY);
+            particle.setAttribute("cx", hostX);
+            particle.setAttribute("cy", hostY);
             svgGroup.appendChild(particle);
 
             const startTime = performance.now();
-            const duration = 650; // ms
+            const totalDuration = 750; // ms
 
             function animate(now) {
                 const elapsed = now - startTime;
-                const progress = Math.min(1, elapsed / duration);
+                const progress = Math.min(1, elapsed / totalDuration);
 
-                const currentX = startX + (targetX - startX) * progress;
-                const currentY = startY + (targetY - startY) * progress;
-                particle.setAttribute("cx", currentX);
-                particle.setAttribute("cy", currentY);
+                let curX, curY;
+                if (progress < 0.5) {
+                    // Host to Switch
+                    const p1 = progress / 0.5;
+                    curX = hostX;
+                    curY = hostY + (switchY - hostY) * p1;
+                } else {
+                    // Switch to Server
+                    const p2 = (progress - 0.5) / 0.5;
+                    curX = switchX + (serverX - switchX) * p2;
+                    curY = switchY + (serverY - switchY) * p2;
+                }
+
+                particle.setAttribute("cx", curX);
+                particle.setAttribute("cy", curY);
 
                 if (progress < 1) {
                     requestAnimationFrame(animate);
                 } else {
                     if (isAnomaly) {
-                        spawnShockwave(targetX, targetY, color);
+                        spawnShockwave(serverX, serverY, color);
                     }
-                    svgGroup.removeChild(particle);
+                    if (particle.parentNode) svgGroup.removeChild(particle);
                 }
             }
             requestAnimationFrame(animate);
 
+            // Highlight Cable
             const cable = document.getElementById(`cable-${domainId}`);
             if (cable) {
                 cable.setAttribute("stroke", color);
@@ -792,7 +928,7 @@
                 cable.setAttribute("stroke-width", "4");
                 setTimeout(() => {
                     cable.setAttribute("stroke", domainId === 1 ? "#06b6d4" : (domainId === 2 ? "#10b981" : "#f59e0b"));
-                    cable.setAttribute("opacity", "0.35");
+                    cable.setAttribute("opacity", "0.4");
                     cable.setAttribute("stroke-width", "2.5");
                 }, 500);
             }
@@ -812,13 +948,38 @@
             }, 800);
         }
 
-        // Ingest flow and update all visual elements
+        // Ingest Flow & Instantly Update Everything
         function handleEventUI(event) {
             const isZeroDay = event.traffic_type.includes("Zero-Day");
+            const domain = event.domain_id;
 
+            // Update internal state counters
+            if (event.is_anomaly) {
+                liveDropped++;
+                domainDropped[domain] = (domainDropped[domain] || 0) + 1;
+            } else {
+                liveForwarded++;
+                domainForwarded[domain] = (domainForwarded[domain] || 0) + 1;
+            }
+
+            // Immediately reflect in DOM
+            document.getElementById('badge-forwarded').innerText = liveForwarded;
+            document.getElementById('badge-dropped').innerText = liveDropped;
+            document.getElementById(`d${domain}-fwd`).innerText = domainForwarded[domain];
+            document.getElementById(`d${domain}-drop`).innerText = domainDropped[domain];
+
+            // Update live throughput jitter
+            if (domain === 1) document.getElementById('d1-tp').innerText = (120 + Math.random() * 50).toFixed(1) + " KB/s";
+            if (domain === 2) document.getElementById('d2-tp').innerText = (4.2 + Math.random() * 1.5).toFixed(2) + " MB/s";
+            if (domain === 3) document.getElementById('d3-tp').innerText = (25 + Math.random() * 20).toFixed(1) + " KB/s";
+
+            // Trigger audio chirp
             playChirp(event.is_anomaly, isZeroDay);
-            spawnParticle(event.domain_id, event.is_anomaly, isZeroDay);
 
+            // Spawn animated packet photons
+            spawnParticle(domain, event.is_anomaly, isZeroDay);
+
+            // Update Chart
             chartLabels.push(event.timestamp);
             chartScores.push(event.anomaly_score);
             chartThresholds.push(event.threshold);
@@ -832,10 +993,11 @@
                 chartThresholds.shift();
                 pointColors.shift();
             }
-            scoreChart.update('none');
+            if (scoreChart) scoreChart.update('none');
 
             document.getElementById('badge-latency').innerText = event.latency_ms;
 
+            // Animate Alert Banner & Switch Laser Shield on Anomaly
             if (event.mitigation_applied) {
                 const banner = document.getElementById('alert-banner');
                 const bannerText = document.getElementById('alert-banner-text');
@@ -843,19 +1005,27 @@
                 banner.classList.remove('hidden');
                 setTimeout(() => banner.classList.add('hidden'), 2500);
 
-                const nodeCircle = document.getElementById(`node-circle-${event.domain_id}`);
+                const nodeCircle = document.getElementById(`node-circle-${domain}`);
                 if (nodeCircle) {
                     nodeCircle.setAttribute("fill", "#e11d48");
-                    setTimeout(() => nodeCircle.setAttribute("fill", "rgba(15, 23, 42, 0.9)"), 800);
+                    setTimeout(() => nodeCircle.setAttribute("fill", "rgba(15, 23, 42, 0.95)"), 800);
                 }
+
+                // Add or update live rule
+                liveRules.unshift({
+                    switch: `s${domain}`,
+                    match: { src_ip: event.src_ip, dst_ip: event.dst_ip, dst_port: event.dst_port },
+                    priority: 65535,
+                    action: "DROP",
+                    packet_count: Math.floor(Math.random() * 35) + 1
+                });
+                if (liveRules.length > 15) liveRules.pop();
+                document.getElementById('badge-rules').innerText = liveRules.length;
+                renderRulesTable(liveRules);
             }
 
             prependEventRow(event);
         }
-
-        let simForwarded = 45;
-        let simDropped = 12;
-        let simRules = [];
 
         function simulatedFallbackFlow(type, domain) {
             const isZeroDay = type.includes("zeroday");
@@ -872,20 +1042,6 @@
             const dstPort = type === "zeroday_covert" ? 53 : (type === "zeroday_slowloris" ? 8080 : (type === "known_attack" ? 443 : 80));
             const srcIp = `10.${domain}.${Math.floor(Math.random()*150)+1}.${Math.floor(Math.random()*250)+1}`;
             const dstIp = `172.16.${domain}.10`;
-
-            if (isAnomaly) {
-                simDropped++;
-                simRules.unshift({
-                    switch: `s${domain}`,
-                    match: { src_ip: srcIp, dst_ip: dstIp, dst_port: dstPort },
-                    priority: 65535,
-                    action: "DROP",
-                    packet_count: Math.floor(Math.random() * 45) + 1
-                });
-                if (simRules.length > 15) simRules.pop();
-            } else {
-                simForwarded++;
-            }
 
             const simEvent = {
                 id: Date.now(),
@@ -905,12 +1061,6 @@
             };
 
             handleEventUI(simEvent);
-
-            document.getElementById('badge-forwarded').innerText = simForwarded;
-            document.getElementById('badge-dropped').innerText = simDropped;
-            document.getElementById('badge-rules').innerText = simRules.length;
-
-            renderRulesTable(simRules);
         }
 
         async function processFlow(type, domain) {
@@ -923,9 +1073,8 @@
                 if (!res.ok) throw new Error("API not reachable");
                 const event = await res.json();
                 handleEventUI(event);
-                fetchStatus();
-                fetchRules();
             } catch (err) {
+                // Client-side simulation fallback (ensures fast 1-second update everywhere)
                 simulatedFallbackFlow(type, domain);
             }
         }
@@ -971,6 +1120,7 @@
         function autonomousStreamTick() {
             if (!isStreaming) return;
 
+            // 65% Benign, 15% Known Attack, 10% Zero-Day Slowloris, 10% Zero-Day Covert
             const rand = Math.random();
             let flowType = "benign";
             if (rand > 0.85) {
@@ -987,6 +1137,8 @@
 
         function startStream() {
             if (streamTimer) clearInterval(streamTimer);
+            // Execute immediately on startup
+            autonomousStreamTick();
             streamTimer = setInterval(autonomousStreamTick, streamSpeed);
         }
 
@@ -997,12 +1149,18 @@
             if (isStreaming) {
                 btn.innerText = "Pause";
                 btn.className = "px-3 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30 transition text-[11px] font-bold ml-1 hover:bg-amber-500/30";
-                ind.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> LIVE (${(streamSpeed/1000).toFixed(1)}s TICK)`;
-                ind.className = "flex items-center gap-1.5 text-[11px] font-bold text-emerald-400";
+                ind.innerHTML = `
+                    <svg class="w-4 h-4" viewBox="0 0 36 36">
+                        <circle cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="3"/>
+                        <circle class="tick-ring" cx="18" cy="18" r="14" fill="none" stroke="#10b981" stroke-width="3" transform="rotate(-90 18 18)"/>
+                    </svg>
+                    <span>LIVE (${(streamSpeed/1000).toFixed(1)}s TICK)</span>
+                `;
+                ind.className = "flex items-center gap-2 text-[11px] font-bold text-emerald-400";
             } else {
                 btn.innerText = "Resume";
                 btn.className = "px-3 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 transition text-[11px] font-bold ml-1 hover:bg-emerald-500/30";
-                ind.innerHTML = `<span class="w-2 h-2 rounded-full bg-slate-500"></span> PAUSED`;
+                ind.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-slate-500"></span> <span>PAUSED</span>`;
                 ind.className = "flex items-center gap-1.5 text-[11px] font-bold text-slate-400";
             }
         }
@@ -1023,7 +1181,13 @@
 
             if (isStreaming) {
                 const ind = document.getElementById('live-indicator');
-                ind.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> LIVE (${(streamSpeed/1000).toFixed(1)}s TICK)`;
+                ind.innerHTML = `
+                    <svg class="w-4 h-4" viewBox="0 0 36 36">
+                        <circle cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="3"/>
+                        <circle class="tick-ring" cx="18" cy="18" r="14" fill="none" stroke="#10b981" stroke-width="3" transform="rotate(-90 18 18)"/>
+                    </svg>
+                    <span>LIVE (${(streamSpeed/1000).toFixed(1)}s TICK)</span>
+                `;
             }
 
             startStream();
@@ -1039,27 +1203,14 @@
         async function fetchStatus() {
             try {
                 const res = await fetch('/api/status');
+                if (!res.ok) return;
                 const data = await res.json();
 
                 document.getElementById('badge-fl-round').innerText = data.fl_round;
                 document.getElementById('badge-threshold').innerText = data.threshold;
                 document.getElementById('chart-threshold').innerText = data.threshold;
-                document.getElementById('badge-rules').innerText = data.active_rules_count;
-                document.getElementById('badge-forwarded').innerText = data.total_forwarded;
-                document.getElementById('badge-dropped').innerText = data.total_dropped;
-
-                if (data.switches && data.switches.length >= 3) {
-                    document.getElementById('d1-fwd').innerText = data.switches[0].forwarded_pkts;
-                    document.getElementById('d1-drop').innerText = data.switches[0].dropped_pkts;
-
-                    document.getElementById('d2-fwd').innerText = data.switches[1].forwarded_pkts;
-                    document.getElementById('d2-drop').innerText = data.switches[1].dropped_pkts;
-
-                    document.getElementById('d3-fwd').innerText = data.switches[2].forwarded_pkts;
-                    document.getElementById('d3-drop').innerText = data.switches[2].dropped_pkts;
-                }
             } catch (err) {
-                console.error("Error fetching status:", err);
+                // Keep moving
             }
         }
 
@@ -1085,9 +1236,13 @@
                 const res = await fetch('/api/rules');
                 if (!res.ok) throw new Error("API not reachable");
                 const rules = await res.json();
-                renderRulesTable(rules);
+                if (rules && rules.length > 0) {
+                    liveRules = rules;
+                    document.getElementById('badge-rules').innerText = liveRules.length;
+                    renderRulesTable(liveRules);
+                }
             } catch (err) {
-                if (simRules.length > 0) renderRulesTable(simRules);
+                if (liveRules.length > 0) renderRulesTable(liveRules);
             }
         }
 
@@ -1119,14 +1274,31 @@
             chartScores = [];
             chartThresholds = [];
             pointColors = [];
-            scoreChart.data.labels = [];
-            scoreChart.data.datasets[0].data = [];
-            scoreChart.data.datasets[1].data = [];
-            scoreChart.update();
+            if (scoreChart) {
+                scoreChart.data.labels = [];
+                scoreChart.data.datasets[0].data = [];
+                scoreChart.data.datasets[1].data = [];
+                scoreChart.update();
+            }
+
+            liveRules = [];
+            liveForwarded = 0;
+            liveDropped = 0;
+            domainForwarded = { 1: 0, 2: 0, 3: 0 };
+            domainDropped = { 1: 0, 2: 0, 3: 0 };
+
+            document.getElementById('badge-forwarded').innerText = 0;
+            document.getElementById('badge-dropped').innerText = 0;
+            document.getElementById('badge-rules').innerText = 0;
+            document.getElementById('d1-fwd').innerText = 0;
+            document.getElementById('d1-drop').innerText = 0;
+            document.getElementById('d2-fwd').innerText = 0;
+            document.getElementById('d2-drop').innerText = 0;
+            document.getElementById('d3-fwd').innerText = 0;
+            document.getElementById('d3-drop').innerText = 0;
 
             document.getElementById('event-log-body').innerHTML = '<tr><td colspan="10" class="p-5 text-center text-slate-400 font-sans font-medium">Connecting to live SDN telemetry stream...</td></tr>';
-            fetchStatus();
-            fetchRules();
+            renderRulesTable([]);
         }
 
         // Admin Authentication State & Handlers
@@ -1233,16 +1405,26 @@
             document.getElementById('target-domain').value = id;
         }
 
-        // Initialize on page load
-        window.onload = () => {
-            initChart();
+        // Instant Initialization without waiting for heavy external assets
+        function bootDashboard() {
+            try {
+                initChart();
+            } catch (e) {
+                console.warn("Chart waiting for load:", e);
+            }
             checkAdminSession();
             fetchStatus();
             fetchRules();
 
-            // Kick off the 1-second autonomous stream
+            // Immediately launch fast 1-second auto stream
             startStream();
-        };
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', bootDashboard);
+        } else {
+            bootDashboard();
+        }
     </script>
 
     <!-- Cyberpunk Glass Admin Login Modal -->
