@@ -1,0 +1,28 @@
+{
+    "metrics": {
+        "roc_auc": 0.984578,
+        "precision": 0.9421661409043113,
+        "recall": 0.896,
+        "f1_score": 0.9185033316248078,
+        "false_positive_rate": 0.054999999999945,
+        "benign_accuracy": 0.945,
+        "known_attack_detection_rate": 1.0,
+        "zero_day_detection_rate": 0.792,
+        "confusion_matrix": {
+            "TN": 945,
+            "FP": 55,
+            "FN": 104,
+            "TP": 896
+        },
+        "threshold_used": 1.9325320144494331
+    },
+    "avg_mitigation_latency_ms": 0.4980299999988347,
+    "mitigated_events": 94,
+    "simulated_events": 200,
+    "figures": {
+        "convergence": "C:\\Users\\RAVI KIRAN\\OneDrive\\Desktop\\NETWORK SECURITY\\output\\fl_convergence.png",
+        "roc_curve": "C:\\Users\\RAVI KIRAN\\OneDrive\\Desktop\\NETWORK SECURITY\\output\\roc_curve.png",
+        "score_distribution": "C:\\Users\\RAVI KIRAN\\OneDrive\\Desktop\\NETWORK SECURITY\\output\\anomaly_score_distribution.png",
+        "confusion_matrix": "C:\\Users\\RAVI KIRAN\\OneDrive\\Desktop\\NETWORK SECURITY\\output\\confusion_matrix.png"
+    }
+}
