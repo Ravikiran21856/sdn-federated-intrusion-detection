@@ -15,7 +15,10 @@ An end-to-end distributed network security framework combining **Federated Learn
 ### 👉 **[Launch Live Demo on GitHub Pages](https://ravikiran21856.github.io/sdn-federated-intrusion-detection/)**
 *Experience the fully animated cyber defense dashboard directly in your browser with real-time 1-second telemetry streams, SVG packet animations, and live OpenFlow flow table reactive rules.*
 
-### 💻 Run Locally with PyTorch Backend:
+### 💻 1-Click Launch on Windows:
+Double-click `START_DEMO.bat` (or run `python run_demo.py`) to automatically boot the server and open your browser!
+
+### 💻 Run Locally via Terminal:
 ```bash
 python web/app.py 8080
 ```
@@ -25,6 +28,23 @@ Open **[http://127.0.0.1:8080](http://127.0.0.1:8080)** to interact with live Py
 - **Username**: `admin`
 - **Password**: `admin` *(or click "Autofill Demo" in the modal)*
 - **Privileges**: Unlocks manual zero-day exploit triggers, federated learning model retraining rounds, and OpenFlow table reset controls. Guests have real-time read-only telemetry observation.
+
+---
+
+## 🎓 College Submission & Academic Defense Package
+
+This repository is equipped with complete, publication-grade academic documentation and presentation materials for college final-year project / thesis submission:
+
+| Academic Deliverable | Document / Tool | Description |
+| :--- | :--- | :--- |
+| **Complete College Project Report** | [`docs/COLLEGE_PROJECT_REPORT.md`](docs/COLLEGE_PROJECT_REPORT.md) | Formal 6-Chapter Academic Dissertation / Thesis |
+| **Printable Report (A4 / PDF)** | [`docs/report.html`](docs/report.html) | Open in browser & press `Ctrl + P` to save as formal PDF |
+| **Project Defense Slide Deck** | [`docs/presentation.html`](docs/presentation.html) | Interactive 20-slide browser presentation (Press `F` for fullscreen, `S` for speaker notes) |
+| **Presentation Notes & Script** | [`docs/PROJECT_PRESENTATION.md`](docs/PROJECT_PRESENTATION.md) | Slide-by-slide word-for-word spoken defense scripts |
+| **Viva-Voce Preparation Guide** | [`docs/VIVA_VOCE_PREPARATION_GUIDE.md`](docs/VIVA_VOCE_PREPARATION_GUIDE.md) | Top 25 toughest examiner questions with model answers |
+| **Project Executive Synopsis** | [`docs/PROJECT_SYNOPSIS.md`](docs/PROJECT_SYNOPSIS.md) | Formal 4-page synopsis for college committee review |
+| **Final Submission Checklist** | [`docs/SUBMISSION_GUIDE.md`](docs/SUBMISSION_GUIDE.md) | Step-by-step printing, binding, and defense demo roadmap |
+| **1-Click Demo Launcher** | [`START_DEMO.bat`](START_DEMO.bat) / [`run_demo.py`](run_demo.py) | Automated 1-click startup and browser launcher |
 
 ---
 

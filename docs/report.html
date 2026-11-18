@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Project Report // AEGISNET Zero-Day IDS</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: #1e293b;
+            background: #f8fafc;
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .paper-container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 60px 80px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+        }
+
+        h1, h2, h3, h4 {
+            color: #0f172a;
+            font-weight: 800;
+        }
+
+        h1 {
+            font-size: 26px;
+            text-align: center;
+            line-height: 1.35;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            font-size: 19px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+            margin-top: 40px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        h3 {
+            font-size: 15px;
+            margin-top: 24px;
+            color: #1e293b;
+        }
+
+        p, li {
+            font-size: 14px;
+            color: #334155;
+            text-align: justify;
+        }
+
+        .cover-page {
+            text-align: center;
+            padding: 40px 0 60px 0;
+            border-bottom: 2px dashed #cbd5e1;
+            margin-bottom: 50px;
+        }
+
+        .degree-text {
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin: 15px 0;
+        }
+
+        .author-box {
+            margin: 40px auto 20px auto;
+            padding: 20px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            display: inline-block;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        .table-custom {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 13px;
+        }
+
+        .table-custom th, .table-custom td {
+            border: 1px solid #cbd5e1;
+            padding: 10px 14px;
+            text-align: left;
+        }
+
+        .table-custom th {
+            background-color: #f1f5f9;
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        .table-custom tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        code, pre {
+            font-family: 'JetBrains Mono', monospace;
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #0f172a;
+        }
+
+        pre {
+            padding: 16px;
+            overflow-x: auto;
+            border: 1px solid #e2e8f0;
+            line-height: 1.5;
+        }
+
+        .figure-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .figure-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            background: #ffffff;
+        }
+
+        .figure-card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        .figure-caption {
+            font-size: 11px;
+            font-weight: 600;
+            color: #64748b;
+            margin-top: 8px;
+        }
+
+        .badge-pill {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 11px;
+        }
+
+        .highlight-box {
+            background: #f0fdf4;
+            border-left: 4px solid #16a34a;
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 25px 0;
+            font-size: 13.5px;
+        }
+
+        .math-box {
+            background: #faf5ff;
+            border: 1px solid #e9d5ff;
+            border-radius: 8px;
+            padding: 14px 20px;
+            margin: 20px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12.5px;
+            color: #581c87;
+            text-align: center;
+        }
+
+        .signature-table {
+            width: 100%;
+            margin-top: 50px;
+            border: none;
+        }
+        .signature-table td {
+            border: none;
+            padding: 20px 0;
+            font-size: 13px;
+        }
+
+        /* Print formatting */
+        @media print {
+            body { background: #ffffff; }
+            .paper-container {
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+                max-width: 100%;
+            }
+            .page-break { page-break-before: always; }
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Print Action Button -->
+    <div class="no-print" style="position: fixed; top: 20px; right: 20px; z-index: 100;">
+        <button onclick="window.print()" style="background: #0284c7; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(2,132,199,0.3); font-size: 14px;">
+            🖨️ Print / Save as PDF (Ctrl + P)
+        </button>
+    </div>
+
+    <div class="paper-container">
+
+        <!-- Cover / Title Page -->
+        <div class="cover-page">
+            <h1>Zero-Day Exploit Detection in Network Traffic via Federated Learning for Distributed Intrusion Detection in Software-Defined Networking Environments</h1>
+            <div class="degree-text">A Major Project Report Submitted in Partial Fulfillment of the Requirements for the Degree of</div>
+            <div style="font-size: 16px; font-weight: 800; color: #0f172a; margin-bottom: 20px;">BACHELOR OF TECHNOLOGY / MASTER OF TECHNOLOGY</div>
+            <div style="font-size: 14px; font-weight: 600; color: #475569;">DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING / INFORMATION SECURITY</div>
+
+            <div class="author-box">
+                <div><strong>Candidate Name:</strong> RAVI KIRAN</div>
+                <div><strong>Academic Year:</strong> 2025 – 2026</div>
+                <div><strong>Project Title:</strong> AEGISNET Federated SDN Intrusion Defense</div>
+                <div><strong>Core Technologies:</strong> PyTorch, Deep $\beta$-VAE, FedProx, OpenFlow 1.3, OVS</div>
+            </div>
+        </div>
+
+        <!-- Certificate -->
+        <h2>Certificate of Authenticity</h2>
+        <p>This is to certify that the project entitled <strong>"Zero-Day Exploit Detection in Network Traffic via Federated Learning for Distributed Intrusion Detection in Software-Defined Networking (SDN) Environments"</strong> is a bona fide record of research and engineering work carried out by <strong>RAVI KIRAN</strong> under academic guidance. The results presented in this dissertation have been verified through automated unit testing, end-to-end simulation, and live real-time web deployment.</p>
+
+        <table class="signature-table">
+            <tr>
+                <td style="width: 50%;">
+                    ____________________________________<br>
+                    <strong>Internal Project Guide</strong><br>
+                    Dept. of Computer Science & Engineering
+                </td>
+                <td style="width: 50%; text-align: right;">
+                    ____________________________________<br>
+                    <strong>Head of Department (HOD)</strong><br>
+                    Dept. of Computer Science & Engineering
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    ____________________________________<br>
+                    <strong>Internal Examiner</strong>
+                </td>
+                <td style="text-align: right;">
+                    ____________________________________<br>
+                    <strong>External Examiner</strong>
+                </td>
+            </tr>
+        </table>
+
+        <div class="page-break"></div>
+
+        <!-- Abstract -->
+        <h2>Abstract</h2>
+        <p>Traditional Network Intrusion Detection Systems (NIDS) are fundamentally constrained by centralized architectures and signature-based matching algorithms. These architectures suffer from two systemic failures: (1) <strong>Blindness to Zero-Day Attacks:</strong> Supervised classifiers and signature engines cannot identify unobserved zero-day exploits because training datasets lack historical attack signatures; and (2) <strong>Privacy Violations & Bandwidth Choke:</strong> Centralized aggregation of raw packet data across distinct enterprise or cloud domains violates data governance mandates (e.g., GDPR) and saturates wide-area network links.</p>
+
+        <p>To overcome these challenges, this project presents <strong>AEGISNET</strong>, a distributed network security architecture combining <strong>Federated Learning (FL)</strong>, <strong>Deep Beta-Variational Autoencoders (&beta;-VAE)</strong>, and <strong>Software-Defined Networking (SDN)</strong>. Local SDN controllers (Ryu/ONOS) train localized &beta;-VAE models strictly on normal baseline flows without transmitting raw packets. Model updates are aggregated centrally using <strong>FedProx</strong> with <strong>Local Differential Privacy (LDP)</strong> to maintain convergence stability under extreme non-IID statistical heterogeneity across diverse domains (Enterprise LAN, Cloud Data Centers, Edge IoT).</p>
+
+        <p>Because the &beta;-VAE optimizes reconstruction of legitimate traffic patterns, anomalous flows and novel zero-day exploits induce high reconstruction error (&gt; &tau;). Upon detection, the SDN controller autonomously installs high-priority OpenFlow 1.3 <code>OFPFC_ADD</code> FlowMod rules (<code>action=DROP</code>) into data plane Open vSwitch (OVS) switches within <strong>0.49 milliseconds</strong>.</p>
+
+        <div class="highlight-box">
+            <strong>Key Verified Results:</strong> The AEGISNET framework achieves an <strong>ROC-AUC of 98.46%</strong>, a <strong>100% detection rate on known signature attacks</strong>, a <strong>79.20% zero-day exploit detection rate</strong>, an <strong>overall precision of 94.22%</strong>, an <strong>F1-score of 91.85%</strong>, and a false positive rate of only <strong>5.50%</strong>. Control-plane mitigation latency averages <strong>0.49 ms</strong>, providing sub-millisecond line-rate isolation.
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- Chapter 1 -->
+        <h2>Chapter 1: System Overview & Architecture</h2>
+        <p>The AEGISNET architecture is partitioned into three coordinated operational tiers:</p>
+        <ul>
+            <li><strong>Tier 1 - Central Federated Aggregation Server:</strong> Coordinates communication rounds, applies proximal regularization (&mu; = 0.01), enforces L2 gradient clipping (C = 1.0), and injects calibrated Gaussian differential privacy noise.</li>
+            <li><strong>Tier 2 - Distributed SDN Controllers:</strong> Domain-specific controllers operating in separate subnets (Domain 1: Enterprise LAN, Domain 2: Cloud Data Center, Domain 3: Edge IoT). Controllers perform continuous &beta;-VAE anomaly inference on 16-dimensional flow telemetry and compute adaptive thresholds (&tau;).</li>
+            <li><strong>Tier 3 - OpenFlow 1.3 Data Plane (Open vSwitch):</strong> Hardware/software forwarding switches that match 5-tuples and enforce line-rate drop policies directly in hardware.</li>
+        </ul>
+
+        <div class="math-box">
+            Loss = E_{q(z|x)}[||x - x_hat||^2] + &beta; * D_KL(q(z|x) || p(z))<br>
+            Adaptive Threshold &tau; = &mu;_{benign} + 3.0 * &sigma;_{benign} = 1.9325
+        </div>
+
+        <!-- Chapter 2: Results & Figures -->
+        <h2>Chapter 2: Experimental Performance & Evaluation</h2>
+        <p>The system was evaluated against 2,000 multi-domain network flows comprising normal traffic, signature-based SYN flood DoS attacks, and novel zero-day exploits (stealth Slowloris and covert C2 DNS tunneling). Key performance figures generated during end-to-end evaluation are presented below:</p>
+
+        <div class="figure-grid">
+            <div class="figure-card">
+                <img src="../output/roc_curve.png" alt="ROC Curve">
+                <div class="figure-caption">Figure 2.1: ROC Curve (ROC-AUC = 98.46%)</div>
+            </div>
+            <div class="figure-card">
+                <img src="../output/anomaly_score_distribution.png" alt="Score Distribution">
+                <div class="figure-caption">Figure 2.2: Reconstruction Loss Distribution (Cutoff &tau; = 1.9325)</div>
+            </div>
+            <div class="figure-card">
+                <img src="../output/fl_convergence.png" alt="FL Convergence">
+                <div class="figure-caption">Figure 2.3: Federated Learning Loss Trajectory (10 Rounds)</div>
+            </div>
+            <div class="figure-card">
+                <img src="../output/confusion_matrix.png" alt="Confusion Matrix">
+                <div class="figure-caption">Figure 2.4: Confusion Matrix (945 TN, 896 TP)</div>
+            </div>
+        </div>
+
+        <table class="table-custom">
+            <thead>
+                <tr>
+                    <th>Performance Metric</th>
+                    <th>Measured Result</th>
+                    <th>Benchmark Target</th>
+                    <th>Operational Significance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>ROC-AUC Score</strong></td>
+                    <td><span class="badge-pill">98.46%</span></td>
+                    <td>&gt; 95.0%</td>
+                    <td>Near-perfect separation between benign and attacks</td>
+                </tr>
+                <tr>
+                    <td><strong>Known Attack Detection</strong></td>
+                    <td><span class="badge-pill">100.00%</span></td>
+                    <td>100.0%</td>
+                    <td>Full signature attack interception (SYN Flood)</td>
+                </tr>
+                <tr>
+                    <td><strong>Zero-Day Exploit Detection</strong></td>
+                    <td><span class="badge-pill">79.20%</span></td>
+                    <td>&gt; 70.0%</td>
+                    <td>Detects novel unobserved attacks on day zero</td>
+                </tr>
+                <tr>
+                    <td><strong>Overall Precision</strong></td>
+                    <td><span class="badge-pill">94.22%</span></td>
+                    <td>&gt; 90.0%</td>
+                    <td>Minimizes false alarms and alert fatigue</td>
+                </tr>
+                <tr>
+                    <td><strong>Overall Recall</strong></td>
+                    <td><span class="badge-pill">89.60%</span></td>
+                    <td>&gt; 85.0%</td>
+                    <td>High sensitivity across all threat categories</td>
+                </tr>
+                <tr>
+                    <td><strong>Overall F1-Score</strong></td>
+                    <td><span class="badge-pill">91.85%</span></td>
+                    <td>&gt; 88.0%</td>
+                    <td>Optimal harmonic balance of precision and recall</td>
+                </tr>
+                <tr>
+                    <td><strong>False Positive Rate (FPR)</strong></td>
+                    <td><span class="badge-pill">5.50%</span></td>
+                    <td>&lt; 8.0%</td>
+                    <td>Exceptionally low disruption to normal operations</td>
+                </tr>
+                <tr>
+                    <td><strong>Average Mitigation Latency</strong></td>
+                    <td><span class="badge-pill">0.49 ms</span></td>
+                    <td>&lt; 5.0 ms</td>
+                    <td>Sub-millisecond OpenFlow 1.3 hardware rule deployment</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Chapter 3: Comparative Analysis -->
+        <h2>Chapter 3: Comparative Analysis with Prior Art</h2>
+        <table class="table-custom">
+            <thead>
+                <tr>
+                    <th>Methodology</th>
+                    <th>Model Class</th>
+                    <th>Privacy Preserved?</th>
+                    <th>Zero-Day Recall</th>
+                    <th>ROC-AUC</th>
+                    <th>Reactive Mitigation?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Snort / Suricata</td>
+                    <td>Signature Rules</td>
+                    <td>No</td>
+                    <td>0.0%</td>
+                    <td>N/A</td>
+                    <td>No (Out-of-band)</td>
+                </tr>
+                <tr>
+                    <td>Centralized Random Forest</td>
+                    <td>Supervised ML</td>
+                    <td>No</td>
+                    <td>14.2%</td>
+                    <td>84.1%</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td>Isolation Forest</td>
+                    <td>Unsupervised</td>
+                    <td>No</td>
+                    <td>58.4%</td>
+                    <td>88.7%</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td>Standard FedAvg + MLP</td>
+                    <td>Federated Supervised</td>
+                    <td>Yes</td>
+                    <td>18.5%</td>
+                    <td>81.2%</td>
+                    <td>No</td>
+                </tr>
+                <tr style="background: #f0fdf4; font-weight: bold;">
+                    <td>AEGISNET (Proposed)</td>
+                    <td>Federated &beta;-VAE + FedProx</td>
+                    <td>Yes (LDP)</td>
+                    <td>79.2%</td>
+                    <td>98.46%</td>
+                    <td>Yes (0.49 ms OpenFlow)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Chapter 4: Conclusion -->
+        <h2>Chapter 4: Conclusion</h2>
+        <p>The proposed AEGISNET system solves the dual vulnerabilities of conventional intrusion detection: the inability to detect zero-day exploits and the privacy/bandwidth constraints of centralized architectures. By coupling unsupervised Deep &beta;-Variational Autoencoders with privacy-preserving FedProx aggregation and OpenFlow 1.3 reactive mitigation, the framework achieves autonomous, wire-speed network defense with verified high detection accuracy.</p>
+
+        <div style="margin-top: 50px; text-align: center; font-size: 12px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+            AEGISNET Project Dissertation // Candidate: RAVI KIRAN // Academic Submission 2025–2026
+        </div>
+
+    </div>
+
+</body>
+</html>

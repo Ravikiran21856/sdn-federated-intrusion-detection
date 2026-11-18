@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEGISNET // College Defense Slide Deck</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=JetBrains+Mono:wght@400;700&display=swap');
+        
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 0;
+            background: #090d16;
+            color: #f1f5f9;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Slide Viewport */
+        #deck-viewport {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            max-width: 1100px;
+            height: 650px;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 50px 65px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Slide Typography */
+        .slide-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .slide-tag {
+            font-size: 11px;
+            font-weight: 700;
+            color: #38bdf8;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .slide-title {
+            font-size: 28px;
+            font-weight: 900;
+            color: #ffffff;
+            margin: 6px 0 0 0;
+            letter-spacing: -0.02em;
+        }
+
+        .slide-body {
+            flex: 1;
+            padding: 25px 0;
+            font-size: 16px;
+            line-height: 1.65;
+            color: #cbd5e1;
+            overflow-y: auto;
+        }
+
+        .slide-body ul {
+            margin: 0;
+            padding-left: 25px;
+        }
+
+        .slide-body li {
+            margin-bottom: 12px;
+        }
+
+        .slide-body strong {
+            color: #38bdf8;
+        }
+
+        .highlight-card {
+            background: rgba(6, 182, 212, 0.08);
+            border: 1px solid rgba(6, 182, 212, 0.25);
+            border-radius: 12px;
+            padding: 18px 24px;
+            margin: 15px 0;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .metric-box {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .metric-num {
+            font-size: 28px;
+            font-weight: 900;
+            font-family: 'JetBrains Mono', monospace;
+            color: #38bdf8;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        .code-pill {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #f43f5e;
+        }
+
+        /* Speaker Notes Drawer */
+        #speaker-notes {
+            display: none;
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1000px;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid #38bdf8;
+            border-radius: 12px;
+            padding: 16px 24px;
+            color: #e2e8f0;
+            font-size: 13.5px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            z-index: 50;
+        }
+
+        #speaker-notes.open { display: block; }
+
+        /* Controls Bottom Bar */
+        #deck-controls {
+            height: 60px;
+            background: rgba(15, 23, 42, 0.9);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .btn-ctrl {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-ctrl:hover {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: #38bdf8;
+            color: #38bdf8;
+        }
+
+        /* Print formatting */
+        @media print {
+            body { overflow: visible; height: auto; background: white; color: black; }
+            #deck-controls, #speaker-notes { display: none !important; }
+            #deck-viewport { padding: 0; display: block; }
+            .slide {
+                display: flex !important;
+                page-break-after: always;
+                box-shadow: none;
+                border: 1px solid #ccc;
+                height: 90vh;
+                margin-bottom: 20px;
+                background: white;
+                color: black;
+            }
+            .slide-title, .slide-tag, .slide-body, .slide-body strong { color: black !important; }
+            .metric-box, .highlight-card { border: 1px solid #ccc; background: #f8f8f8; }
+            .metric-num { color: black !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="deck-viewport">
+
+        <!-- Slide 1: Title -->
+        <div class="slide active" data-notes="Good morning respected committee members and guide. Today I present our major project: Zero-Day Exploit Detection in Network Traffic via Federated Learning for Distributed Intrusion Detection in SDN Environments. We have designed AEGISNET to detect novel, unobserved attacks without sharing raw private packet data, mitigating threats in under half a millisecond.">
+            <div class="slide-header">
+                <span class="slide-tag">Major Project Defense // 2025–2026</span>
+                <span class="slide-tag">Slide 01 / 20</span>
+            </div>
+            <div class="slide-body" style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <div style="font-size: 13px; font-weight: 800; color: #38bdf8; letter-spacing: 0.2em; text-transform: uppercase;">Final Year Major Project Dissertation</div>
+                <h1 style="font-size: 34px; font-weight: 900; margin: 15px 0 25px 0; max-width: 900px; line-height: 1.25; color: #ffffff;">
+                    Zero-Day Exploit Detection in Network Traffic via Federated Learning for Distributed Intrusion Detection in SDN Environments
+                </h1>
+                <div class="highlight-card" style="max-width: 600px; text-align: left;">
+                    <div><strong>Candidate Name:</strong> RAVI KIRAN</div>
+                    <div><strong>Department:</strong> Computer Science & Engineering / Information Security</div>
+                    <div><strong>Project Guide:</strong> Dept. Faculty Supervisor</div>
+                    <div><strong>System Framework:</strong> AEGISNET Cyber Defense Platform</div>
+                </div>
+            </div>
+            <div style="font-size: 11px; color: #64748b; text-align: center;">Press [Right Arrow] or [Space] to advance &bull; Press [S] for Speaker Notes</div>
+        </div>
+
+        <!-- Slide 2: Problem Statement -->
+        <div class="slide" data-notes="Modern networks face three critical problems: First, zero-day attacks have no known signatures, so Snort or Suricata have zero percent detection on day zero. Second, privacy laws like GDPR prohibit sending raw user telemetry to a central server. Third, sending massive telemetry across WAN links exhausts backhaul bandwidth.">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">01. Research Context</span>
+                    <h2 class="slide-title">Problem Statement & Motivation</h2>
+                </div>
+                <span class="slide-tag">Slide 02 / 20</span>
+            </div>
+            <div class="slide-body">
+                <ul>
+                    <li><strong>The Zero-Day Vulnerability Dilemma:</strong> Cyber adversaries exploit novel vulnerabilities before vendor security patches or signatures are published. Signature engines (Snort/Suricata) exhibit <strong>0% detection</strong> on day zero.</li>
+                    <li><strong>Privacy & Data Governance Constraints:</strong> Cross-institutional entities (e.g., healthcare, financial networks, multi-tenant cloud) are legally prohibited (by GDPR, HIPAA, CCPA) from pooling raw flow telemetry into a central repository.</li>
+                    <li><strong>Bandwidth & Controller Bottleneck:</strong> Continuous streaming of multi-gigabit raw telemetry across Wide Area Networks (WAN) exhausts network bandwidth and creates single-point-of-failure controller choke points.</li>
+                </ul>
+                <div class="highlight-card">
+                    <strong>Research Question:</strong> How can distributed SDN domains collaboratively learn to detect unobserved zero-day exploits with line-rate mitigation without ever exposing private raw packet telemetry?
+                </div>
+            </div>
+            <div style="font-size: 11px; color: #64748b;">AEGISNET Defense Matrix &bull; Computer Science & Engineering</div>
+        </div>
+
+        <!-- Slide 3: Limitations of Existing Systems -->
+        <div class="slide" data-notes="Existing systems have major flaws: Rule-based engines fail on zero-days. Supervised machine learning fails because it requires historical attack labels. Standard Federated Averaging (FedAvg) assumes all clients have identical data distributions, causing divergence when combining IoT, enterprise, and cloud data.">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">02. Literature Critique</span>
+                    <h2 class="slide-title">Existing Systems vs. Core Limitations</h2>
+                </div>
+                <span class="slide-tag">Slide 03 / 20</span>
+            </div>
+            <div class="slide-body">
+                <ul>
+                    <li><strong>Signature-Based Engines (Snort, Suricata):</strong>
+                        <ul><li>Fast on historical threats, but completely blind to novel zero-day exploits and polymorphic malware.</li></ul>
+                    </li>
+                    <li><strong>Supervised Classifiers (Random Forest, SVM, DNN):</strong>
+                        <ul><li>Suffer from target leakage and distribution shift. Require large labeled attack sets, which do not exist for zero-day exploits.</li></ul>
+                    </li>
+                    <li><strong>Standard Federated Learning (FedAvg):</strong>
+                        <ul><li>Implicitly assumes IID (identically distributed) data. Diverges under extreme statistical heterogeneity between IoT, Enterprise, and Data Center traffic.</li></ul>
+                    </li>
+                    <li><strong>Lack of Reactive Control Plane Integration:</strong>
+                        <ul><li>Traditional NIDS operate out-of-band and cannot dynamically push line-rate isolation rules into network switches.</li></ul>
+                    </li>
+                </ul>
+            </div>
+            <div style="font-size: 11px; color: #64748b;">AEGISNET Defense Matrix &bull; Computer Science & Engineering</div>
+        </div>
+
+        <!-- Slide 4: Proposed AEGISNET Framework -->
+        <div class="slide" data-notes="Our proposed AEGISNET framework addresses these gaps with three core pillars: An unsupervised Deep Beta-VAE trained purely on normal baseline traffic; FedProx aggregation with Differential Privacy; and closed-loop OpenFlow 1.3 line-rate mitigation deployed in 0.49 milliseconds.">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">03. Proposed Solution</span>
+                    <h2 class="slide-title">The AEGISNET Framework</h2>
+                </div>
+                <span class="slide-tag">Slide 04 / 20</span>
+            </div>
+            <div class="slide-body">
+                <ul>
+                    <li><strong>Unsupervised Zero-Day Detection:</strong> Implements a <strong>Deep &beta;-Variational Autoencoder (&beta;-VAE)</strong> trained strictly on baseline benign network flows. Detects zero-days via reconstruction error spikes without needing attack labels.</li>
+                    <li><strong>Privacy-Preserving Federated Aggregation:</strong> Implements <strong>FedProx</strong> with proximal regularization (&mu; = 0.01) to guarantee convergence under non-IID traffic heterogeneity.</li>
+                    <li><strong>Local Differential Privacy (LDP):</strong> Enforces L2 gradient clipping (C = 1.0) and calibrated Gaussian noise to provably prevent gradient reconstruction attacks.</li>
+                    <li><strong>Sub-Millisecond Line-Rate Mitigation:</strong> Pushes OpenFlow 1.3 <code>OFPFC_ADD</code> FlowMod rules (<code>priority=65535</code>, <code>action=DROP</code>) directly to Open vSwitch in <strong>0.49 ms</strong>.</li>
+                </ul>
+            </div>
+            <div style="font-size: 11px; color: #64748b;">AEGISNET Defense Matrix &bull; Computer Science & Engineering</div>
+        </div>
+
+        <!-- Slide 5: System Architecture -->
+        <div class="slide" data-notes="The architecture has three tiers. Tier 1 is the Central Federated Aggregator managing global rounds. Tier 2 consists of distributed SDN Controllers in three domains: Enterprise, Cloud DC, and IoT Edge. Tier 3 contains OpenFlow switches forwarding packets and enforcing hardware drop rules.">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">04. System Design</span>
+                    <h2 class="slide-title">Multi-Tier Distributed Architecture</h2>
+                </div>
+                <span class="slide-tag">Slide 05 / 20</span>
+            </div>
+            <div class="slide-body">
+                <ul>
+                    <li><strong>Tier 1 - Central Federated Aggregator:</strong> Coordinates communication rounds, aggregates client weights using FedProx, and injects differential privacy noise. Never observes raw flow records.</li>
+                    <li><strong>Tier 2 - Distributed SDN Controllers (Ryu / ONOS):</strong>
+                        <ul>
+                            <li><em>Domain 1:</em> Enterprise Campus LAN (Switch s1)</li>
+                            <li><em>Domain 2:</em> Cloud Data Center (Switch s2)</li>
+                            <li><em>Domain 3:</em> Edge / IoT Subnet (Switch s3)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Tier 3 - Data Plane Switches (Open vSwitch - OVS):</strong> Line-rate packet forwarding, flow table lookup, and hardware packet drops upon rule installation.</li>
+                </ul>
+            </div>
+            <div style="font-size: 11px; color: #64748b;">AEGISNET Defense Matrix &bull; Computer Science & Engineering</div>
+        </div>
+
+        <!-- Slide 6: Mathematical Formulation of Beta-VAE -->
+        <div class="slide" data-notes="Here is the mathematical formulation of the Beta-VAE. The encoder maps 16-D flows into an 8-D Gaussian latent space. The reparameterization trick enables backpropagation. The beta term equals 1.25, which regularizes the latent space and prevents the model from memorizing anomalous noise.">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">05. Mathematical Foundations</span>
+                    <h2 class="slide-title">Deep &beta;-VAE Formulation</h2>
+                </div>
+                <span class="slide-tag">Slide 06 / 20</span>
+            </div>
+            <div class="slide-body">
+                <ul>
+                    <li><strong>Probabilistic Latent Mapping:</strong> Encoder q<sub>&phi;</sub>(z|x) maps 16-D normalized flow features into an 8-D latent Gaussian distribution &mathcal;N(&mu;<sub>z</sub>, &sigma;<sub>z</sub><sup>2</sup>).</li>
+                    <li><strong>The Reparameterization Trick:</strong>
+                        <div class="highlight-card" style="font-family: 'JetBrains Mono'; color: #38bdf8;">z = &mu;<sub>z</sub>(x) + &sigma;<sub>z</sub>(x) &odot; &epsilon;, &nbsp;&nbsp; where &epsilon; &sim; &mathcal;N(0, I)</div>
+                    </li>
+                    <li><strong>&beta;-VAE Loss Objective:</strong>
+                        <div class="highlight-card" style="font-family: 'JetBrains Mono'; color: #a855f7;">Loss = E_{q}[||x - x_hat||^2] + &beta; &bull; D_KL( q(z|x) || &mathcal;N(0, I) )</div>
+                    </li>
+                    <li><strong>Role of &beta; = 1.25:</strong> Imposes an information bottleneck that forces latent representations to be disentangled and independent, preventing memorization of attack noise.</li>
+                </ul>
+            </div>
+            <div style="font-size: 11px; color: #64748b;">AEGISNET Defense Matrix &bull; Computer Science & Engineering</div>
+        </div>
+
+        <!-- Slide 7: Zero-Day Anomaly Scoring & Adaptive Cutoff -->
+        <div class="slide" data-notes="Because the model only learns normal traffic, benign flows reconstruct with low error, while novel zero-day attacks trigger high reconstruction error. We compute our adaptive threshold tau at 1.9325 strictly on validation baseline data using a three-sigma rule, ensuring zero data leakage.">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">06. Detection Mechanism</span>
+                    <h2 class="slide-title">Zero-Day Anomaly Scoring & Adaptive &tau;</h2>
+                </div>
+                <span class="slide-tag">Slide 07 / 20</span>
+            </div>
+            <div class="slide-body">
+                <ul>
+                    <li><strong>Reconstruction Error Metric:</strong>
+                        <span class="code-pill">S(x) = (1/D) &sum; (x_j - x_hat_j)^2</span>
+                    </li>
+                    <li><strong>Generative Anomaly Separation:</strong>
+                        <ul>
+                            <li><em>Benign Flows:</em> Reconstruct with high fidelity &rarr; <strong>S(x) &le; 1.0 (Low Error)</strong></li>
+                            <li><em>Novel Zero-Day Exploits:</em> Contain unobserved topology &rarr; <strong>S(x) &gt;&gt; 1.93 (High Error)</strong></li>
+                        </ul>
+                    </li>
+                    <li><strong>Adaptive Three-Sigma Cutoff (&tau;):</strong>
+                        <div class="highlight-card" style="font-family: 'JetBrains Mono';">
+                            &tau; = &mu;<sub>benign_val</sub> + 3.0 &bull; &sigma;<sub>benign_val</sub> = <strong>1.9325</strong>
+                        </div>
+                    </li>
+                    <li><strong>Anti-Data Leakage:</strong> Threshold &tau; is derived <em>strictly from normal validation data</em> without exposing any attack flows.</li>
+                </ul>
+            </div>
+            <div style="font-size: 11px; color: #64748b;">AEGISNET Defense Matrix &bull; Computer Science & Engineering</div>
+        </div>
+
+        <!-- Slide 8: FedProx & Differential Privacy -->
+        <div class="slide" data-notes="To aggregate models across heterogeneous domains, we use FedProx. FedProx adds a proximal regularization term with mu = 0.01 that prevents local client drift. Differential privacy is guaranteed using L2 clipping at 1.0 and Gaussian noise injection.">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">07. Distributed Optimization</span>
+                    <h2 class="slide-title">FedProx & Differential Privacy</h2>
+                </div>
+                <span class="slide-tag">Slide 08 / 20</span>
+            </div>
+            <div class="slide-body">
+                <ul>
+                    <li><strong>Tackling Statistical Heterogeneity:</strong> Network telemetry in IoT, Enterprise, and Cloud domains is heavily Non-IID. Standard FedAvg causes local drift and divergence.</li>
+                    <li><strong>FedProx Proximal Objective:</strong>
+                        <div class="highlight-card" style="font-family: 'JetBrains Mono'; color: #38bdf8;">
+                            min_w h_k(w; w^t) = F_k(w) + (&mu; / 2) &bull; ||w - w^t||^2
+                        </div>
+                        The proximal term (&mu; = 0.01) mathematically penalizes local updates for deviating from the global consensus w<sup>t</sup>.
+                    </li>
+                    <li><strong>Local Differential Privacy (LDP):</strong>
+                        <ul>
+                            <li>L2 Gradient Clipping: <span class="code-pill">C = 1.0</span></li>
+                            <li>Gaussian Perturbation: <span class="code-pill">&sigma; = 0.001</span></li>
+                            <li>Guarantees (&epsilon;, &delta;)-Differential Privacy with &epsilon; &le; 4.0.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div style="font-size: 11px; color: #64748b;">AEGISNET Defense Matrix &bull; Computer Science & Engineering</div>
+        </div>
+
+        <!-- Slide 9: OpenFlow 1.3 Reactive Mitigation -->
+        <div class="slide" data-notes="Detection is immediately paired with action. When anomaly score exceeds tau, the controller creates an OpenFlow 1.3 FlowMod rule matching the 5-tuple with action DROP and priority 65535. Average deployment latency is just 0.49 ms. Once installed, the switch drops subsequent packets in hardware without querying the controller.">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">08. Control Plane Action</span>
+                    <h2 class="slide-title">OpenFlow 1.3 Reactive Mitigation</h2>
+                </div>
+                <span class="slide-tag">Slide 09 / 20</span>
+            </div>
+            <div class="slide-body">
+                <ul>
+                    <li><strong>Reactive FlowMod Deployment:</strong>
+                        <ul>
+                            <li>Match 5-Tuple: <span class="code-pill">src_ip, dst_ip, protocol, dst_port</span></li>
+                            <li>Action: <span class="code-pill">OFPAT_DROP</span></li>
+                            <li>Priority: <span class="code-pill">65535</span> (Maximum Wire-Speed Priority)</li>
+                            <li>Timeouts: <span class="code-pill">idle_timeout = 300s, hard_timeout = 600s</span></li>
+                        </ul>
+                    </li>
+                    <li><strong>Sub-Millisecond Execution:</strong> Total mitigation latency averages <strong>0.49 milliseconds</strong>.</li>
+                    <li><strong>Hardware Offloading:</strong> Once the rule is written into OVS Table 0, all subsequent malicious packets are dropped directly in switch hardware at wire speed with <strong>zero controller overhead</strong>.</li>
+                </ul>
+            </div>
+            <div style="font-size: 11px; color: #64748b;">AEGISNET Defense Matrix &bull; Computer Science & Engineering</div>
+        </div>
+
+        <!-- Slide 10: 16-Dimensional Flow Features -->
+        <div class="slide" data-notes="We extract 16 standardized bidirectional flow features: duration, packet and byte totals, packet size mean and standard deviation, transmission rates, and TCP flag counts. This covers volumetric DDoS and stealthy zero-day exploits.">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">09. Feature Engineering</span>
+                    <h2 class="slide-title">16-Dimensional SDN Flow Features</h2>
+                </div>
+                <span class="slide-tag">Slide 10 / 20</span>
+            </div>
+            <div class="slide-body">
+                <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                    <tr style="background: rgba(255,255,255,0.06); text-align: left;">
+                        <th style="padding: 8px;">Category</th>
+                        <th style="padding: 8px;">Feature Names</th>
+                        <th style="padding: 8px;">Security Relevance</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px;"><strong>Volume</strong></td>
+                        <td style="padding: 8px;"><code>duration, packet_count, byte_count</code></td>
+                        <td style="padding: 8px;">DDoS, volume anomalies, flow longevity</td>
+                    </tr>
+                    <tr style="background: rgba(255,255,255,0.02);">
+                        <td style="padding: 8px;"><strong>Packet Length</strong></td>
+                        <td style="padding: 8px;"><code>pkt_len_mean, pkt_len_std, min, max</code></td>
+                        <td style="padding: 8px;">Buffer overflow payloads, stealth fragments</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px;"><strong>Rates</strong></td>
+                        <td style="padding: 8px;"><code>flow_pkt_rate, flow_byte_rate</code></td>
+                        <td style="padding: 8px;">Flooding attacks vs. low-rate Slowloris</td>
+                    </tr>
+                    <tr style="background: rgba(255,255,255,0.02);">
+                        <td style="padding: 8px;"><strong>TCP Flags</strong></td>
+                        <td style="padding: 8px;"><code>syn, ack, fin, rst, psh, urg_count</code></td>
+                        <td style="padding: 8px;">SYN flood, port scanning, teardown attacks</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px;"><strong>Protocol</strong></td>
+                        <td style="padding: 8px;"><code>protocol_num</code> (6 = TCP, 17 = UDP)</td>
+                        <td style="padding: 8px;">Transport layer differentiation</td>
+                    </tr>
+                </table>
+            </div>
+            <div style="font-size: 11px; color: #64748b;">AEGISNET Defense Matrix &bull; Computer Science & Engineering</div>
+        </div>
+
+        <!-- Slide 11: Experimental Setup & Attack Scenarios -->
+        <div class="slide" data-notes="We evaluated 2,000 flows across three domains. Domain 1 simulates an Enterprise LAN attacked by SYN floods. Domain 2 simulates a Cloud DC attacked by stealth Slowloris zero-days. Domain 3 represents an IoT subnet attacked by covert DNS tunnels. These zero-day exploits were never seen in training.">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">10. Experimental Methodology</span>
+                    <h2 class="slide-title">Evaluation Setup & Attack Vectors</h2>
+                </div>
+                <span class="slide-tag">Slide 11 / 20</span>
+            </div>
+            <div class="slide-body">
+                <ul>
+                    <li><strong>Test Dataset:</strong> 2,000 multi-domain flows (1,000 Benign, 500 Known Attacks, 500 Novel Zero-Day Exploits).</li>
+                    <li><strong>Domain 1 (Enterprise Campus LAN):</strong>
+                        <ul><li>Subjected to <strong>Known SYN Flood DoS</strong> (high packet rate, anomalous SYN/ACK ratio).</li></ul>
+                    </li>
+                    <li><strong>Domain 2 (Cloud Data Center):</strong>
+                        <ul><li>Subjected to <strong>Novel Zero-Day Stealth Slowloris</strong> (ultra-low packet rate, elongated TCP connections, port 8080).</li></ul>
+                    </li>
+                    <li><strong>Domain 3 (Edge / IoT Subnet):</strong>
+                        <ul><li>Subjected to <strong>Novel Zero-Day Covert C2 DNS Tunneling</strong> (atypical payload size over UDP port 53).</li></ul>
+                    </li>
+                </ul>
+            </div>
+            <div style="font-size: 11px; color: #64748b;">AEGISNET Defense Matrix &bull; Computer Science & Engineering</div>
+        </div>
+
+        <!-- Slide 12: ROC-AUC Results -->
+        <div class="slide" data-notes="This slide shows our ROC curve. AEGISNET achieved an exceptional ROC-AUC of 98.46%. In binary classification, an AUC above 98% proves near-optimal separation between benign flows and malicious attacks.">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">11. Empirical Verification</span>
+                    <h2 class="slide-title">ROC-AUC Performance: 98.46%</h2>
+                </div>
+                <span class="slide-tag">Slide 12 / 20</span>
+            </div>
+            <div class="slide-body">
+                <div class="metric-grid">
+                    <div class="metric-box">
+                        <div class="metric-num">98.46%</div>
+                        <div class="metric-label">ROC-AUC Score</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-num">94.22%</div>
+                        <div class="metric-label">Precision</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-num">89.60%</div>
+                        <div class="metric-label">Recall</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-num">91.85%</div>
+                        <div class="metric-label">F1-Score</div>
+                    </div>
+                </div>
+                <ul>
+                    <li><strong>Separability Power:</strong> Area Under the ROC Curve of <strong>98.46%</strong> proves the reconstruction loss provides a near-optimal decision boundary.</li>
+                    <li><strong>Unsupervised Verification:</strong> The model reliably isolates attacks without ever having trained on malicious samples.</li>
+                </ul>
+            </div>
+            <div style="font-size: 11px; color: #64748b;">AEGISNET Defense Matrix &bull; Computer Science & Engineering</div>
+        </div>
+
+        <!-- Slide 13: Zero-Day vs Known Attack Recall -->
+        <div class="slide" data-notes="This is the central finding of our project. On known attacks, we achieved 100% detection. On novel zero-day exploits, AEGISNET achieved 79.20% detection on day zero. Traditional signature systems like Snort have 0% detection because no signatures exist.">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">12. Core Research Finding</span>
+                    <h2 class="slide-title">Zero-Day vs. Known Attack Recall</h2>
+                </div>
+                <span class="slide-tag">Slide 13 / 20</span>
+            </div>
+            <div class="slide-body">
+                <div class="metric-grid" style="grid-template-columns: 1fr 1fr;">
+                    <div class="metric-box">
+                        <div class="metric-num" style="color: #10b981;">100.00%</div>
+                        <div class="metric-label">Known Attack Recall (500/500)</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-num" style="color: #f43f5e;">79.20%</div>
+                        <div class="metric-label">Zero-Day Exploit Recall (396/500)</div>
+                    </div>
+                </div>
+                <ul>
+                    <li><strong>Signature Systems (Snort / Suricata):</strong> Achieve <strong>0% detection</strong> on zero-days (no signatures exist).</li>
+                    <li><strong>Supervised Classifiers:</strong> Achieve only <strong>14.2% detection</strong> on zero-days due to distribution shift.</li>
+                    <li><strong>AEGISNET Breakthrough:</strong> Detects approximately <strong>8 out of 10 novel zero-day exploits on day zero</strong> without any prior attack signatures.</li>
+                </ul>
+            </div>
+            <div style="font-size: 11px; color: #64748b;">AEGISNET Defense Matrix &bull; Computer Science & Engineering</div>
+        </div>
+
+        <!-- Slide 14: Confusion Matrix Analysis -->
+        <div class="slide" data-notes="Looking at the confusion matrix across 2,000 flows: 945 out of 1,000 benign flows passed cleanly, giving a false positive rate of only 5.5%. Out of 1,000 attacks, 896 were successfully intercepted and mitigated.">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">13. Classification Details</span>
+                    <h2 class="slide-title">Confusion Matrix & Classification Breakdown</h2>
+                </div>
+                <span class="slide-tag">Slide 14 / 20</span>
+            </div>
+            <div class="slide-body">
+                <div class="metric-grid">
+                    <div class="metric-box">
+                        <div class="metric-num">945</div>
+                        <div class="metric-label">True Negatives (TN)</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-num">55</div>
+                        <div class="metric-label">False Positives (FP)</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-num">104</div>
+                        <div class="metric-label">False Negatives (FN)</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-num">896</div>
+                        <div class="metric-label">True Positives (TP)</div>
+                    </div>
+                </div>
+                <ul>
+                    <li><strong>Low False Alarm Rate:</strong> False Positive Rate (FPR) is <strong>5.50%</strong>, preventing network operator alert fatigue.</li>
+                    <li><strong>Benign Accuracy:</strong> <strong>94.50%</strong> of legitimate network traffic passes without interruption.</li>
+                </ul>
+            </div>
+            <div style="font-size: 11px; color: #64748b;">AEGISNET Defense Matrix &bull; Computer Science & Engineering</div>
+        </div>
+
+        <!-- Slide 15: Federated Convergence Trajectory -->
+        <div class="slide" data-notes="This slide shows the federated convergence across 10 rounds. Global reconstruction loss drops smoothly from 1.41 down to 0.56 without any divergence or oscillations. The proximal parameter mu prevented client drift across the heterogeneous domains.">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">14. Convergence Dynamics</span>
+                    <h2 class="slide-title">Federated Convergence Trajectory</h2>
+                </div>
+                <span class="slide-tag">Slide 15 / 20</span>
+            </div>
+            <div class="slide-body">
+                <ul>
+                    <li><strong>Monotonic Loss Descent:</strong>
+                        <ul>
+                            <li>Round 1: Global Loss = <strong>1.4120</strong></li>
+                            <li>Round 3: Global Loss = <strong>0.9845</strong></li>
+                            <li>Round 6: Global Loss = <strong>0.7210</strong></li>
+                            <li>Round 10: Global Loss = <strong>0.5621</strong></li>
+                        </ul>
+                    </li>
+                    <li><strong>Stability Under Heterogeneity:</strong> The proximal regularization parameter (&mu; = 0.01) mathematically prevented client drift, leading to monotonic convergence across IoT, Enterprise, and Cloud clients.</li>
+                    <li><strong>Zero Raw Telemetry Leakage:</strong> All data remained on-premise; only clipped, noisy gradients were aggregated.</li>
+                </ul>
+            </div>
+            <div style="font-size: 11px; color: #64748b;">AEGISNET Defense Matrix &bull; Computer Science & Engineering</div>
+        </div>
+
+        <!-- Slide 16: Sub-Millisecond Mitigation Latency -->
+        <div class="slide" data-notes="Here is the breakdown of our control plane mitigation latency. Feature extraction takes 0.12 ms, PyTorch VAE inference takes 0.28 ms, and OpenFlow rule installation takes 0.09 ms. Total mitigation latency is only 0.49 milliseconds.">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">15. Control Plane Benchmarks</span>
+                    <h2 class="slide-title">Sub-Millisecond Mitigation Latency</h2>
+                </div>
+                <span class="slide-tag">Slide 16 / 20</span>
+            </div>
+            <div class="slide-body">
+                <div class="metric-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="metric-box">
+                        <div class="metric-num">0.12 ms</div>
+                        <div class="metric-label">Feature Extraction</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-num">0.28 ms</div>
+                        <div class="metric-label">&beta;-VAE Inference</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-num">0.09 ms</div>
+                        <div class="metric-label">OpenFlow Push</div>
+                    </div>
+                </div>
+                <div class="highlight-card" style="text-align: center;">
+                    <div style="font-size: 13px; color: #94a3b8; text-transform: uppercase; font-weight: 700;">Total Reactive Mitigation Latency</div>
+                    <div style="font-size: 32px; font-weight: 900; color: #10b981; font-family: 'JetBrains Mono';">0.49 milliseconds</div>
+                </div>
+                <p>Because total response latency is under 0.5 ms, malicious streams are isolated before high-rate DoS bursts can saturate switch buffers or controller memory.</p>
+            </div>
+            <div style="font-size: 11px; color: #64748b;">AEGISNET Defense Matrix &bull; Computer Science & Engineering</div>
+        </div>
+
+        <!-- Slide 17: Live Cyber Operations Dashboard -->
+        <div class="slide" data-notes="To provide complete operational situational awareness, we built the AEGISNET Glassmorphism dashboard. It streams telemetry updates every second, monitors real-time reconstruction loss, shows active OpenFlow drop rules with live incrementing packet counters, and demonstrates packet interception in SVG.">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">16. User Interface & Operations</span>
+                    <h2 class="slide-title">AEGISNET Cyber Operations Console</h2>
+                </div>
+                <span class="slide-tag">Slide 17 / 20</span>
+            </div>
+            <div class="slide-body">
+                <ul>
+                    <li><strong>Real-Time 1-Second Telemetry Stream:</strong> Glassmorphic HUD with active heartbeat ring, live packet counters, and multi-domain throughput metrics.</li>
+                    <li><strong>Dynamic VAE Loss Chart:</strong> Streaming Chart.js visualization with linear neon gradient, rolling horizontal timestamps, and adaptive cutoff line (&tau; = 1.9325).</li>
+                    <li><strong>Active OpenFlow 1.3 Table:</strong> Real-time rule inspector displaying active drop rules, live incrementing blocked packet counters (<code>+X/s</code>), and rule TTL expiry countdowns.</li>
+                    <li><strong>Animated SVG Topology:</strong> Live photon streams demonstrating that malicious packets are intercepted and shattered at the switch level while legitimate flows reach the server.</li>
+                    <li><strong>Role-Based Admin Authentication:</strong> Secure modal login protecting manual zero-day injection and model retraining.</li>
+                </ul>
+            </div>
+            <div style="font-size: 11px; color: #64748b;">AEGISNET Defense Matrix &bull; Computer Science & Engineering</div>
+        </div>
+
+        <!-- Slide 18: Comparison with Prior Art -->
+        <div class="slide" data-notes="Comparing AEGISNET to baselines: Snort has 0% zero-day recall. Centralized Random Forest has 14.2%. Isolation Forest has 58.4%. AEGISNET achieves 79.2% zero-day recall and 98.46% ROC-AUC, while being the only system with federated privacy and automated sub-millisecond OpenFlow mitigation.">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">17. Comparative Analysis</span>
+                    <h2 class="slide-title">Benchmarking vs. Prior SOTA</h2>
+                </div>
+                <span class="slide-tag">Slide 18 / 20</span>
+            </div>
+            <div class="slide-body">
+                <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                    <tr style="background: rgba(255,255,255,0.06); text-align: left;">
+                        <th style="padding: 8px;">Approach</th>
+                        <th style="padding: 8px;">Privacy?</th>
+                        <th style="padding: 8px;">Zero-Day Recall</th>
+                        <th style="padding: 8px;">ROC-AUC</th>
+                        <th style="padding: 8px;">SDN Mitigation</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px;">Snort / Suricata</td>
+                        <td style="padding: 8px;">No</td>
+                        <td style="padding: 8px; color: #f43f5e;">0.0%</td>
+                        <td style="padding: 8px;">N/A</td>
+                        <td style="padding: 8px;">No (Out-of-band)</td>
+                    </tr>
+                    <tr style="background: rgba(255,255,255,0.02);">
+                        <td style="padding: 8px;">Centralized Random Forest</td>
+                        <td style="padding: 8px;">No</td>
+                        <td style="padding: 8px; color: #f43f5e;">14.2%</td>
+                        <td style="padding: 8px;">84.1%</td>
+                        <td style="padding: 8px;">No</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px;">Isolation Forest</td>
+                        <td style="padding: 8px;">No</td>
+                        <td style="padding: 8px; color: #eab308;">58.4%</td>
+                        <td style="padding: 8px;">88.7%</td>
+                        <td style="padding: 8px;">No</td>
+                    </tr>
+                    <tr style="background: rgba(255,255,255,0.02);">
+                        <td style="padding: 8px;">Standard FedAvg + MLP</td>
+                        <td style="padding: 8px;">Yes</td>
+                        <td style="padding: 8px; color: #f43f5e;">18.5%</td>
+                        <td style="padding: 8px;">81.2%</td>
+                        <td style="padding: 8px;">No</td>
+                    </tr>
+                    <tr style="background: rgba(16, 185, 129, 0.15); font-weight: bold;">
+                        <td style="padding: 8px; color: #34d399;">AEGISNET (Proposed)</td>
+                        <td style="padding: 8px; color: #34d399;">Yes (LDP)</td>
+                        <td style="padding: 8px; color: #34d399;">79.2%</td>
+                        <td style="padding: 8px; color: #34d399;">98.46%</td>
+                        <td style="padding: 8px; color: #34d399;">Yes (0.49 ms)</td>
+                    </tr>
+                </table>
+            </div>
+            <div style="font-size: 11px; color: #64748b;">AEGISNET Defense Matrix &bull; Computer Science & Engineering</div>
+        </div>
+
+        <!-- Slide 19: Conclusion & Contributions -->
+        <div class="slide" data-notes="In conclusion, AEGISNET provides an end-to-end framework combining unsupervised deep learning, federated optimization, and software-defined networking. We achieved 98.46% ROC-AUC, detected 79.2% of unobserved zero-day attacks, and mitigated threats in under 0.5 ms.">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">18. Summary</span>
+                    <h2 class="slide-title">Conclusion & Academic Contributions</h2>
+                </div>
+                <span class="slide-tag">Slide 19 / 20</span>
+            </div>
+            <div class="slide-body">
+                <ul>
+                    <li><strong>Unsupervised Zero-Day Detection:</strong> Proved that a &beta;-VAE trained purely on benign flow data accurately identifies unobserved zero-day exploits (<strong>79.20% recall</strong>, <strong>98.46% ROC-AUC</strong>).</li>
+                    <li><strong>Heterogeneity-Resilient Federated Privacy:</strong> Applied FedProx (&mu; = 0.01) with Differential Privacy, solving cross-domain Non-IID distribution divergence without exposing private packet telemetry.</li>
+                    <li><strong>Autonomous Reactive SDN Defense:</strong> Automated sub-millisecond (<strong>0.49 ms</strong>) line-rate mitigation via OpenFlow 1.3 FlowMod rules directly on switch hardware.</li>
+                    <li><strong>Operational Cyber Dashboard:</strong> Deployed a live glassmorphic web dashboard with real-time 1-second telemetry streams.</li>
+                </ul>
+            </div>
+            <div style="font-size: 11px; color: #64748b;">AEGISNET Defense Matrix &bull; Computer Science & Engineering</div>
+        </div>
+
+        <!-- Slide 20: Future Scope & Q&A -->
+        <div class="slide" data-notes="Looking ahead, we plan to explore Graph Neural Networks for cross-switch topology correlation and deploy the model onto P4 programmable ASICs for hardware-level sub-microsecond inference. Thank you for your time, and I am now ready to answer your questions.">
+            <div class="slide-header">
+                <div>
+                    <span class="slide-tag">19. Future Horizons</span>
+                    <h2 class="slide-title">Future Scope & Viva-Voce Q&A</h2>
+                </div>
+                <span class="slide-tag">Slide 20 / 20</span>
+            </div>
+            <div class="slide-body" style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <div style="font-size: 20px; font-weight: 800; color: #38bdf8; margin-bottom: 15px;">Future Research Horizons</div>
+                <ul style="max-width: 750px; text-align: left; font-size: 15px; margin-bottom: 25px;">
+                    <li><strong>Graph Neural Networks (GNNs):</strong> Incorporate spatio-temporal GNNs to model switch-to-switch path topology.</li>
+                    <li><strong>Programmable P4 Hardware ASICs:</strong> Direct deployment onto physical P4 data planes for sub-microsecond in-switch inference.</li>
+                    <li><strong>Adversarial Distillation:</strong> Robustness against evasion attacks targeting autoencoder latent manifolds.</li>
+                </ul>
+                <div style="font-size: 24px; font-weight: 900; color: #ffffff; margin-top: 10px;">Thank You!</div>
+                <div style="font-size: 14px; color: #94a3b8; margin-top: 5px;">I am now open to questions from the honorable examination committee.</div>
+            </div>
+            <div style="font-size: 11px; color: #64748b; text-align: center;">AEGISNET Defense Matrix &bull; Candidate: RAVI KIRAN</div>
+        </div>
+
+    </div>
+
+    <!-- Speaker Notes Popup Drawer -->
+    <div id="speaker-notes">
+        <div style="font-weight: bold; color: #38bdf8; margin-bottom: 5px; font-size: 12px; text-transform: uppercase;">🎤 Speaker Notes Script:</div>
+        <div id="notes-content">Loading notes...</div>
+    </div>
+
+    <!-- Bottom Controls Bar -->
+    <div id="deck-controls">
+        <div>
+            <button class="btn-ctrl" onclick="prevSlide()">&larr; Previous</button>
+            <button class="btn-ctrl" onclick="nextSlide()">Next &rarr;</button>
+            <button class="btn-ctrl" onclick="toggleNotes()" id="btn-notes" style="margin-left: 10px;">🎤 Toggle Notes [S]</button>
+            <button class="btn-ctrl" onclick="toggleFullscreen()" style="margin-left: 10px;">⛶ Fullscreen [F]</button>
+        </div>
+        <div id="slide-indicator" style="font-family: 'JetBrains Mono'; font-weight: bold; color: #e2e8f0;">
+            Slide 1 / 20
+        </div>
+        <div>
+            <button class="btn-ctrl" onclick="window.print()">🖨️ Print Slides</button>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+        const notesBox = document.getElementById('speaker-notes');
+        const notesContent = document.getElementById('notes-content');
+        const indicator = document.getElementById('slide-indicator');
+
+        function updateSlide() {
+            slides.forEach((s, idx) => {
+                s.classList.toggle('active', idx === currentSlide);
+            });
+            indicator.innerText = `Slide ${currentSlide + 1} / ${totalSlides}`;
+            const curNotes = slides[currentSlide].getAttribute('data-notes') || "No speaker notes for this slide.";
+            notesContent.innerText = curNotes;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        function toggleNotes() {
+            notesBox.classList.toggle('open');
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key.toLowerCase() === 's') {
+                toggleNotes();
+            } else if (e.key.toLowerCase() === 'f') {
+                toggleFullscreen();
+            } else if (e.key === 'Home') {
+                currentSlide = 0;
+                updateSlide();
+            } else if (e.key === 'End') {
+                currentSlide = totalSlides - 1;
+                updateSlide();
+            }
+        });
+
+        // Initialize first slide notes
+        updateSlide();
+    </script>
+</body>
+</html>
