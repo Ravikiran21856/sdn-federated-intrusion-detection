@@ -2,30 +2,36 @@
 
 ---
 
-### **A DISSERTATION / MAJOR PROJECT REPORT**
+### **A PROJECT REPORT**
 Submitted in partial fulfillment of the requirements for the award of the degree of  
-**BACHELOR OF TECHNOLOGY / MASTER OF TECHNOLOGY**  
+**BACHELOR OF TECHNOLOGY**  
 in  
-**COMPUTER SCIENCE & ENGINEERING / INFORMATION SECURITY**
+**COMPUTER SCIENCE AND ENGINEERING (CYBER SECURITY)**
+
+**Submitted by:**  
+**NVV RAVI KIRAN** (Roll No: **24ME5A4605**)
+
+**Under the Esteemed Guidance of:**  
+**Ms. G. VISHNU PRIYANKA**, Assistant Professor  
+Department of Computer Science and Engineering (Cyber Security)
+
+**RAMACHANDRA COLLEGE OF ENGINEERING (AUTONOMOUS)**  
+(Approved by AICTE, Permanently Affiliated to JNTUK: Kakinada, NAAC A+ & NBA)  
+NH16 Bypass Road, Vatluru (V), Eluru - 534007, A.P.  
+**Academic Year: 2026 – 2027**
 
 ---
 
-## CERTIFICATE OF AUTHENTICITY
+## CERTIFICATE
 
-This is to certify that the project work entitled **"Zero-Day Exploit Detection in Network Traffic via Federated Learning for Distributed Intrusion Detection in Software-Defined Networking (SDN) Environments"** is a bona fide record of the work carried out by:
+This is to certify that the project work entitled **"Zero-Day Exploit Detection in Network Traffic via Federated Learning for Distributed Intrusion Detection in Software-Defined Networking (SDN) Environments"** is a bona fide record of work carried out by **NVV RAVI KIRAN (24ME5A4605)**, student of Bachelor of Technology in Computer Science and Engineering (Cyber Security) at Ramachandra College of Engineering, Eluru during the academic year 2026-2027.
 
-* **Candidate Name:** RAVI KIRAN
-* **Department:** Department of Computer Science & Engineering / Information Technology
-* **Academic Year:** 2025 – 2026
-
-The results embodied in this project report have not been submitted to any other University or Institute for the award of any degree or diploma.
-
-\
 \
 \
 ______________________________ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ______________________________  
-**Internal Project Guide** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Head of Department (HOD)**  
-Department of Computer Science & Engg. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Department of Computer Science & Engg.
+**Ms. G. VISHNU PRIYANKA** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Dr. B. NARENDRA**  
+Project Mentor / Guide &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Head of Department (HOD)  
+Dept. of CSE (Cyber Security) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Dept. of CSE (Cyber Security)
 
 \
 \
@@ -49,11 +55,15 @@ All literature, frameworks, mathematical formulations, and tools utilized during
 
 ## ACKNOWLEDGMENTS
 
-I express our deepest gratitude to our project guide for their invaluable guidance, constructive criticism, and continuous technical mentorship throughout the formulation and implementation of this research project.
+I express my deepest gratitude to my project supervisor, **Ms. G. VISHNU PRIYANKA**, Assistant Professor, Department of Computer Science and Engineering (Cyber Security), for her invaluable guidance, constructive criticism, and continuous technical mentorship throughout the formulation and implementation of this research project.
 
-I also extend our sincere appreciation to the Head of the Department and the faculty members of the Computer Science and Information Security department for providing the high-performance computing resources, laboratory infrastructure, and academic environment necessary to execute this work.
+I also extend my sincere appreciation to **Dr. B. NARENDRA**, Head of the Department (CSE - Cyber Security), **Dr. S. S. Sarma**, Dean Academics, and **Dr. M. Muralidhara Rao**, Principal, Ramachandra College of Engineering, Eluru, for providing the laboratory infrastructure and high-performance computing environment necessary to execute this work.
 
-Finally, I thank our peers and families for their unwavering encouragement and support during the design, coding, testing, and documentation stages of this dissertation.
+Finally, I thank my peers, faculty members, and family for their unwavering encouragement and support during the design, testing, and completion of this project.
+
+\
+**Mr. NVV RAVI KIRAN**  
+Roll No: **24ME5A4605**
 
 ---
 

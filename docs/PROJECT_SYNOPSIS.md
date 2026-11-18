@@ -1,7 +1,11 @@
 # MAJOR PROJECT SYNOPSIS
 
 ## 1. PROJECT DETAILS
-* **Project Title:** Zero-Day Exploit Detection in Network Traffic via Federated Learning for Distributed Intrusion Detection in Software-Defined Networking (SDN) Environments
+* **Project Title:** Zero-Day Exploit Detection in Network Traffic via Federated Learning for Distributed Intrusion Detection in Software-Defined Networking (SDN) Environments (AEGISNET)
+* **Candidate Name:** NVV RAVI KIRAN (Roll No: **24ME5A4605**)
+* **Project Mentor / Guide:** Ms. G. VISHNU PRIYANKA, Assistant Professor, Dept. of CSE (Cyber Security)
+* **Head of Department:** Dr. B. NARENDRA, HoD (CSE - Cyber Security)
+* **Institution:** Ramachandra College of Engineering (Autonomous), Eluru, A.P. (Academic Year 2026–2027)
 * **Domain:** Network Security, Machine Learning, Software-Defined Networking, Distributed Systems
 * **Application Areas:** Enterprise Campus Networks, Cloud Data Centers, Edge/IoT Smart Infrastructures, Critical National Infrastructure (CNI)
 

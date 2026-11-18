@@ -11,9 +11,10 @@
 ## SLIDE 1: TITLE SLIDE
 * **Title:** Zero-Day Exploit Detection in Network Traffic via Federated Learning for Distributed Intrusion Detection in SDN Environments
 * **Framework:** AEGISNET Cyber Defense Platform
-* **Candidate:** RAVI KIRAN
-* **Guide / Supervisor:** [Project Guide Name], Dept. of Computer Science & Engineering
-* **Institutional Details:** [College / University Name]
+* **Candidate:** NVV RAVI KIRAN (Roll No: **24ME5A4605**)
+* **Guide / Supervisor:** Ms. G. VISHNU PRIYANKA, Assistant Professor, Dept. of CSE (Cyber Security)
+* **Head of Department:** Dr. B. NARENDRA, HoD (CSE - Cyber Security)
+* **Institutional Details:** Ramachandra College of Engineering (Autonomous), Eluru, A.P. (Academic Year 2026–2027)
 
 > **🎤 Speaker Notes:**  
 > "Good morning, respected members of the evaluation committee and my project guide. Today, I am presenting our major project titled *Zero-Day Exploit Detection in Network Traffic via Federated Learning for Distributed Intrusion Detection in Software-Defined Networking Environments*. In this project, we have designed and implemented an end-to-end framework, called AEGISNET, that detects novel, unobserved zero-day cyber exploits without sharing raw private packet telemetry, while enforcing line-rate mitigation using OpenFlow 1.3 switches in less than half a millisecond."

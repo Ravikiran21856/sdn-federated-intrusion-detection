@@ -211,7 +211,7 @@ def build_pdf(output_filename):
     story.append(Spacer(1, 8))
     story.append(Paragraph("Under the Esteemed Guidance of", ParagraphStyle('UnderGuid', parent=styles['Normal'], fontName='Helvetica', fontSize=8.5, leading=11, alignment=TA_CENTER)))
     story.append(Spacer(1, 2))
-    story.append(Paragraph("<b>Ms. G. MADHURI</b><br/>Assistant Professor<br/>Department of Computer Science and Engineering<br/>(Cyber Security)", ParagraphStyle('GuideDet', parent=styles['Normal'], fontName='Helvetica', fontSize=9, leading=12.5, alignment=TA_CENTER)))
+    story.append(Paragraph("<b>Ms. G. VISHNU PRIYANKA</b><br/>Assistant Professor<br/>Department of Computer Science and Engineering<br/>(Cyber Security)", ParagraphStyle('GuideDet', parent=styles['Normal'], fontName='Helvetica', fontSize=9, leading=12.5, alignment=TA_CENTER)))
     story.append(Spacer(1, 12))
     
     # College Logo
@@ -254,7 +254,7 @@ def build_pdf(output_filename):
     story.append(Spacer(1, 110))
 
     sig_data = [
-        [Paragraph("<b>Ms. G. Madhuri</b><br/>Project Mentor", ParagraphStyle('Sig1', parent=styles['Normal'], fontName='Helvetica', fontSize=9, leading=12, alignment=TA_CENTER)),
+        [Paragraph("<b>Ms. G. Vishnu Priyanka</b><br/>Project Mentor", ParagraphStyle('Sig1', parent=styles['Normal'], fontName='Helvetica', fontSize=9, leading=12, alignment=TA_CENTER)),
          "",
          Paragraph("<b>Dr. B. Narendra</b><br/>HoD, CSE (Cyber Security)", ParagraphStyle('Sig2', parent=styles['Normal'], fontName='Helvetica', fontSize=9, leading=12, alignment=TA_CENTER))],
         ["", "", ""],
@@ -278,7 +278,7 @@ def build_pdf(output_filename):
     story.append(Spacer(1, 15))
     story.append(Paragraph("<b>DECLARATION</b>", ParagraphStyle('DecHead', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=13, leading=16, alignment=TA_CENTER, textColor=colors.HexColor('#0f172a'))))
     story.append(Spacer(1, 20))
-    dec_body_1 = """I am, <b>NVV RAVI KIRAN (24ME5A4605)</b>, hereby declare the project report titled <b>"Zero-Day Exploit Detection in Network Traffic via Federated Learning for Distributed Intrusion Detection, Applied to Software-Defined Networking (SDN) Environments"</b> under the supervision of <b>Ms. G. Madhuri</b>, Assistant Professor, Department of Computer Science and Engineering (Cyber Security) is submitted in partial fulfilment of the requirements for the award of the degree of Bachelor of Technology in Computer Science and Engineering (Cyber Security)."""
+    dec_body_1 = """I am, <b>NVV RAVI KIRAN (24ME5A4605)</b>, hereby declare the project report titled <b>"Zero-Day Exploit Detection in Network Traffic via Federated Learning for Distributed Intrusion Detection, Applied to Software-Defined Networking (SDN) Environments"</b> under the supervision of <b>Ms. G. Vishnu Priyanka</b>, Assistant Professor, Department of Computer Science and Engineering (Cyber Security) is submitted in partial fulfilment of the requirements for the award of the degree of Bachelor of Technology in Computer Science and Engineering (Cyber Security)."""
     dec_body_2 = """This is a record of work carried out by me and the results embodied in this project have not been reproduced or copied from any source. The results embodied in this project report have not been submitted to any other University or Institute for the award of any other degree or diploma."""
     story.append(Paragraph(dec_body_1, ParagraphStyle('DecText1', parent=styles['Normal'], fontName='Helvetica', fontSize=9.5, leading=16, alignment=TA_JUSTIFY)))
     story.append(Spacer(1, 12))
@@ -302,7 +302,7 @@ def build_pdf(output_filename):
 
     ack_paragraphs = [
         "I take this opportunity to express my sincere gratitude to all those who have contributed to the successful completion of our research work. Their guidance, support, and encouragement have been invaluable throughout this journey.",
-        "I extend my heartfelt thanks to our supervisor, <b>Ms. G. Madhuri</b>, Assistant Professor, Department of Computer Science and Engineering (Cyber Security), for her invaluable mentorship, insightful guidance, and unwavering support throughout the course of this research. Her expertise and constructive feedback have been instrumental in shaping this work.",
+        "I extend my heartfelt thanks to our supervisor, <b>Ms. G. Vishnu Priyanka</b>, Assistant Professor, Department of Computer Science and Engineering (Cyber Security), for her invaluable mentorship, insightful guidance, and unwavering support throughout the course of this research. Her expertise and constructive feedback have been instrumental in shaping this work.",
         "I am deeply indebted to <b>Dr. B. Narendra</b>, Head of the Department, Department of Computer Science and Engineering (Cyber Security), for his continuous encouragement, guidance, and support in all aspects of this research endeavor.",
         "We express our deepest gratitude to <b>Dr. S. S. Sarma</b>, Dean Academics, and <b>Dr. M. Muralidhara Rao</b>, Principal, Ramachandra College of Engineering, Eluru for their valuable suggestions during the entire project work.",
         "I also wish to convey my sincere thanks to all the Deans for their constant encouragement and insightful suggestions that have greatly contributed to the progress of this research.",
